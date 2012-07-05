@@ -11,9 +11,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import puf.m2.basket.model.User;
+import puf.m2.basket.model.UserBasket;
 
-public class Login extends javax.swing.JPanel implements ActionListener {
+public class UserBasketView extends javax.swing.JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,7 +27,7 @@ public class Login extends javax.swing.JPanel implements ActionListener {
 
 	private JFrame parent;
 
-	public Login(JFrame parent) {
+	public UserBasketView(JFrame parent) {
 		this.parent = parent;
 		initComponents();
 	}
@@ -37,7 +37,7 @@ public class Login extends javax.swing.JPanel implements ActionListener {
 			String username = txtUsername.getText();
 			@SuppressWarnings("deprecation")
 			String password = txtPassword.getText();
-			login(username, password);
+			requestLogin(username, password);
 		}
 	}
 
@@ -58,7 +58,7 @@ public class Login extends javax.swing.JPanel implements ActionListener {
 			@SuppressWarnings("deprecation")
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					login(txtUsername.getText(), txtPassword.getText());
+					requestLogin(txtUsername.getText(), txtPassword.getText());
 				}
 			}
 		});
@@ -140,10 +140,10 @@ public class Login extends javax.swing.JPanel implements ActionListener {
 										Short.MAX_VALUE)));
 	}
 
-	public void login(String username, String password) {
-		User user = User.login(username, password);
+	public void requestLogin(String username, String password) {
+		UserBasket userBasket = UserBasket.requestLogin(username, password);
 
-		if (user != null) {
+		if (userBasket != null) {
 			parent.setVisible(false);
 			Utils.createAndShowGUI(new JFrame("Manage basket-ball meetings"),
 						new MainForm());

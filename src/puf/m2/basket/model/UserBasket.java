@@ -8,33 +8,33 @@ import puf.m2.basket.exception.BasketException;
 import puf.m2.basket.exception.UserException;
 import puf.m2.basket.model.support.Condition;
 
-public class User extends BasketEntity {
+public class UserBasket extends BasketEntity {
 
-	protected static final Map<Integer, User> MAP = new CacheAwareMap<Integer, User>();
+	protected static final Map<Integer, UserBasket> MAP = new CacheAwareMap<Integer, UserBasket>();
 
 	@DbProp
-	private String name;
+	private String username;
 	@DbProp
 	private String password;
 
-	public User() {
+	public UserBasket() {
 		super();
 	}
 
-	public User(String name, String password) {
-		this.name = name;
+	public UserBasket(String name, String password) {
+		this.username = name;
 		this.password = password;
 	}
 
-	public static User login(String username, String password) {
+	public static UserBasket requestLogin(String username, String password) {
 
-		Condition c = new Condition("name", username);
-		c.and(new Condition("password", password)).and(
+		Condition c = new Condition("username", username.toUpperCase());
+		c.and(new Condition("password", password.toUpperCase())).and(
 				new Condition("deleted", "0"));
 
-		User user = null;
+		UserBasket user = null;
 		try {
-			List<User> userList = getByCondition(c, User.class);
+			List<UserBasket> userList = getByCondition(c, UserBasket.class);
 			if (userList.size() == 1) {
 				user = userList.get(0);
 			}
@@ -46,14 +46,14 @@ public class User extends BasketEntity {
 
 	}
 
-	public static User getUserByName(String username) {
+	public static UserBasket getUserByName(String username) {
 
 		Condition c = new Condition("name", username);
 		c.and(new Condition("deleted", "0"));
 
-		User user = null;
+		UserBasket user = null;
 		try {
-			List<User> userList = getByCondition(c, User.class);
+			List<UserBasket> userList = getByCondition(c, UserBasket.class);
 			if (userList.size() == 1) {
 				user = userList.get(0);
 			}
@@ -85,11 +85,11 @@ public class User extends BasketEntity {
 	}
 
 	public String getUsername() {
-		return name;
+		return username;
 	}
 
 	public void setUsername(String username) {
-		this.name = username;
+		this.username = username;
 	}
 
 	public String getPassword() {

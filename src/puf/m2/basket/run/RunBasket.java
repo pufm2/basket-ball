@@ -13,7 +13,7 @@ import javax.swing.UIManager;
 
 import puf.m2.basket.exception.DbException;
 import puf.m2.basket.model.BasketEntity;
-import puf.m2.basket.view.Login;
+import puf.m2.basket.view.UserBasketView;
 import puf.m2.basket.view.Utils;
 
 public class RunBasket {
@@ -26,7 +26,7 @@ public class RunBasket {
 			public void run() {
 
 				JFrame frame = new JFrame("Login");
-				Login loginPanel = new Login(frame);
+				UserBasketView loginPanel = new UserBasketView(frame);
 				Utils.createAndShowGUI(frame, loginPanel);
 			}
 		});
