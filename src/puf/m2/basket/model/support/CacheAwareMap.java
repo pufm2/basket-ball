@@ -1,6 +1,8 @@
-package puf.m2.basket.model;
+package puf.m2.basket.model.support;
 
 import java.util.HashMap;
+
+import puf.m2.basket.model.BasketEntity;
 
 public class CacheAwareMap<K, V> extends HashMap<K, V> {
 

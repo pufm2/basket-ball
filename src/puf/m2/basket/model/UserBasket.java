@@ -6,7 +6,7 @@ import java.util.Map;
 import puf.m2.basket.db.DbProp;
 import puf.m2.basket.exception.BasketException;
 import puf.m2.basket.exception.UserException;
-import puf.m2.basket.model.support.Condition;
+import puf.m2.basket.model.support.CacheAwareMap;
 
 public class UserBasket extends BasketEntity {
 

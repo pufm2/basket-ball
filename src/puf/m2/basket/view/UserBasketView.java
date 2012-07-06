@@ -13,19 +13,20 @@ import javax.swing.JTextField;
 
 import puf.m2.basket.model.UserBasket;
 
-public class UserBasketView extends javax.swing.JPanel implements ActionListener {
+public class UserBasketView extends javax.swing.JPanel implements
+		ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
+	private JLabel lblPassword;
 	// Variables declaration - do not modify
 	private JLabel lblUsername;
-	private JLabel lblPassword;
+	private JFrame parent;
 	private JPasswordField txtPassword;
-	private JTextField txtUsername;
 
 	// End of variables declaration
 
-	private JFrame parent;
+	private JTextField txtUsername;
 
 	public UserBasketView(JFrame parent) {
 		this.parent = parent;
@@ -146,7 +147,7 @@ public class UserBasketView extends javax.swing.JPanel implements ActionListener
 		if (userBasket != null) {
 			parent.setVisible(false);
 			Utils.createAndShowGUI(new JFrame("Manage basket-ball meetings"),
-						new MainForm());
+					new MainForm());
 		} else {
 			JOptionPane.showMessageDialog(parent, "Invalid Credential",
 					"Alert", JOptionPane.ERROR_MESSAGE);

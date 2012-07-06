@@ -1,4 +1,6 @@
-package puf.m2.basket.model.support;
+package puf.m2.basket.model;
+
+import puf.m2.basket.model.support.BooleanOperator;
 
 public class Condition {
 	private String prop, value;

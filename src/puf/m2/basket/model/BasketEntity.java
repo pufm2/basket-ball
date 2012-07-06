@@ -14,7 +14,6 @@ import puf.m2.basket.db.DatabaseFactory;
 import puf.m2.basket.db.DbProp;
 import puf.m2.basket.exception.BasketException;
 import puf.m2.basket.exception.DbException;
-import puf.m2.basket.model.support.Condition;
 import puf.m2.basket.utils.DateUtils;
 
 public abstract class BasketEntity {
