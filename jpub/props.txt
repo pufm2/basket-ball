@@ -1,0 +1,8 @@
+jpub.user=basket_user/basket_pwd
+jpub.methods=all
+jpub.builtintypes=jdbc   
+jpub.numbertypes=objectjdbc
+jpub.usertypes=oracle
+jpub.package=puf.m2.basket.db.entity
+jpub.url=jdbc:oracle:thin:@hoan-nb:1521:orcl
+jpub.input=input.txt
