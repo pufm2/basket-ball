@@ -11,8 +11,10 @@
 	<classpathentry kind="lib" path="libs/jta-1.1.jar"/>
 	<classpathentry kind="lib" path="libs/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="libs/mysql-connector-java-5.0.5.jar"/>
-	<classpathentry kind="lib" path="libs/ojdbc14.jar"/>
+	<classpathentry kind="lib" path="libs/ojdbc6-11.2.0.jar"/>
+	<classpathentry kind="lib" path="libs/runtime12.jar"/>
 	<classpathentry kind="lib" path="libs/slf4j-api-1.5.6.jar"/>
 	<classpathentry kind="lib" path="libs/slf4j-log4j12-1.5.6.jar"/>
+	<classpathentry kind="lib" path="libs/translator.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
