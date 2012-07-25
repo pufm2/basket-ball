@@ -11,7 +11,6 @@ import oracle.sql.Datum;
 import puf.m2.basket.db.entity.DbCoach;
 import puf.m2.basket.db.entity.DbTeamMany;
 import puf.m2.basket.db.entity.DbTeamWithCoach;
-import puf.m2.basket.db.entity.DbTeamWithPlayer;
 import puf.m2.basket.model.support.BasketException;
 
 public class Coach extends DbCoach implements ORAData, ORADataFactory {

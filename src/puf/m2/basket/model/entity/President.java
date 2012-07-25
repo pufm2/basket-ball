@@ -6,7 +6,6 @@ import oracle.sql.ORADataFactory;
 import oracle.sql.Datum;
 import puf.m2.basket.db.entity.DbPresident;
 import puf.m2.basket.db.entity.PresidentRef;
-import puf.m2.basket.db.entity.TeamRef;
 import puf.m2.basket.model.support.BasketException;
 
 public class President extends DbPresident implements ORAData, ORADataFactory {

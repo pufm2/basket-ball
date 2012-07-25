@@ -7,23 +7,21 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-public class CategoryView extends javax.swing.JPanel implements ActionListener {
+import puf.m2.basket.model.entity.Category;
 
-	/**
-	 * 
-	 */
+public class CategoryView extends javax.swing.JPanel implements ActionListener {
 	private static final long serialVersionUID = 1945726675774788232L;
 
 	// Variables declaration - do not modify
-    private JButton btnAddTeam;
-
+	FormState formState;
+	Category categoryModel;
+	
+	private JButton btnAddTeam;
     private JButton btnCancel;
-
-    private JButton btnClose;                                       
-
     private JButton btnDelete;
     private JButton btnFind;
     private JButton btnNew;
@@ -43,34 +41,170 @@ public class CategoryView extends javax.swing.JPanel implements ActionListener {
     public CategoryView() {
     	initComponents();
     	addActionListeners();
+    	
+    	formState = FormState.NORMAL;
+    	categoryModel = new Category();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ("Cancel".equals(e.getActionCommand())) {
-
-		} else if ("Close".equals(e.getActionCommand())) {
-
+			formState = FormState.NORMAL;
 		} else if ("Delete".equals(e.getActionCommand())) {
-
+			formState = FormState.DELETE;
+			if (JOptionPane.showConfirmDialog(this,
+					"Do you really to delete this category?",
+					"Confirm to delete category", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				// Delete this category
+				JOptionPane.showMessageDialog(this, "This category is deleted");
+			}
 		} else if ("Find".equals(e.getActionCommand())) {
+			formState = FormState.FIND;
+			String categoryName = (String) JOptionPane.showInputDialog(this,
+					"Please give a name of category", "Category 1");
+			// Find category with that name
+			// If exist category, show its information
+			// If not exist category, show error message */
 
 		} else if ("New".equals(e.getActionCommand())) {
-
+			formState = FormState.NEW;
 		} else if ("Save".equals(e.getActionCommand())) {
-
+			formState = FormState.SAVE;
+			if (isEmptyData()) {
+				JOptionPane.showMessageDialog(this,
+						"Please give enought information of category", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			} 
+			if (isTypeMismatch()) {
+				JOptionPane.showMessageDialog(this,
+						"Please give correct type in each text field", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			else {
+				if (formState == FormState.NEW) {
+					if (isDuplicateData()) {
+						JOptionPane
+						.showMessageDialog(
+								this,
+								"Can not insert new category which is duplicate ID/ Name with existing category",
+								"Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					} else {
+						// Save new category
+						saveCategory();
+						JOptionPane.showMessageDialog(this,
+								"Save new category successful", "Success",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+				} else if (formState == FormState.UPDATE) {
+					// Update existing category
+					updateCategory();
+					JOptionPane.showMessageDialog(this,
+							"Update new category successful", "Success",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
 		} else if ("Update".equals(e.getActionCommand())) {
-
+			formState = FormState.UPDATE;
 		}
 
+		// Finally for each button
+		updateForm();
 	}
 
-    private void addActionListeners() {
+	private void updateCategory() {
+		
+	}
+
+	private void saveCategory() {
+		
+	}
+
+	private void updateForm() {
+		switch (formState) {
+
+		case NORMAL:
+			btnCancel.setVisible(true);
+			btnDelete.setVisible(true);
+			btnFind.setVisible(true);
+			btnNew.setVisible(true);
+			btnSave.setVisible(true);
+			btnUpdate.setVisible(true);
+
+			txtCategoryID.setText("");
+			txtCategoryName.setText("");
+
+			break;
+
+		case NEW:
+			btnCancel.setVisible(true);
+			btnDelete.setVisible(false);
+			btnFind.setVisible(false);
+			btnNew.setVisible(false);
+			btnSave.setVisible(true);
+			btnUpdate.setVisible(false);
+			break;
+
+		case FIND:
+
+			break;
+
+		case SAVE:
+			btnCancel.setVisible(true);
+			btnDelete.setVisible(true);
+			btnFind.setVisible(true);
+			btnNew.setVisible(true);
+			btnSave.setVisible(true);
+			btnUpdate.setVisible(true);
+			break;
+
+		case UPDATE:
+			btnCancel.setVisible(true);
+			btnDelete.setVisible(false);
+			btnFind.setVisible(false);
+			btnNew.setVisible(false);
+			btnSave.setVisible(true);
+			btnUpdate.setVisible(false);
+			break;
+
+		case DELETE:
+
+			break;
+		}
+	}
+
+	private boolean isEmptyData() {
+		if (txtCategoryID.getText().trim()==""
+				|| txtCategoryName.getText().trim()=="")
+			return true;
+		return false;
+	}
+	
+	private boolean isTypeMismatch() {
+		if (!isInteger(txtCategoryID.getText()))
+			return true;
+		return false;
+	}
+	
+	public boolean isInteger(String s) {
+		try {
+			Integer.parseInt(s);
+		}
+		catch (NumberFormatException nfe) {
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean isDuplicateData() {
+		return false;
+	}
+
+	private void addActionListeners() {
 		btnCancel.setActionCommand("Cancel");
 		btnCancel.addActionListener(this);
-
-		btnClose.setActionCommand("Close");
-		btnClose.addActionListener(this);
 
 		btnDelete.setActionCommand("Delete");
 		btnDelete.addActionListener(this);
@@ -96,7 +230,6 @@ public class CategoryView extends javax.swing.JPanel implements ActionListener {
         jLabel2 = new JLabel();
         btnNew = new JButton();
         btnFind = new JButton();
-        btnClose = new JButton();
         btnSave = new JButton();
         btnCancel = new JButton();
         btnUpdate = new JButton();
@@ -118,9 +251,6 @@ public class CategoryView extends javax.swing.JPanel implements ActionListener {
 
         btnFind.setText("Find");
         btnFind.setToolTipText("Find an existing category");
-
-        btnClose.setText("Close");
-        btnClose.setToolTipText("Close this form");
 
         btnSave.setText("Save");
         btnSave.setToolTipText("Save new category");
@@ -156,8 +286,7 @@ public class CategoryView extends javax.swing.JPanel implements ActionListener {
                             .addComponent(btnCancel, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnClose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE))
+                           .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -200,7 +329,7 @@ public class CategoryView extends javax.swing.JPanel implements ActionListener {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNew)
                     .addComponent(btnFind)
-                    .addComponent(btnClose))
+                    )
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)

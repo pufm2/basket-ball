@@ -11,20 +11,12 @@ import javax.swing.JTextField;
 public class ClubPlayerView extends javax.swing.JPanel implements
 		ActionListener {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	// Variables declaration - do not modify
 	private JButton btnCancel;
-
-	private JButton btnClose;
-
 	private JButton btnDelete;
-
 	private JButton btnFind;
-
 	private JButton btnNew;
 	private JButton btnSave;
 	private JButton btnUpdate;
@@ -67,9 +59,6 @@ public class ClubPlayerView extends javax.swing.JPanel implements
 		btnCancel.setActionCommand("Cancel");
 		btnCancel.addActionListener(this);
 
-		btnClose.setActionCommand("Close");
-		btnClose.addActionListener(this);
-
 		btnDelete.setActionCommand("Delete");
 		btnDelete.addActionListener(this);
 
@@ -104,15 +93,14 @@ public class ClubPlayerView extends javax.swing.JPanel implements
         btnDelete = new javax.swing.JButton();
         btnNew = new javax.swing.JButton();
         btnFind = new javax.swing.JButton();
-        btnClose = new javax.swing.JButton();
 
         jLabel1.setText("Club");
 
         jLabel2.setText("Player");
 
-        cboClub.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Choose club from list" }));
+        cboClub.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Choose club from list" }));
 
-        cboPlayer.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Choose player from list" }));
+        cboPlayer.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Choose player from list" }));
 
         jLabel3.setText("ID");
 
@@ -134,9 +122,6 @@ public class ClubPlayerView extends javax.swing.JPanel implements
 
         btnFind.setText("Find");
         btnFind.setToolTipText("Find an existing office");
-
-        btnClose.setText("Close");
-        btnClose.setToolTipText("Close this form");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -169,7 +154,7 @@ public class ClubPlayerView extends javax.swing.JPanel implements
                             .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnClose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                           
                             .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -202,7 +187,7 @@ public class ClubPlayerView extends javax.swing.JPanel implements
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNew)
                     .addComponent(btnFind)
-                    .addComponent(btnClose))
+                    )
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)

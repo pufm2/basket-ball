@@ -6,19 +6,22 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import puf.m2.basket.model.entity.Office;
+import puf.m2.basket.model.entity.Person;
+
 import com.toedter.calendar.JCalendar;
 
 public class PersonView extends javax.swing.JPanel implements ActionListener {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1265877891170734060L;
 
 	// Variables declaration - do not modify
+	Person personModel;
+	FormState formState;
+	
 	private JButton btnCancel;
-	private JButton btnClose;
 	private JButton btnDelete;
 	private JButton btnFind;
 	private JButton btnNew;
@@ -50,14 +53,13 @@ public class PersonView extends javax.swing.JPanel implements ActionListener {
 	public PersonView() {
 		initComponents();
 		addActionListeners();
+		
+		formState = FormState.NORMAL;
 	}
 
 	private void addActionListeners() {
 		btnCancel.setActionCommand("Cancel");
 		btnCancel.addActionListener(this);
-
-		btnClose.setActionCommand("Close");
-		btnClose.addActionListener(this);
 
 		btnDelete.setActionCommand("Delete");
 		btnDelete.addActionListener(this);
@@ -87,7 +89,6 @@ public class PersonView extends javax.swing.JPanel implements ActionListener {
 		jLabel3 = new JLabel();
 		btnNew = new JButton();
 		btnFind = new JButton();
-		btnClose = new JButton();
 		btnSave = new JButton();
 		btnCancel = new JButton();
 		btnUpdate = new JButton();
@@ -116,16 +117,13 @@ public class PersonView extends javax.swing.JPanel implements ActionListener {
 		jLabel3.setText("Address");
 
 		btnNew.setText("New");
-		btnNew.setToolTipText("Add new office");
+		btnNew.setToolTipText("Add new person");
 
 		btnFind.setText("Find");
-		btnFind.setToolTipText("Find an existing office");
-
-		btnClose.setText("Close");
-		btnClose.setToolTipText("Close this form");
+		btnFind.setToolTipText("Find an existing person");
 
 		btnSave.setText("Save");
-		btnSave.setToolTipText("Save new office");
+		btnSave.setToolTipText("Save new person");
 
 		btnCancel.setText("Cancel");
 
@@ -201,11 +199,6 @@ public class PersonView extends javax.swing.JPanel implements ActionListener {
 																		layout.createParallelGroup(
 																				javax.swing.GroupLayout.Alignment.LEADING,
 																				false)
-																				.addComponent(
-																						btnClose,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						Short.MAX_VALUE)
 																				.addComponent(
 																						btnUpdate,
 																						javax.swing.GroupLayout.DEFAULT_SIZE,
@@ -448,7 +441,7 @@ public class PersonView extends javax.swing.JPanel implements ActionListener {
 												javax.swing.GroupLayout.Alignment.BASELINE)
 												.addComponent(btnNew)
 												.addComponent(btnFind)
-												.addComponent(btnClose))
+												)
 								.addPreferredGap(
 										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 								.addGroup(
@@ -471,20 +464,156 @@ public class PersonView extends javax.swing.JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ("Cancel".equals(e.getActionCommand())) {
-
-		} else if ("Close".equals(e.getActionCommand())) {
-
+			formState = FormState.NORMAL;
 		} else if ("Delete".equals(e.getActionCommand())) {
-
+			formState = FormState.DELETE;
+			if (JOptionPane.showConfirmDialog(this,
+					"Do you really to delete this person?",
+					"Confirm to delete person", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				// Delete this person
+				JOptionPane.showMessageDialog(this, "This person is deleted");
+			}
 		} else if ("Find".equals(e.getActionCommand())) {
+			formState = FormState.FIND;
+			String officeName = (String) JOptionPane.showInputDialog(this,
+					"Please give a name of person", "Office 1");
+			// Find person with that name
+			// If exist person, show its information
+			// If not exist person, show error message */
 
 		} else if ("New".equals(e.getActionCommand())) {
-
+			formState = FormState.NEW;
 		} else if ("Save".equals(e.getActionCommand())) {
-
+			formState = FormState.SAVE;
+			if (isEmptyData()) {
+				JOptionPane.showMessageDialog(this,
+						"Please give enought information of person", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			} 
+			if (isTypeMismatch()) {
+				JOptionPane.showMessageDialog(this,
+						"Please give correct type in each text field", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			else {
+				if (formState == FormState.NEW) {
+					if (isDuplicateData()) {
+						JOptionPane
+						.showMessageDialog(
+								this,
+								"Can not insert new person which is duplicate ID/ Name with existing person",
+								"Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					} else {
+						// Save new person
+						savePerson();
+						JOptionPane.showMessageDialog(this,
+								"Save new person successful", "Success",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+				} else if (formState == FormState.UPDATE) {
+					// Update existing person
+					updatePerson();
+					JOptionPane.showMessageDialog(this,
+							"Save new person successful", "Success",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
 		} else if ("Update".equals(e.getActionCommand())) {
-
+			formState = FormState.UPDATE;
 		}
 
+		// Finally for each button
+		updateForm();
+	}
+
+	private void updateForm() {
+		switch (formState) {
+
+		case NORMAL:
+			btnCancel.setVisible(true);
+			btnDelete.setVisible(true);
+			btnFind.setVisible(true);
+			btnNew.setVisible(true);
+			btnSave.setVisible(true);
+			btnUpdate.setVisible(true);
+
+			txtAddressCity.setText("");
+			txtAddressDistrict.setText("");
+			txtAddressNumber.setText("");
+			txtAddressStreet.setText("");
+			txtLicenseNumber.setText("");
+			txtPersonID.setText("");
+			txtPersonName.setText("");
+			break;
+
+		case NEW:
+			btnCancel.setVisible(true);
+			btnDelete.setVisible(false);
+			btnFind.setVisible(false);
+			btnNew.setVisible(false);
+			btnSave.setVisible(true);
+			btnUpdate.setVisible(false);
+			break;
+
+		case FIND:
+
+			break;
+
+		case SAVE:
+			btnCancel.setVisible(true);
+			btnDelete.setVisible(true);
+			btnFind.setVisible(true);
+			btnNew.setVisible(true);
+			btnSave.setVisible(true);
+			btnUpdate.setVisible(true);
+			break;
+
+		case UPDATE:
+			btnCancel.setVisible(true);
+			btnDelete.setVisible(false);
+			btnFind.setVisible(false);
+			btnNew.setVisible(false);
+			btnSave.setVisible(true);
+			btnUpdate.setVisible(false);
+			break;
+
+		case DELETE:
+			break;
+		}
+	}
+
+	private void updatePerson() {
+		
+	}
+
+	private void savePerson() {
+		
+	}
+
+	private boolean isDuplicateData() {
+		return false;
+	}
+
+	private boolean isTypeMismatch() {
+		if (!isInteger(txtPersonID.getText()))
+			return true;
+		return false;
+	}
+
+	public boolean isInteger(String s) {
+		try {
+			Integer.parseInt(s);
+		}
+		catch (NumberFormatException nfe) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isEmptyData() {
+		return false;
 	}
 }

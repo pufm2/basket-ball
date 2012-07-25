@@ -9,7 +9,6 @@ import oracle.sql.Datum;
 import puf.m2.basket.db.entity.DbTeam;
 import puf.m2.basket.db.entity.TeamRef;
 import puf.m2.basket.model.support.BasketException;
-import puf.m2.basket.model.support.Condition;
 import puf.m2.basket.model.support.EntityUtils;
 
 public class Team extends DbTeam {

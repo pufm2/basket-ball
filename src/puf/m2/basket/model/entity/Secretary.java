@@ -6,7 +6,6 @@ import oracle.sql.ORADataFactory;
 import oracle.sql.Datum;
 import puf.m2.basket.db.entity.DbSecretary;
 import puf.m2.basket.db.entity.SecretaryRef;
-import puf.m2.basket.db.entity.TeamRef;
 import puf.m2.basket.model.support.BasketException;
 
 public class Secretary extends DbSecretary implements ORAData, ORADataFactory {

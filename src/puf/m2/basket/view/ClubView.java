@@ -9,17 +9,43 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 public class ClubView extends javax.swing.JPanel implements ActionListener {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8257054384536718934L;
 
+    // Variables declaration - do not modify
+    private JButton btnAdd;
+    
+	private JButton btnCancel;
+   
+	private JButton btnDelete;
+
+    private JButton btnFind;                                       
+
+    private JButton btnNew;
+    private JButton btnSave;
+    private JButton btnUpdate;
+    private JComboBox<String> cboCategory;
+    private JComboBox<String> cboOffice;
+    private JComboBox<String> cboPresident;
+    private JComboBox<String> cboSecretary;
+    private JComboBox<String> cboTreasurer;
+    private JComboBox<String> cboVicePresident;
+    private JLabel jLabel1;
+    private JLabel jLabel2;
+    private JLabel jLabel3;
+    private JLabel jLabel4;
+    private JLabel jLabel5;
+    private JLabel jLabel6;
+    private JLabel jLabel7;
+    private JLabel jLabel8;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<String> lstCategory;
+    private JTextField txtClubID;
+    private JTextField txtClubName;
+    // End of variables declaration
     public ClubView() {
         initComponents();addActionListeners();
 	}
-    
-	@Override
+    @Override
 	public void actionPerformed(ActionEvent e) {
 		if ("Cancel".equals(e.getActionCommand())) {
 
@@ -38,13 +64,9 @@ public class ClubView extends javax.swing.JPanel implements ActionListener {
 		}
 
 	}
-	
-	private void addActionListeners() {
+    private void addActionListeners() {
 		btnCancel.setActionCommand("Cancel");
 		btnCancel.addActionListener(this);
-
-		btnClose.setActionCommand("Close");
-		btnClose.addActionListener(this);
 
 		btnDelete.setActionCommand("Delete");
 		btnDelete.addActionListener(this);
@@ -61,8 +83,8 @@ public class ClubView extends javax.swing.JPanel implements ActionListener {
 		btnUpdate.setActionCommand("Update");
 		btnUpdate.addActionListener(this);
 	}
-    
-	private void initComponents() {
+
+    private void initComponents() {
 
         jLabel1 = new JLabel();
         txtClubID = new JTextField();
@@ -86,7 +108,6 @@ public class ClubView extends javax.swing.JPanel implements ActionListener {
         btnUpdate = new JButton();
         btnNew = new JButton();
         btnFind = new JButton();
-        btnClose = new JButton();
         btnAdd = new JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstCategory = new javax.swing.JList<String>();
@@ -97,7 +118,7 @@ public class ClubView extends javax.swing.JPanel implements ActionListener {
 
         jLabel3.setText("Office");
 
-        cboOffice.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Choose office from list" }));
+        cboOffice.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Choose office from list" }));
 
         jLabel4.setText("President");
 
@@ -109,15 +130,15 @@ public class ClubView extends javax.swing.JPanel implements ActionListener {
 
         jLabel8.setText("Categories");
 
-        cboCategory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Choose category(ies) from list" }));
+        cboCategory.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Choose category(ies) from list" }));
 
-        cboTreasurer.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Choose treasurer from list" }));
+        cboTreasurer.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Choose treasurer from list" }));
 
-        cboVicePresident.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Choose vice president from list" }));
+        cboVicePresident.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Choose vice president from list" }));
 
-        cboPresident.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Choose president from list" }));
+        cboPresident.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Choose president from list" }));
 
-        cboSecretary.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Choose secretary from list" }));
+        cboSecretary.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Choose secretary from list" }));
 
         btnCancel.setText("Cancel");
 
@@ -133,14 +154,6 @@ public class ClubView extends javax.swing.JPanel implements ActionListener {
 
         btnFind.setText("Find");
         btnFind.setToolTipText("Find an existing office");
-        btnFind.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFindActionPerformed(evt);
-            }
-        });
-
-        btnClose.setText("Close");
-        btnClose.setToolTipText("Close this form");
 
         btnAdd.setText("Add");
 
@@ -187,7 +200,7 @@ public class ClubView extends javax.swing.JPanel implements ActionListener {
                                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnClose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                  
                                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -236,7 +249,7 @@ public class ClubView extends javax.swing.JPanel implements ActionListener {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNew)
                     .addComponent(btnFind)
-                    .addComponent(btnClose))
+                    )
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)
@@ -246,37 +259,4 @@ public class ClubView extends javax.swing.JPanel implements ActionListener {
                 .addContainerGap())
         );
     }// </editor-fold>
-
-    private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {                                        
-        // TODO add your handling code here:
-    }                                       
-
-    // Variables declaration - do not modify
-    private JButton btnAdd;
-    private JButton btnCancel;
-    private JButton btnClose;
-    private JButton btnDelete;
-    private JButton btnFind;
-    private JButton btnNew;
-    private JButton btnSave;
-    private JButton btnUpdate;
-    private JComboBox<String> cboCategory;
-    private JComboBox<String> cboOffice;
-    private JComboBox<String> cboPresident;
-    private JComboBox<String> cboSecretary;
-    private JComboBox<String> cboTreasurer;
-    private JComboBox<String> cboVicePresident;
-    private JLabel jLabel1;
-    private JLabel jLabel2;
-    private JLabel jLabel3;
-    private JLabel jLabel4;
-    private JLabel jLabel5;
-    private JLabel jLabel6;
-    private JLabel jLabel7;
-    private JLabel jLabel8;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList<String> lstCategory;
-    private JTextField txtClubID;
-    private JTextField txtClubName;
-    // End of variables declaration
 }

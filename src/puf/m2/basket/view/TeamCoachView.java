@@ -11,10 +11,6 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JCalendar;
 
 public class TeamCoachView extends javax.swing.JPanel implements ActionListener{
-
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = -8395390533641301270L;
 
 	// Variables declaration - do not modify
@@ -109,9 +105,9 @@ public class TeamCoachView extends javax.swing.JPanel implements ActionListener{
 
         jLabel2.setText("Coach");
 
-        cboTeam.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Choose team from list" }));
+        cboTeam.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Choose team from list" }));
 
-        cboCoach.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Choose coach from list" }));
+        cboCoach.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Choose coach from list" }));
 
         jLabel3.setText("ID");
 
