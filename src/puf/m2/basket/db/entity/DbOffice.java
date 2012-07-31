@@ -1,13 +1,14 @@
 /*@lineinfo:filename=DbOffice*//*@lineinfo:user-code*//*@lineinfo:1^1*/package puf.m2.basket.db.entity;
 
-import java.sql.SQLException;
 import java.sql.Connection;
+import java.sql.SQLException;
+
 import oracle.jdbc.OracleTypes;
+import oracle.jpub.runtime.MutableStruct;
+import oracle.sql.Datum;
 import oracle.sql.ORAData;
 import oracle.sql.ORADataFactory;
-import oracle.sql.Datum;
 import oracle.sql.STRUCT;
-import oracle.jpub.runtime.MutableStruct;
 import puf.m2.basket.model.entity.Address;
 import puf.m2.basket.model.entity.Office;
 import puf.m2.basket.model.support.DbProp;
@@ -25,12 +26,18 @@ public class DbOffice extends DbLocation implements ORAData, ORADataFactory {
     }
     protected static final DbOffice _DbOfficeFactory = new DbOffice();
 
+    public static ORADataFactory getORADataFactory() {
+        return _DbOfficeFactory;
+    }
+
     static {
         _map.put("BASKET_USER.T_OFFICE", _DbOfficeFactory);
     }
 
-    public static ORADataFactory getORADataFactory() {
-        return _DbOfficeFactory;
+    /* constructors */
+    protected void _init_struct(boolean init) {
+        if (init)
+            _struct = new MutableStruct(new Object[5], _sqlType, _factory);
     }
 
     public DbOffice() {
@@ -38,16 +45,16 @@ public class DbOffice extends DbLocation implements ORAData, ORADataFactory {
         __tx = DefaultContext.getDefaultContext();
     }
 
-    public DbOffice(Connection c) /* throws SQLException */
-    {
-        _init_struct(true);
-        __onn = c;
-    }
-
     public DbOffice(DefaultContext c) /* throws SQLException */
     {
         _init_struct(true);
         __tx = c;
+    }
+
+    public DbOffice(Connection c) /* throws SQLException */
+    {
+        _init_struct(true);
+        __onn = c;
     }
 
     public DbOffice(Integer id, SdoGeometry loc, String officeName,
@@ -60,17 +67,32 @@ public class DbOffice extends DbLocation implements ORAData, ORADataFactory {
         setDeleted(deleted);
     }
 
-    /* constructors */
-    @Override
-    protected void _init_struct(boolean init) {
-        if (init)
-            _struct = new MutableStruct(new Object[5], _sqlType, _factory);
+    /* ORAData interface */
+    public Datum toDatum(Connection c) throws SQLException {
+        if (__tx != null && __onn != c)
+            release();
+        __onn = c;
+        return _struct.toDatum(c, _SQL_NAME);
     }
 
     /* ORADataFactory interface */
-    @Override
     public ORAData create(Datum d, int sqlType) throws SQLException {
         return create(null, d, sqlType);
+    }
+
+    public void setFrom(DbOffice o) throws SQLException {
+        setContextFrom(o);
+        setValueFrom(o);
+    }
+
+    protected void setContextFrom(DbOffice o) throws SQLException {
+        release();
+        __tx = o.__tx;
+        __onn = o.__onn;
+    }
+
+    protected void setValueFrom(DbOffice o) {
+        _struct = o._struct;
     }
 
     protected ORAData create(DbOffice o, Datum d, int sqlType)
@@ -89,17 +111,53 @@ public class DbOffice extends DbLocation implements ORAData, ORADataFactory {
         return o;
     }
 
-    @Override
     protected ORAData createExact(Datum d, int sqlType) throws SQLException {
         return create(null, d, sqlType);
     }
 
-    @Override
+    /* accessor methods */
+    @DbProp
+    public String getOfficeName() throws SQLException {
+        return (String) _struct.getAttribute(2);
+    }
+
+    public void setOfficeName(String officeName) throws SQLException {
+        _struct.setAttribute(2, officeName);
+    }
+
+    @DbProp
+    public Address getOfficeAddress() throws SQLException {
+        return (Address) _struct.getAttribute(3);
+    }
+
+    public void setOfficeAddress(Address officeAddress) throws SQLException {
+        _struct.setAttribute(3, officeAddress);
+    }
+
+    @DbProp
+    public Integer getDeleted() throws SQLException {
+        return (Integer) _struct.getAttribute(4);
+    }
+
+    public void setDeleted(Integer deleted) throws SQLException {
+        _struct.setAttribute(4, deleted);
+    }
+
     public java.math.BigDecimal distance(DbLocation LOCOBJ)
             throws java.sql.SQLException {
-        DbLocation __jPt_temp = this;
+        DbLocation __jPt_temp = (DbLocation) this;
         java.math.BigDecimal __jPt_result;
         try {
+            /* @lineinfo:generated-code *//* @lineinfo:109^5 */
+
+            // ************************************************************
+            // #sql [getConnectionContext()] { BEGIN
+            // :__jPt_result := :__jPt_temp.DISTANCE(
+            // :LOCOBJ);
+            // END;
+            // };
+            // ************************************************************
+
             {
                 // declare temps
                 oracle.jdbc.OracleCallableStatement __sJT_st = null;
@@ -145,7 +203,17 @@ public class DbOffice extends DbLocation implements ORAData, ORADataFactory {
                 closeConnection();
                 if (__dataSource == null)
                     throw _err;
-                               {
+                /* @lineinfo:generated-code *//* @lineinfo:120^5 */
+
+                // ************************************************************
+                // #sql [getConnectionContext()] { BEGIN
+                // :__jPt_result := :__jPt_temp.DISTANCE(
+                // :LOCOBJ);
+                // END;
+                // };
+                // ************************************************************
+
+                {
                     // declare temps
                     oracle.jdbc.OracleCallableStatement __sJT_st = null;
                     sqlj.runtime.ref.DefaultContext __sJT_cc = getConnectionContext();
@@ -194,57 +262,5 @@ public class DbOffice extends DbLocation implements ORAData, ORADataFactory {
             }
         }
         return __jPt_result;
-    }
-
-    @DbProp
-    public Integer getDeleted() throws SQLException {
-        return (Integer) _struct.getAttribute(4);
-    }
-
-    @DbProp
-    public Address getOfficeAddress() throws SQLException {
-        return (Address) _struct.getAttribute(3);
-    }
-
-    /* accessor methods */
-    @DbProp
-    public String getOfficeName() throws SQLException {
-        return (String) _struct.getAttribute(2);
-    }
-
-    protected void setContextFrom(DbOffice o) throws SQLException {
-        release();
-        __tx = o.__tx;
-        __onn = o.__onn;
-    }
-
-    public void setDeleted(Integer deleted) throws SQLException {
-        _struct.setAttribute(4, deleted);
-    }
-
-    public void setFrom(DbOffice o) throws SQLException {
-        setContextFrom(o);
-        setValueFrom(o);
-    }
-
-    public void setOfficeAddress(Address officeAddress) throws SQLException {
-        _struct.setAttribute(3, officeAddress);
-    }
-
-    public void setOfficeName(String officeName) throws SQLException {
-        _struct.setAttribute(2, officeName);
-    }
-
-    protected void setValueFrom(DbOffice o) {
-        _struct = o._struct;
-    }
-
-    /* ORAData interface */
-    @Override
-    public Datum toDatum(Connection c) throws SQLException {
-        if (__tx != null && __onn != c)
-            release();
-        __onn = c;
-        return _struct.toDatum(c, _SQL_NAME);
     }
 }/* @lineinfo:generated-code */
