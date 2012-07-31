@@ -17,15 +17,25 @@ public class Person extends DbPerson implements ORAData, ORADataFactory {
         super();
     }
 
-    protected Person(Integer id, String personName) throws SQLException {
-        setId(id);
-        setPersonName(personName);
+    protected Person(Integer id, String personName, Integer deleted)
+            throws SQLException {
+        super(id, personName, deleted);
     }
 
     /* ORAData interface */
     @Override
     protected ORAData createExact(Datum d, int sqlType) throws SQLException {
         return create(new Person(), d, sqlType);
+    }
+    
+    public String toString(){
+    	String result = "";
+    	try {
+			result = getPersonName();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	return result;
     }
 
 }

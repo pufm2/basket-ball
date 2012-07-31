@@ -11,12 +11,15 @@ import oracle.sql.Datum;
 import puf.m2.basket.db.entity.DbCoach;
 import puf.m2.basket.db.entity.DbTeamMany;
 import puf.m2.basket.db.entity.DbTeamWithCoach;
+import puf.m2.basket.model.entity.ref.CoachRef;
 import puf.m2.basket.model.support.BasketException;
 
 public class Coach extends DbCoach implements ORAData, ORADataFactory {
 
     public static final String TABLE_NAME = "coach";
     private static final Coach _CoachFactory = new Coach();
+    
+   // private CoachRef ref;
 
     private List<Team> teams = new ArrayList<Team>();
 
@@ -28,11 +31,9 @@ public class Coach extends DbCoach implements ORAData, ORADataFactory {
         super();
     }
 
-    public Coach(Integer id, String personName, DbTeamWithCoach teamWithCoach)
-            throws SQLException {
-        setId(id);
-        setPersonName(personName);
-        setTeamWithCoach(teamWithCoach);
+    public Coach(Integer id, String personName, Integer deleted,
+            DbTeamWithCoach teamWithCoach) throws SQLException {
+        super(id, personName, deleted, teamWithCoach);
     }
 
     public List<Team> getTeams() {
@@ -49,21 +50,34 @@ public class Coach extends DbCoach implements ORAData, ORADataFactory {
         return create(new Coach(), d, sqlType);
     }
 
+    @Override
     public void save() throws BasketException {
 
         List<DbTeamMany> tmList = new ArrayList<DbTeamMany>();
         try {
 
             for (Team team : teams) {
-                tmList.add(new DbTeamMany(team.getRef(), new Timestamp(System.currentTimeMillis()),
-                        new Timestamp(System.currentTimeMillis())));
+                tmList.add(new DbTeamMany(team.getRef(), new Timestamp(System
+                        .currentTimeMillis()), new Timestamp(System
+                        .currentTimeMillis())));
             }
-            setTeamWithCoach(new DbTeamWithCoach(tmList.toArray(new DbTeamMany[]{})));
+            setTeamWithCoach(new DbTeamWithCoach(
+                    tmList.toArray(new DbTeamMany[] {})));
 
         } catch (Exception e) {
             throw new BasketException(e);
 
         }
         super.save();
+    }
+    
+    public String toString(){
+    	String result = "";
+    	try {
+			result = getPersonName();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	return result;
     }
 }

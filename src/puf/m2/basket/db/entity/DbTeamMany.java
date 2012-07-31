@@ -8,6 +8,7 @@ import oracle.sql.ORADataFactory;
 import oracle.sql.Datum;
 import oracle.sql.STRUCT;
 import oracle.jpub.runtime.MutableStruct;
+import puf.m2.basket.model.entity.ref.TeamRef;
 
 public class DbTeamMany implements ORAData, ORADataFactory {
     public static final String _SQL_NAME = "BASKET_USER.T_TEAM_MANY";

@@ -6,8 +6,8 @@ import oracle.sql.ORAData;
 import oracle.sql.ORADataFactory;
 import oracle.sql.Datum;
 import puf.m2.basket.db.entity.DbScoreDetail;
-import puf.m2.basket.db.entity.PlayerRef;
-import puf.m2.basket.db.entity.TeamRef;
+import puf.m2.basket.model.entity.ref.PlayerRef;
+import puf.m2.basket.model.entity.ref.TeamRef;
 
 public class ScoreDetail extends DbScoreDetail implements ORAData,
         ORADataFactory {
@@ -33,6 +33,16 @@ public class ScoreDetail extends DbScoreDetail implements ORAData,
     @Override
     public ORAData create(Datum d, int sqlType) throws SQLException {
         return create(new ScoreDetail(), d, sqlType);
+    }
+    
+    public String toString(){
+    	String result = "";
+    	try {
+			result = getTeam().getValue().getTeamName() + " - " + getPlayer().getValue().getPersonName() + getValue();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	return result;
     }
 
 }

@@ -9,15 +9,16 @@ import oracle.sql.Datum;
 import oracle.sql.STRUCT;
 import oracle.jpub.runtime.MutableStruct;
 import puf.m2.basket.model.entity.Person;
+import puf.m2.basket.model.support.DbProp;
 
 public class DbCoach extends Person implements ORAData, ORADataFactory {
     public static final String _SQL_NAME = "BASKET_USER.T_COACH";
     public static final int _SQL_TYPECODE = OracleTypes.STRUCT;
 
-    protected static int[] _sqlType = { 4, 12, 2003 };
-    protected static ORADataFactory[] _factory = new ORADataFactory[3];
+    protected static int[] _sqlType = { 4, 12, 4, 2003 };
+    protected static ORADataFactory[] _factory = new ORADataFactory[4];
     static {
-        _factory[2] = DbTeamWithCoach.getORADataFactory();
+        _factory[3] = DbTeamWithCoach.getORADataFactory();
     }
     protected static final DbCoach _DbCoachFactory = new DbCoach();
 
@@ -33,18 +34,19 @@ public class DbCoach extends Person implements ORAData, ORADataFactory {
     @Override
     protected void _init_struct(boolean init) {
         if (init)
-            _struct = new MutableStruct(new Object[3], _sqlType, _factory);
+            _struct = new MutableStruct(new Object[4], _sqlType, _factory);
     }
 
     public DbCoach() {
         _init_struct(true);
     }
 
-    public DbCoach(Integer id, String personName, DbTeamWithCoach teamWithCoach)
-            throws SQLException {
+    public DbCoach(Integer id, String personName, Integer deleted,
+            DbTeamWithCoach teamWithCoach) throws SQLException {
         _init_struct(true);
         setId(id);
         setPersonName(personName);
+        setDeleted(deleted);
         setTeamWithCoach(teamWithCoach);
     }
 
@@ -78,13 +80,14 @@ public class DbCoach extends Person implements ORAData, ORADataFactory {
     }
 
     /* accessor methods */
+    @DbProp
     public DbTeamWithCoach getTeamWithCoach() throws SQLException {
-        return (DbTeamWithCoach) _struct.getAttribute(2);
+        return (DbTeamWithCoach) _struct.getAttribute(3);
     }
 
     public void setTeamWithCoach(DbTeamWithCoach teamWithCoach)
             throws SQLException {
-        _struct.setAttribute(2, teamWithCoach);
+        _struct.setAttribute(3, teamWithCoach);
     }
 
 }

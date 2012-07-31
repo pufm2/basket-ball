@@ -19,7 +19,7 @@ public class TeamTest {
 
     @Test
     public void testSave() throws SQLException, BasketException {
-        Team team = new Team(88, "a x y");
+        Team team = new Team(88, "a x y", 0);
         team.save();
         
         team.setTeamName("befica");

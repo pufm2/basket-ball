@@ -15,10 +15,10 @@ import puf.m2.basket.db.JDBCUtil;
 import puf.m2.basket.db.entity.DbTeam;
 import puf.m2.basket.db.entity.DbTeamMany;
 import puf.m2.basket.db.entity.DbTeamWithPlayer;
-import puf.m2.basket.db.entity.TeamRef;
 import puf.m2.basket.model.entity.Address;
 import puf.m2.basket.model.entity.Player;
 import puf.m2.basket.model.entity.Team;
+import puf.m2.basket.model.entity.ref.TeamRef;
 
 public class MainTest {
     private Connection conn;
@@ -94,7 +94,7 @@ public class MainTest {
             DbTeamMany[] tmArr = {new DbTeamMany(tr, Timestamp.valueOf("2012-01-01 01:01:01"),
                     Timestamp.valueOf("2012-01-01 01:01:01"))};
             DbTeamWithPlayer twp = new DbTeamWithPlayer(tmArr);
-            Player p = new Player(99, "a", "123", new Timestamp(345345345), new Address(), twp);
+            Player p = new Player(99, "a", 0, "123", new Timestamp(345345345), new Address(), twp);
             pstmt = conn.prepareStatement(stmtString);
             pstmt.setObject(1, p);
             pstmt.executeUpdate();

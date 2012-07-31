@@ -9,6 +9,8 @@ import oracle.sql.Datum;
 import oracle.sql.STRUCT;
 import oracle.jpub.runtime.MutableStruct;
 import puf.m2.basket.model.entity.ScoreDetail;
+import puf.m2.basket.model.entity.ref.PlayerRef;
+import puf.m2.basket.model.entity.ref.TeamRef;
 
 public class DbScoreDetail implements ORAData, ORADataFactory {
     public static final String _SQL_NAME = "BASKET_USER.T_SCOREDETAIL";

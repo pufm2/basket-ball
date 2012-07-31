@@ -5,15 +5,15 @@ import oracle.sql.ORAData;
 import oracle.sql.ORADataFactory;
 import oracle.sql.Datum;
 import puf.m2.basket.db.entity.DbSeason;
-import puf.m2.basket.db.entity.SeasonRef;
-import puf.m2.basket.model.support.BasketException;
+import puf.m2.basket.model.entity.ref.SeasonRef;
 
 public class Season extends DbSeason implements ORAData, ORADataFactory {
     
     public static final String TABLE_NAME = "season";
-    private static final Season _SeasonFactory = new Season();
     
-    private SeasonRef ref;
+   // private SeasonRef ref;
+    
+    private static final Season _SeasonFactory = new Season();
 
     public static ORADataFactory getORADataFactory() {
         return _SeasonFactory;
@@ -23,11 +23,15 @@ public class Season extends DbSeason implements ORAData, ORADataFactory {
         super();
     }
 
-    public Season(Integer id, java.sql.Timestamp seasonStartdate,
-            java.sql.Timestamp seasonEnddate) throws SQLException {
+    public Season(Integer id, String seasonName,
+            java.sql.Timestamp seasonStartdate,
+            java.sql.Timestamp seasonEnddate, Integer deleted)
+            throws SQLException {
         setId(id);
+        setSeasonName(seasonName);
         setSeasonStartdate(seasonStartdate);
         setSeasonEnddate(seasonEnddate);
+        setDeleted(deleted);
     }
 
     /* ORAData interface */
@@ -36,10 +40,13 @@ public class Season extends DbSeason implements ORAData, ORADataFactory {
         return create(new Season(), d, sqlType);
     }
 
-    public SeasonRef getRef() throws BasketException {
-        if (ref == null) {
-            ref = getRef(SeasonRef.class);
-        }
-        return ref;
+    public String toString(){
+    	String result = "";
+    	try {
+			result = getSeasonName();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	return result;
     }
 }

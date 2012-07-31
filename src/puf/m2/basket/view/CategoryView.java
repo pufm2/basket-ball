@@ -2,204 +2,200 @@ package puf.m2.basket.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
 
+import javax.swing.DefaultListModel;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.LayoutStyle;
+import javax.swing.ListModel;
+import javax.swing.SwingConstants;
 
 import puf.m2.basket.model.entity.Category;
+import puf.m2.basket.model.entity.Team;
+import puf.m2.basket.model.support.BasketException;
+import puf.m2.basket.model.support.Condition;
+import puf.m2.basket.model.support.EntityUtils;
 
-public class CategoryView extends javax.swing.JPanel implements ActionListener {
+public class CategoryView extends JPanel implements ActionListener {
+
 	private static final long serialVersionUID = 1945726675774788232L;
 
-	// Variables declaration - do not modify
-	FormState formState;
-	Category categoryModel;
-	
 	private JButton btnAddTeam;
-    private JButton btnCancel;
-    private JButton btnDelete;
-    private JButton btnFind;
-    private JButton btnNew;
-    private JButton btnSave;
-    private JButton btnUpdate;
-    private javax.swing.JComboBox<String> cboTeam;
-    private JButton jButton2;
-    private JLabel jLabel1;
-    private JLabel jLabel2;
-    private JLabel jLabel8;
-    private JScrollPane jScrollPane1;
-    private JList<String> lstTeam;
-    private JTextField txtCategoryID;
-    private JTextField txtCategoryName;
-    // End of variables declaration
+	private JButton btnCancel;
 
-    public CategoryView() {
-    	initComponents();
-    	addActionListeners();
-    	
-    	formState = FormState.NORMAL;
-    	categoryModel = new Category();
+	private JButton btnDelete;
+	private JButton btnFind;
+	private JButton btnNew;
+	private JButton btnSave;
+	private JButton btnUpdate;
+
+	// Variables declaration - do not modify
+	Category category;
+	private JComboBox<Team> cboTeam;
+	FormState formState;
+	boolean pressUpdate = false;
+	ListModel<Team> listModelTeam;
+	
+	private JButton jButton2;
+	private JLabel jLabel1;
+
+	private JLabel jLabel2;
+	private JLabel jLabel8;
+	private JScrollPane jScrollPane1;
+	
+	private JList<Team> lstTeam;
+		
+	private JTextField txtCategoryID;
+	private JTextField txtCategoryName;
+
+	// End of variables declaration
+
+	public CategoryView() {
+		initComponents();
+		addActionListeners();
+
+		listModelTeam = new DefaultListModel<Team>();
+		category = new Category();
+		formState = FormState.INITIAL;
+		updateForm();
+		fillComboTeam();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 		if ("Cancel".equals(e.getActionCommand())) {
-			formState = FormState.NORMAL;
+			formState = FormState.INITIAL;
+
 		} else if ("Delete".equals(e.getActionCommand())) {
-			formState = FormState.DELETE;
-			if (JOptionPane.showConfirmDialog(this,
+			Category categoryToDelete = null;
+
+			if (!isInteger(txtCategoryID.getText())) {
+				JOptionPane.showMessageDialog(this,
+						"Please input correct category ID", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
+			try {
+				category = makeCategory();
+				categoryToDelete = EntityUtils.loadById(category.getId(),
+						Category.class);
+			} catch (BasketException | SQLException e1) {
+				e1.printStackTrace();
+			}
+			if (categoryToDelete == null) {
+				JOptionPane.showMessageDialog(this,
+						"This category ID does not exists, can not delete",
+						"Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			} else if (JOptionPane.showConfirmDialog(this,
 					"Do you really to delete this category?",
 					"Confirm to delete category", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-				// Delete this category
+				deleteCategory();
 				JOptionPane.showMessageDialog(this, "This category is deleted");
 			}
+			formState = FormState.INITIAL;
+
 		} else if ("Find".equals(e.getActionCommand())) {
-			formState = FormState.FIND;
 			String categoryName = (String) JOptionPane.showInputDialog(this,
 					"Please give a name of category", "Category 1");
+
+			if (categoryName == null)
+				return;
+
+			categoryName = categoryName.toUpperCase();
+
 			// Find category with that name
+			List<Category> categorys = null;
+			try {
+				categorys = EntityUtils.loadByCondition(new Condition(
+						"CATEGORY_NAME", categoryName), Category.class,
+						"CATEGORY_NAME");
+			} catch (BasketException e1) {
+				e1.printStackTrace();
+			}
+
 			// If exist category, show its information
-			// If not exist category, show error message */
+			if (categorys.size() > 0) {
+				category = categorys.get(0);
+				setTextField(category);
+
+				JOptionPane.showMessageDialog(this, "Category founded",
+						"Notice", JOptionPane.INFORMATION_MESSAGE);
+				formState = FormState.FIND;
+			} else {
+				// If not exist category, show error message
+				JOptionPane.showMessageDialog(this,
+						"Can not found that category", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				formState = FormState.INITIAL;
+			}
 
 		} else if ("New".equals(e.getActionCommand())) {
+			pressUpdate = false;
 			formState = FormState.NEW;
+
 		} else if ("Save".equals(e.getActionCommand())) {
-			formState = FormState.SAVE;
 			if (isEmptyData()) {
 				JOptionPane.showMessageDialog(this,
 						"Please give enought information of category", "Error",
 						JOptionPane.ERROR_MESSAGE);
 				return;
-			} 
+			}
 			if (isTypeMismatch()) {
 				JOptionPane.showMessageDialog(this,
 						"Please give correct type in each text field", "Error",
 						JOptionPane.ERROR_MESSAGE);
 				return;
-			}
-			else {
-				if (formState == FormState.NEW) {
-					if (isDuplicateData()) {
+			} else {
+				if (!pressUpdate) {
+					category = makeCategory();
+					if (isDuplicateData(category)) {
 						JOptionPane
-						.showMessageDialog(
-								this,
-								"Can not insert new category which is duplicate ID/ Name with existing category",
-								"Error", JOptionPane.ERROR_MESSAGE);
-						return;
+								.showMessageDialog(
+										this,
+										"Can not insert new category which is duplicate ID/ Name with existing category",
+										"Error", JOptionPane.ERROR_MESSAGE);
 					} else {
 						// Save new category
-						saveCategory();
+						saveCategory(category);
 						JOptionPane.showMessageDialog(this,
 								"Save new category successful", "Success",
 								JOptionPane.INFORMATION_MESSAGE);
 					}
-				} else if (formState == FormState.UPDATE) {
+				} else {
 					// Update existing category
-					updateCategory();
+					category = makeCategory();
+					updateCategory(category);
 					JOptionPane.showMessageDialog(this,
-							"Update new category successful", "Success",
+							"Update category successful", "Success",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
+			formState = FormState.INITIAL;
+
 		} else if ("Update".equals(e.getActionCommand())) {
-			formState = FormState.UPDATE;
+			pressUpdate = true;
+			formState = FormState.NEW;
+
+		} else if ("AddTeam".equals(e.getActionCommand())) {
+			((DefaultListModel<Team>) listModelTeam).addElement((Team) cboTeam
+					.getSelectedItem());
+			lstTeam.setModel(listModelTeam);
 		}
 
 		// Finally for each button
 		updateForm();
-	}
-
-	private void updateCategory() {
-		
-	}
-
-	private void saveCategory() {
-		
-	}
-
-	private void updateForm() {
-		switch (formState) {
-
-		case NORMAL:
-			btnCancel.setVisible(true);
-			btnDelete.setVisible(true);
-			btnFind.setVisible(true);
-			btnNew.setVisible(true);
-			btnSave.setVisible(true);
-			btnUpdate.setVisible(true);
-
-			txtCategoryID.setText("");
-			txtCategoryName.setText("");
-
-			break;
-
-		case NEW:
-			btnCancel.setVisible(true);
-			btnDelete.setVisible(false);
-			btnFind.setVisible(false);
-			btnNew.setVisible(false);
-			btnSave.setVisible(true);
-			btnUpdate.setVisible(false);
-			break;
-
-		case FIND:
-
-			break;
-
-		case SAVE:
-			btnCancel.setVisible(true);
-			btnDelete.setVisible(true);
-			btnFind.setVisible(true);
-			btnNew.setVisible(true);
-			btnSave.setVisible(true);
-			btnUpdate.setVisible(true);
-			break;
-
-		case UPDATE:
-			btnCancel.setVisible(true);
-			btnDelete.setVisible(false);
-			btnFind.setVisible(false);
-			btnNew.setVisible(false);
-			btnSave.setVisible(true);
-			btnUpdate.setVisible(false);
-			break;
-
-		case DELETE:
-
-			break;
-		}
-	}
-
-	private boolean isEmptyData() {
-		if (txtCategoryID.getText().trim()==""
-				|| txtCategoryName.getText().trim()=="")
-			return true;
-		return false;
-	}
-	
-	private boolean isTypeMismatch() {
-		if (!isInteger(txtCategoryID.getText()))
-			return true;
-		return false;
-	}
-	
-	public boolean isInteger(String s) {
-		try {
-			Integer.parseInt(s);
-		}
-		catch (NumberFormatException nfe) {
-			return false;
-		}
-		return true;
-	}
-	
-	private boolean isDuplicateData() {
-		return false;
 	}
 
 	private void addActionListeners() {
@@ -220,126 +216,401 @@ public class CategoryView extends javax.swing.JPanel implements ActionListener {
 
 		btnUpdate.setActionCommand("Update");
 		btnUpdate.addActionListener(this);
+
+		btnAddTeam.setActionCommand("AddTeam");
+		btnAddTeam.addActionListener(this);
 	}
-    private void initComponents() {
 
-        jButton2 = new JButton();
-        txtCategoryID = new JTextField();
-        jLabel1 = new JLabel();
-        txtCategoryName = new JTextField();
-        jLabel2 = new JLabel();
-        btnNew = new JButton();
-        btnFind = new JButton();
-        btnSave = new JButton();
-        btnCancel = new JButton();
-        btnUpdate = new JButton();
-        btnDelete = new JButton();
-        cboTeam = new JComboBox<String>();
-        jLabel8 = new JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        lstTeam = new javax.swing.JList<String>();
-        btnAddTeam = new JButton();
+	private void deleteCategory() {
+		try {
+			category.setDeleted(1);
+			category.update();
+		} catch (SQLException | BasketException e) {
+			e.printStackTrace();
+		}
 
-        jButton2.setText("jButton2");
+	}
 
-        jLabel1.setText("Category ID");
+	private void fillComboTeam() {
+		try {
+			List<Team> teams = EntityUtils.loadByCondition(null, Team.class, null);
+			if (teams.size() <= 0) {
+				JOptionPane
+						.showMessageDialog(
+								this,
+								"There are no team in this system \n Please add team first",
+								"Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			cboTeam.removeAll();
+			for (Team team : teams) {
+				cboTeam.addItem(team);
+			}
+		} catch (BasketException e) {
+			e.printStackTrace();
+		}
+	}
 
-        jLabel2.setText("Category name");
+	private void initComponents() {
 
-        btnNew.setText("New");
-        btnNew.setToolTipText("Add new category");
+		jButton2 = new JButton();
+		txtCategoryID = new JTextField();
+		jLabel1 = new JLabel();
+		txtCategoryName = new JTextField();
+		jLabel2 = new JLabel();
+		btnNew = new JButton();
+		btnFind = new JButton();
+		btnSave = new JButton();
+		btnCancel = new JButton();
+		btnUpdate = new JButton();
+		btnDelete = new JButton();
+		cboTeam = new JComboBox<Team>();
+		jLabel8 = new JLabel();
+		jScrollPane1 = new JScrollPane();
+		lstTeam = new JList<Team>();
+		btnAddTeam = new JButton();
 
-        btnFind.setText("Find");
-        btnFind.setToolTipText("Find an existing category");
+		jButton2.setText("jButton2");
 
-        btnSave.setText("Save");
-        btnSave.setToolTipText("Save new category");
+		jLabel1.setText("Category ID");
 
-        btnCancel.setText("Cancel");
+		jLabel2.setText("Category name");
 
-        btnUpdate.setText("Update");
+		btnNew.setText("New");
+		btnNew.setToolTipText("Add new office");
 
-        btnDelete.setText("Delete");
+		btnFind.setText("Find");
+		btnFind.setToolTipText("Find an existing office");
 
-        cboTeam.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Choose category(s) in list" }));
+		btnSave.setText("Save");
+		btnSave.setToolTipText("Save new office");
 
-        jLabel8.setText("Team");
+		btnCancel.setText("Cancel");
 
-        jScrollPane1.setViewportView(lstTeam);
+		btnUpdate.setText("Update");
 
-        btnAddTeam.setText("Add");
+		btnDelete.setText("Delete");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
-                            .addComponent(btnNew, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnFind, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnCancel, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                           .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel8))
-                        .addGap(23, 23, 23)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCategoryName, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(cboTeam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnAddTeam))
-                            .addComponent(txtCategoryID, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtCategoryID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtCategoryName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cboTeam)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel8)
-                        .addComponent(btnAddTeam)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNew)
-                    .addComponent(btnFind)
-                    )
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSave)
-                    .addComponent(btnCancel)
-                    .addComponent(btnUpdate)
-                    .addComponent(btnDelete))
-                .addGap(23, 23, 23))
-        );
+		jLabel8.setText("Category");
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtCategoryID, txtCategoryName});
+		jScrollPane1.setViewportView(lstTeam);
 
-    }// </editor-fold>
+		btnAddTeam.setText("Add");
+
+		GroupLayout layout = new GroupLayout(this);
+		this.setLayout(layout);
+		layout.setHorizontalGroup(layout
+				.createParallelGroup(GroupLayout.Alignment.LEADING)
+				.addGroup(
+						layout.createSequentialGroup()
+								.addGap(19, 19, 19)
+								.addGroup(
+										layout.createParallelGroup(
+												GroupLayout.Alignment.LEADING)
+												.addGroup(
+														layout.createSequentialGroup()
+																.addComponent(
+																		btnNew,
+																		GroupLayout.PREFERRED_SIZE,
+																		76,
+																		GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(
+																		LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnFind,
+																		GroupLayout.PREFERRED_SIZE,
+																		78,
+																		GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(
+																		LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnCancel,
+																		GroupLayout.PREFERRED_SIZE,
+																		78,
+																		GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(
+																		LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnSave,
+																		GroupLayout.PREFERRED_SIZE,
+																		76,
+																		GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(
+																		LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnUpdate,
+																		GroupLayout.PREFERRED_SIZE,
+																		78,
+																		GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(
+																		LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnDelete,
+																		GroupLayout.PREFERRED_SIZE,
+																		82,
+																		GroupLayout.PREFERRED_SIZE))
+												.addGroup(
+														layout.createSequentialGroup()
+																.addGroup(
+																		layout.createParallelGroup(
+																				GroupLayout.Alignment.LEADING)
+																				.addComponent(
+																						jLabel1)
+																				.addComponent(
+																						jLabel2)
+																				.addComponent(
+																						jLabel8))
+																.addGap(23, 23,
+																		23)
+																.addGroup(
+																		layout.createParallelGroup(
+																				GroupLayout.Alignment.LEADING)
+																				.addComponent(
+																						txtCategoryName,
+																						GroupLayout.PREFERRED_SIZE,
+																						234,
+																						GroupLayout.PREFERRED_SIZE)
+																				.addGroup(
+																						layout.createSequentialGroup()
+																								.addComponent(
+																										cboTeam,
+																										GroupLayout.PREFERRED_SIZE,
+																										GroupLayout.DEFAULT_SIZE,
+																										GroupLayout.PREFERRED_SIZE)
+																								.addPreferredGap(
+																										LayoutStyle.ComponentPlacement.RELATED)
+																								.addComponent(
+																										btnAddTeam))
+																				.addComponent(
+																						txtCategoryID,
+																						GroupLayout.PREFERRED_SIZE,
+																						91,
+																						GroupLayout.PREFERRED_SIZE)
+																				.addComponent(
+																						jScrollPane1,
+																						GroupLayout.PREFERRED_SIZE,
+																						362,
+																						GroupLayout.PREFERRED_SIZE))))
+								.addContainerGap(29, Short.MAX_VALUE)));
+		layout.setVerticalGroup(layout
+				.createParallelGroup(GroupLayout.Alignment.LEADING)
+				.addGroup(
+						layout.createSequentialGroup()
+								.addContainerGap()
+								.addGroup(
+										layout.createParallelGroup(
+												GroupLayout.Alignment.BASELINE)
+												.addComponent(
+														txtCategoryID,
+														GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE,
+														GroupLayout.PREFERRED_SIZE)
+												.addComponent(jLabel1))
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(
+										layout.createParallelGroup(
+												GroupLayout.Alignment.BASELINE)
+												.addComponent(jLabel2)
+												.addComponent(
+														txtCategoryName,
+														GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE,
+														GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.UNRELATED)
+								.addGroup(
+										layout.createParallelGroup(
+												GroupLayout.Alignment.LEADING)
+												.addComponent(cboTeam)
+												.addGroup(
+														layout.createParallelGroup(
+																GroupLayout.Alignment.BASELINE)
+																.addComponent(
+																		jLabel8)
+																.addComponent(
+																		btnAddTeam)))
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.UNRELATED)
+								.addComponent(jScrollPane1,
+										GroupLayout.PREFERRED_SIZE,
+										GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(26, 26, 26)
+								.addGroup(
+										layout.createParallelGroup(
+												GroupLayout.Alignment.BASELINE)
+												.addComponent(btnNew)
+												.addComponent(btnFind)
+												.addComponent(btnCancel)
+												.addComponent(btnSave)
+												.addComponent(btnUpdate)
+												.addComponent(btnDelete))
+								.addGap(27, 27, 27)));
+
+		layout.linkSize(SwingConstants.VERTICAL, new java.awt.Component[] {
+				txtCategoryID, txtCategoryName });
+
+	}// </editor-fold>
+
+	private boolean isDuplicateData(Category category) {
+		List<Category> categories = null;
+
+		// check if duplicate category ID
+		try {
+			categories = EntityUtils.loadByCondition(new Condition("id",
+					category.getId().toString()), Category.class, "ID");
+		} catch (BasketException | SQLException e) {
+			e.printStackTrace();
+		}
+		if (categories.size() > 0)
+			return true;
+
+		// Check if duplicate secretary name
+		categories = null;
+		try {
+			categories = EntityUtils.loadByCondition(new Condition(
+					"Category_Name", category.getCategoryName()),
+					Category.class, "CATEGORY_NAME");
+		} catch (BasketException | SQLException e) {
+			e.printStackTrace();
+		}
+		if (categories.size() > 0)
+			return true;
+
+		return false;
+
+	}
+
+	private boolean isEmptyData() {
+		if (txtCategoryID.getText().equals("")
+				|| txtCategoryName.getText().equals(""))
+			return true;
+		return false;
+	}
+
+	public boolean isInteger(String s) {
+		try {
+			Integer.parseInt(s);
+		} catch (NumberFormatException nfe) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isTypeMismatch() {
+		if (!isInteger(txtCategoryID.getText()))
+			return true;
+		return false;
+	}
+
+	private Category makeCategory() {
+		setFieldtoAttribute();
+		try {
+			category.setDeleted(0);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return category;
+	}
+
+	private void saveCategory(Category category) {
+		setFieldtoAttribute();
+		try {
+			category.setDeleted(0);
+			category.save();
+		} catch (BasketException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void setFieldtoAttribute() {
+		try {
+			category.setId(Integer.parseInt(txtCategoryID.getText()));
+			category.setCategoryName(txtCategoryName.getText());
+
+			// Add team from list to category
+			String teamName = "";
+			for (int i = 0; i < lstTeam.getModel().getSize(); i++) {
+				teamName = lstTeam.getModel().getElementAt(i).getTeamName();
+				try {
+					List<Team> teams = EntityUtils.loadByCondition(
+							new Condition("Team_Name", teamName), Team.class,
+							"TEAM_NAME");
+					for (Team team : teams) {
+						category.addTeam(team);
+					}
+				} catch (BasketException e) {
+					e.printStackTrace();
+				}
+			}
+
+		} catch (NumberFormatException | SQLException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	private void setTextField(Category category) {
+		try {
+			txtCategoryID.setText(category.getId().toString());
+			txtCategoryName.setText(category.getCategoryName());
+
+			// Update combobox Team when change categoryID
+			Team[] teams = category.getListteam().getArray();
+			cboTeam.removeAllItems();
+			for (Team team : teams) {
+				cboTeam.addItem(team);
+			}
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+
+	}
+
+	private void updateCategory(Category category) {
+		setFieldtoAttribute();
+		try {
+			category.update();
+		} catch (BasketException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void updateForm() {
+		switch (formState) {
+		case INITIAL:
+			btnCancel.setVisible(false);
+			btnSave.setVisible(false);
+			btnUpdate.setVisible(false);
+			btnDelete.setVisible(false);
+
+			btnNew.setVisible(true);
+			btnFind.setVisible(true);
+			break;
+		case NEW:
+			btnNew.setVisible(false);
+			btnFind.setVisible(false);
+			btnUpdate.setVisible(false);
+			btnDelete.setVisible(false);
+
+			btnSave.setVisible(true);
+			btnCancel.setVisible(true);
+			
+			txtCategoryID.setText("");
+			txtCategoryName.setText("");
+			
+			break;
+		case FIND:
+			btnSave.setVisible(false);
+
+			btnCancel.setVisible(true);
+			btnNew.setVisible(true);
+			btnFind.setVisible(true);
+			btnUpdate.setVisible(true);
+			btnDelete.setVisible(true);
+			break;
+		}
+	}
 }

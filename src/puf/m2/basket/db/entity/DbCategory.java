@@ -17,8 +17,8 @@ public class DbCategory extends Entity implements ORAData, ORADataFactory {
 
     protected MutableStruct _struct;
 
-    protected static int[] _sqlType = { 4, 12, 2003 };
-    protected static ORADataFactory[] _factory = new ORADataFactory[3];
+    protected static int[] _sqlType = { 4, 12, 2003, 4 };
+    protected static ORADataFactory[] _factory = new ORADataFactory[4];
     static {
         _factory[2] = DbTeams.getORADataFactory();
     }
@@ -31,19 +31,20 @@ public class DbCategory extends Entity implements ORAData, ORADataFactory {
     /* constructors */
     protected void _init_struct(boolean init) {
         if (init)
-            _struct = new MutableStruct(new Object[3], _sqlType, _factory);
+            _struct = new MutableStruct(new Object[4], _sqlType, _factory);
     }
 
     public DbCategory() {
         _init_struct(true);
     }
 
-    public DbCategory(Integer id, String categoryName, DbTeams listteam)
-            throws SQLException {
+    public DbCategory(Integer id, String categoryName, DbTeams listteam,
+            Integer deleted) throws SQLException {
         _init_struct(true);
         setId(id);
         setCategoryName(categoryName);
         setListteam(listteam);
+        setDeleted(deleted);
     }
 
     /* ORAData interface */
@@ -69,6 +70,7 @@ public class DbCategory extends Entity implements ORAData, ORADataFactory {
     }
 
     /* accessor methods */
+    @Override
     @DbProp
     public Integer getId() throws SQLException {
         return (Integer) _struct.getAttribute(0);
@@ -94,6 +96,15 @@ public class DbCategory extends Entity implements ORAData, ORADataFactory {
 
     public void setListteam(DbTeams listteam) throws SQLException {
         _struct.setAttribute(2, listteam);
+    }
+
+    @DbProp
+    public Integer getDeleted() throws SQLException {
+        return (Integer) _struct.getAttribute(3);
+    }
+
+    public void setDeleted(Integer deleted) throws SQLException {
+        _struct.setAttribute(3, deleted);
     }
 
 }

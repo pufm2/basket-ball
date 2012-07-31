@@ -7,15 +7,15 @@ import oracle.sql.ORAData;
 import oracle.sql.ORADataFactory;
 import oracle.sql.Datum;
 import puf.m2.basket.db.entity.DbTeam;
-import puf.m2.basket.db.entity.TeamRef;
+import puf.m2.basket.model.entity.ref.TeamRef;
 import puf.m2.basket.model.support.BasketException;
 import puf.m2.basket.model.support.EntityUtils;
 
 public class Team extends DbTeam {
     public static final String TABLE_NAME = "TEAM";
-    
+
     private static final Team _TeamFactory = new Team();
-    
+
     private TeamRef ref;
 
     public static ORADataFactory getORADataFactory() {
@@ -26,8 +26,9 @@ public class Team extends DbTeam {
 
     }
 
-    public Team(Integer id, String teamName) throws SQLException {
-        super(id, teamName);
+    public Team(Integer id, String teamName, Integer deleted)
+            throws SQLException {
+        super(id, teamName, deleted);
     }
 
     /* ORAData interface */
@@ -42,17 +43,21 @@ public class Team extends DbTeam {
         }
         return ref;
     }
-    
-    public static List<Team> loadAll() throws BasketException {
-
-        List<Team> teams = EntityUtils.loadByCondition(null, Team.class);
-        return teams;
-    }
 
     public static Team loadById(int id) throws BasketException {
 
         return EntityUtils.loadById(id, Team.class);
 
+    }
+        
+    public String toString(){
+    	String result = "";
+    	try {
+			result = getTeamName();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	return result;
     }
 
 }

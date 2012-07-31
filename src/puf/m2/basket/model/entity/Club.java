@@ -9,19 +9,22 @@ import oracle.sql.ORADataFactory;
 import oracle.sql.Datum;
 import puf.m2.basket.db.entity.DbCategories;
 import puf.m2.basket.db.entity.DbClub;
-import puf.m2.basket.db.entity.OfficeRef;
-import puf.m2.basket.db.entity.PresidentRef;
-import puf.m2.basket.db.entity.SecretaryRef;
-import puf.m2.basket.db.entity.TreasurerRef;
-import puf.m2.basket.db.entity.VicePresidentRef;
+import puf.m2.basket.model.entity.ref.ClubRef;
+import puf.m2.basket.model.entity.ref.OfficeRef;
+import puf.m2.basket.model.entity.ref.PresidentRef;
+import puf.m2.basket.model.entity.ref.SecretaryRef;
+import puf.m2.basket.model.entity.ref.TreasurerRef;
+import puf.m2.basket.model.entity.ref.VicePresidentRef;
 import puf.m2.basket.model.support.BasketException;
 
 public class Club extends DbClub implements ORAData, ORADataFactory {
-    
+
     public static final String TABLE_NAME = "club";
 
     private static final Club _ClubFactory = new Club();
     
+   // private ClubRef ref;
+
     List<Category> categories = new ArrayList<Category>();
 
     public static ORADataFactory getORADataFactory() {
@@ -35,15 +38,9 @@ public class Club extends DbClub implements ORAData, ORADataFactory {
     public Club(Integer id, String clubName, OfficeRef clubOffice,
             PresidentRef clubPresident, VicePresidentRef clubVicePresident,
             TreasurerRef clubTreasurer, SecretaryRef clubSecretary,
-            DbCategories listcategory) throws SQLException {
-        setId(id);
-        setClubName(clubName);
-        setClubOffice(clubOffice);
-        setClubPresident(clubPresident);
-        setClubVicePresident(clubVicePresident);
-        setClubTreasurer(clubTreasurer);
-        setClubSecretary(clubSecretary);
-        setListcategory(listcategory);
+            DbCategories listcategory, Integer deleted) throws SQLException {
+        super(id, clubName, clubOffice, clubPresident, clubVicePresident,
+                clubTreasurer, clubSecretary, listcategory, deleted);
     }
 
     /* ORAData interface */
@@ -59,15 +56,27 @@ public class Club extends DbClub implements ORAData, ORADataFactory {
     public void addCategory(Category category) {
         categories.add(category);
     }
-    
+
+    @Override
     public void save() throws BasketException {
-        DbCategories dbCategories = new DbCategories(categories.toArray(new Category[] {}));
+        DbCategories dbCategories = new DbCategories(
+                categories.toArray(new Category[] {}));
         try {
             setListcategory(dbCategories);
         } catch (SQLException e) {
             new BasketException(e);
         }
-        
+
         super.save();
+    }
+    
+    public String toString(){
+    	String result = "";
+    	try {
+			result = getClubName();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	return result;
     }
 }

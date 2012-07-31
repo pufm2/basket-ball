@@ -13,11 +13,19 @@ public class Address extends DbAddress implements ORAData, ORADataFactory {
         return _AddressFactory;
     }
 
+    public Address() {
+
+    }
+
+    public Address(String addressNumber, String addressStreet,
+            String addressDistrict, String addressCity) throws SQLException {
+        super(addressNumber, addressStreet, addressDistrict, addressCity);
+    }
+
     /* ORAData interface */
     @Override
     public ORAData create(Datum d, int sqlType) throws SQLException {
         return create(new Address(), d, sqlType);
     }
-
 
 }

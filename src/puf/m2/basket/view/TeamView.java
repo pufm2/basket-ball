@@ -2,69 +2,183 @@ package puf.m2.basket.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
 
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.LayoutStyle;
+import javax.swing.SwingConstants;
 
-public class TeamView extends javax.swing.JPanel implements ActionListener {
-	/**
-	 * 
-	 */
+import puf.m2.basket.model.entity.Team;
+import puf.m2.basket.model.support.BasketException;
+import puf.m2.basket.model.support.Condition;
+import puf.m2.basket.model.support.EntityUtils;
+
+public class TeamView extends JPanel implements ActionListener {
+
 	private static final long serialVersionUID = -580791303394022630L;
 
 	// Variables declaration - do not modify
-	private JButton btnAddPlayer;
+	Team team;
+	FormState formState;
+	boolean pressUpdate = false;
 
 	private JButton btnCancel;
-
-	private JButton btnClose;
-
 	private JButton btnDelete;
 	private JButton btnFind;
 	private JButton btnNew;
 	private JButton btnSave;
 	private JButton btnUpdate;
-	private JComboBox<String> cboPlayer;
+	private JButton jButton2;
 	private JLabel jLabel1;
 	private JLabel jLabel2;
-	private JLabel jLabel8;
-	private JScrollPane jScrollPane1;
-	private JList<String> lstPlayer;
 	private JTextField txtTeamID;
 	private JTextField txtTeamName;
+
 	public TeamView() {
 		initComponents();
 		addActionListeners();
+
+		team = new Team();
+		formState = FormState.INITIAL;
+		updateForm();
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ("Cancel".equals(e.getActionCommand())) {
-
-		} else if ("Close".equals(e.getActionCommand())) {
+			formState = FormState.INITIAL;
 
 		} else if ("Delete".equals(e.getActionCommand())) {
+			Team teamToDelete = null;
+
+			if (!isInteger(txtTeamID.getText())) {
+				JOptionPane.showMessageDialog(this,
+						"Please input correct team ID", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
+
+			try {
+				team = makeTeam();
+				teamToDelete = EntityUtils.loadById(team.getId(), Team.class);
+			} catch (BasketException | SQLException e1) {
+				e1.printStackTrace();
+			}
+			if (teamToDelete == null) {
+				JOptionPane.showMessageDialog(this,
+						"This team ID does not exists, can not delete",
+						"Error", JOptionPane.ERROR_MESSAGE);
+			} else if (JOptionPane.showConfirmDialog(this,
+					"Do you really to delete this team?",
+					"Confirm to delete team", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				// Delete this team
+				deleteTeam();
+				JOptionPane
+						.showMessageDialog(this, "This president is deleted");
+			}
+			formState = FormState.INITIAL;
 
 		} else if ("Find".equals(e.getActionCommand())) {
+			String teamName = (String) JOptionPane.showInputDialog(this,
+					"Please give a name of team", "Team 1");
+
+			if (teamName == null)
+				return;
+
+			teamName = teamName.toUpperCase();
+			// Find team with that name
+			List<Team> teams = null;
+			try {
+				teams = EntityUtils.loadByCondition(new Condition("TEAM_NAME",
+						teamName), Team.class, "Team_Name");
+			} catch (BasketException e1) {
+				e1.printStackTrace();
+			}
+			// If exist team, show its information
+			if (teams.size() > 0) {
+				team = teams.get(0);
+				setTextField(team);
+				JOptionPane.showMessageDialog(this, "Team founded", "Notice",
+						JOptionPane.INFORMATION_MESSAGE);
+				formState = FormState.FIND;
+			} else {
+				// If not exist team, show error message
+				JOptionPane.showMessageDialog(this, "Can not found that team",
+						"Error", JOptionPane.ERROR_MESSAGE);
+				formState = FormState.INITIAL;
+			}
 
 		} else if ("New".equals(e.getActionCommand())) {
+			pressUpdate = false;
+			formState = FormState.NEW;
 
 		} else if ("Save".equals(e.getActionCommand())) {
+			if (isEmptyData()) {
+				JOptionPane.showMessageDialog(this,
+						"Please give enought information of team", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if (isTypeMismatch()) {
+				JOptionPane.showMessageDialog(this,
+						"Please give correct type in each text field", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			} else {
+				if (!pressUpdate) {
+					team = makeTeam();
+					if (isDuplicateData(team)) {
+						JOptionPane
+								.showMessageDialog(
+										this,
+										"Can not insert new team which is duplicate ID/ Name with existing team",
+										"Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					} else {
+						// Save new team
+						saveTeam(team);
+						JOptionPane.showMessageDialog(this,
+								"Save new team successful", "Success",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+				} else {
+					// Update existing team
+					team = makeTeam();
+					updateTeam(team);
+					JOptionPane.showMessageDialog(this,
+							"Update team successful", "Success",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+			formState = FormState.INITIAL;
 
 		} else if ("Update".equals(e.getActionCommand())) {
+			pressUpdate = true;
+			formState = FormState.NEW;
+		}
 
+		// Finally for each button
+		updateForm();
+	}
+
+	private void deleteTeam() {
+		try {
+			team.setDeleted(1);
+			team.update();
+		} catch (SQLException | BasketException e) {
+			e.printStackTrace();
 		}
 
 	}
+
 	private void addActionListeners() {
 		btnCancel.setActionCommand("Cancel");
 		btnCancel.addActionListener(this);
-
-		btnClose.setActionCommand("Close");
-		btnClose.addActionListener(this);
 
 		btnDelete.setActionCommand("Delete");
 		btnDelete.addActionListener(this);
@@ -82,42 +196,34 @@ public class TeamView extends javax.swing.JPanel implements ActionListener {
 		btnUpdate.addActionListener(this);
 	}
 
-	// End of variables declaration
-
 	private void initComponents() {
 
-		txtTeamID = new javax.swing.JTextField();
+		jButton2 = new JButton();
+		txtTeamID = new JTextField();
 		jLabel1 = new JLabel();
-		txtTeamName = new javax.swing.JTextField();
+		txtTeamName = new JTextField();
 		jLabel2 = new JLabel();
-		btnNew = new javax.swing.JButton();
-		btnFind = new javax.swing.JButton();
-		btnClose = new javax.swing.JButton();
-		btnSave = new javax.swing.JButton();
-		btnCancel = new javax.swing.JButton();
-		btnUpdate = new javax.swing.JButton();
-		btnDelete = new javax.swing.JButton();
-		cboPlayer = new JComboBox<String>();
-		jLabel8 = new JLabel();
-		jScrollPane1 = new javax.swing.JScrollPane();
-		lstPlayer = new javax.swing.JList<String>();
-		btnAddPlayer = new javax.swing.JButton();
+		btnNew = new JButton();
+		btnFind = new JButton();
+		btnSave = new JButton();
+		btnCancel = new JButton();
+		btnUpdate = new JButton();
+		btnDelete = new JButton();
+
+		jButton2.setText("jButton2");
 
 		jLabel1.setText("Team ID");
 
 		jLabel2.setText("Team name");
 
 		btnNew.setText("New");
-		btnNew.setToolTipText("Add new Team");
+		btnNew.setToolTipText("Add new office");
 
 		btnFind.setText("Find");
-		btnFind.setToolTipText("Find an existing Team");
-
-		btnClose.setText("Close");
-		btnClose.setToolTipText("Close this form");
+		btnFind.setToolTipText("Find an existing office");
 
 		btnSave.setText("Save");
-		btnSave.setToolTipText("Save new Team");
+		btnSave.setToolTipText("Save new office");
 
 		btnCancel.setText("Cancel");
 
@@ -125,184 +231,269 @@ public class TeamView extends javax.swing.JPanel implements ActionListener {
 
 		btnDelete.setText("Delete");
 
-		cboPlayer.setModel(new javax.swing.DefaultComboBoxModel<String>(
-				new String[] { "Choose player in list" }));
-
-		jLabel8.setText("Player");
-
-		jScrollPane1.setViewportView(lstPlayer);
-
-		btnAddPlayer.setText("Add");
-
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+		GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
 		layout.setHorizontalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addGroup(
 						layout.createSequentialGroup()
 								.addGroup(
 										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.LEADING)
+												GroupLayout.Alignment.LEADING)
 												.addGroup(
 														layout.createSequentialGroup()
 																.addContainerGap()
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING,
-																				false)
-																				.addComponent(
-																						btnSave,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						76,
-																						Short.MAX_VALUE)
-																				.addComponent(
-																						btnNew,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						Short.MAX_VALUE))
+																.addComponent(
+																		btnNew,
+																		GroupLayout.PREFERRED_SIZE,
+																		76,
+																		GroupLayout.PREFERRED_SIZE)
 																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING,
-																				false)
-																				.addComponent(
-																						btnFind,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						Short.MAX_VALUE)
-																				.addComponent(
-																						btnCancel,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						78,
-																						Short.MAX_VALUE))
+																		LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnFind,
+																		GroupLayout.PREFERRED_SIZE,
+																		78,
+																		GroupLayout.PREFERRED_SIZE)
 																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING,
-																				false)
-																				.addComponent(
-																						btnClose,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						Short.MAX_VALUE)
-																				.addComponent(
-																						btnUpdate,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						78,
-																						Short.MAX_VALUE))
+																		LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnCancel,
+																		GroupLayout.PREFERRED_SIZE,
+																		78,
+																		GroupLayout.PREFERRED_SIZE)
 																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																		LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnSave,
+																		GroupLayout.PREFERRED_SIZE,
+																		76,
+																		GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(
+																		LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnUpdate,
+																		GroupLayout.PREFERRED_SIZE,
+																		78,
+																		GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(
+																		LayoutStyle.ComponentPlacement.RELATED)
 																.addComponent(
 																		btnDelete,
-																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		GroupLayout.PREFERRED_SIZE,
 																		82,
-																		javax.swing.GroupLayout.PREFERRED_SIZE))
+																		GroupLayout.PREFERRED_SIZE))
 												.addGroup(
 														layout.createSequentialGroup()
 																.addGap(19, 19,
 																		19)
 																.addGroup(
 																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
+																				GroupLayout.Alignment.LEADING)
 																				.addComponent(
 																						jLabel1)
 																				.addComponent(
-																						jLabel2)
-																				.addComponent(
-																						jLabel8))
+																						jLabel2))
 																.addGap(23, 23,
 																		23)
 																.addGroup(
 																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
+																				GroupLayout.Alignment.LEADING)
 																				.addComponent(
 																						txtTeamName,
-																						javax.swing.GroupLayout.PREFERRED_SIZE,
+																						GroupLayout.PREFERRED_SIZE,
 																						234,
-																						javax.swing.GroupLayout.PREFERRED_SIZE)
-																				.addGroup(
-																						layout.createSequentialGroup()
-																								.addComponent(
-																										cboPlayer,
-																										javax.swing.GroupLayout.PREFERRED_SIZE,
-																										javax.swing.GroupLayout.DEFAULT_SIZE,
-																										javax.swing.GroupLayout.PREFERRED_SIZE)
-																								.addPreferredGap(
-																										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																								.addComponent(
-																										btnAddPlayer))
+																						GroupLayout.PREFERRED_SIZE)
 																				.addComponent(
 																						txtTeamID,
-																						javax.swing.GroupLayout.PREFERRED_SIZE,
+																						GroupLayout.PREFERRED_SIZE,
 																						91,
-																						javax.swing.GroupLayout.PREFERRED_SIZE)
-																				.addComponent(
-																						jScrollPane1,
-																						javax.swing.GroupLayout.PREFERRED_SIZE,
-																						311,
-																						javax.swing.GroupLayout.PREFERRED_SIZE))))
-								.addContainerGap(34, Short.MAX_VALUE)));
+																						GroupLayout.PREFERRED_SIZE))))
+								.addContainerGap(GroupLayout.DEFAULT_SIZE,
+										Short.MAX_VALUE)));
 		layout.setVerticalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addGroup(
 						layout.createSequentialGroup()
 								.addContainerGap()
 								.addGroup(
 										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
+												GroupLayout.Alignment.BASELINE)
 												.addComponent(
 														txtTeamID,
-														javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
+														GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE,
+														GroupLayout.PREFERRED_SIZE)
 												.addComponent(jLabel1))
 								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										LayoutStyle.ComponentPlacement.RELATED)
 								.addGroup(
 										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
+												GroupLayout.Alignment.BASELINE)
 												.addComponent(jLabel2)
 												.addComponent(
 														txtTeamName,
-														javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+														GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE,
+														GroupLayout.PREFERRED_SIZE))
+								.addGap(18, 18, 18)
 								.addGroup(
 										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(jLabel8)
-												.addComponent(btnAddPlayer)
-												.addComponent(cboPlayer))
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-								.addComponent(jScrollPane1,
-										javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addGap(48, 48, 48)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
+												GroupLayout.Alignment.BASELINE)
 												.addComponent(btnNew)
 												.addComponent(btnFind)
-												.addComponent(btnClose))
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(btnSave)
 												.addComponent(btnCancel)
 												.addComponent(btnUpdate)
-												.addComponent(btnDelete))
-								.addGap(23, 23, 23)));
+												.addComponent(btnDelete)
+												.addComponent(btnSave))
+								.addContainerGap(GroupLayout.DEFAULT_SIZE,
+										Short.MAX_VALUE)));
 
-		layout.linkSize(javax.swing.SwingConstants.VERTICAL,
-				new java.awt.Component[] { txtTeamID, txtTeamName });
+		layout.linkSize(SwingConstants.VERTICAL, new java.awt.Component[] {
+				txtTeamID, txtTeamName });
 
 	}// </editor-fold>
+
+	private boolean isDuplicateData(Team team) {
+		List<Team> teams = null;
+
+		// check if duplicate team ID
+		try {
+			teams = EntityUtils.loadByCondition(new Condition("id", team
+					.getId().toString()), Team.class, "id");
+		} catch (BasketException | SQLException e) {
+			e.printStackTrace();
+		}
+		if (teams.size() > 0)
+			return true;
+
+		// Check if duplicate team name
+		teams = null;
+		try {
+			teams = EntityUtils.loadByCondition(
+					new Condition("Team_name", team.getTeamName()), Team.class,
+					"Team_name");
+		} catch (BasketException | SQLException e) {
+			e.printStackTrace();
+		}
+		if (teams.size() > 0)
+			return true;
+
+		return false;
+
+	}
+
+	private boolean isEmptyData() {
+		if (txtTeamID.getText().equals("") || txtTeamName.getText().equals(""))
+			return true;
+		return false;
+	}
+
+	public boolean isInteger(String s) {
+		try {
+			Integer.parseInt(s);
+		} catch (NumberFormatException nfe) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isTypeMismatch() {
+		if (!isInteger(txtTeamID.getText()))
+			return true;
+		return false;
+	}
+
+	private Team makeTeam() {
+		setFieldtoAttribute();
+		try {
+			team.setDeleted(0);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return team;
+	}
+
+	private void saveTeam(Team team) {
+		setFieldtoAttribute();
+		try {
+			team.setDeleted(0);
+			team.save();
+		} catch (BasketException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void setFieldtoAttribute() {
+		try {
+			// season.setId(Integer.parseInt(txtSeasonID.getText().trim()));
+			// season.setSeasonStartdate(new
+			// Timestamp(txtStartDate.getDate().getTime()));
+			// season.setSeasonEnddate(new
+			// Timestamp(txtEndDate.getDate().getTime()));
+
+			team.setId(Integer.parseInt(txtTeamID.getText().trim()));
+			team.setTeamName(txtTeamName.getText().trim());
+		} catch (NumberFormatException | SQLException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	private void setTextField(Team foundedTeam) {
+		try {
+			txtTeamID.setText(foundedTeam.getId().toString());
+			txtTeamName.setText(foundedTeam.getTeamName());
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+
+	}
+
+	private void updateForm() {
+		switch (formState) {
+		case INITIAL:
+			btnCancel.setVisible(false);
+			btnSave.setVisible(false);
+			btnUpdate.setVisible(false);
+			btnDelete.setVisible(false);
+
+			btnNew.setVisible(true);
+			btnFind.setVisible(true);
+			break;
+		case NEW:
+			btnNew.setVisible(false);
+			btnFind.setVisible(false);
+			btnUpdate.setVisible(false);
+			btnDelete.setVisible(false);
+
+			btnSave.setVisible(true);
+			btnCancel.setVisible(true);
+			
+			txtTeamID.setText("");
+			txtTeamName.setText("");
+			
+			break;
+		case FIND:
+			btnSave.setVisible(false);
+
+			btnCancel.setVisible(true);
+			btnNew.setVisible(true);
+			btnFind.setVisible(true);
+			btnUpdate.setVisible(true);
+			btnDelete.setVisible(true);
+			break;
+		}
+	}
+
+	private void updateTeam(Team team) {
+		setFieldtoAttribute();
+		try {
+			team.setDeleted(0);
+			team.update();
+		} catch (BasketException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

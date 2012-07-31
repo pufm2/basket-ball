@@ -16,8 +16,8 @@ public class DbPerson extends Entity implements ORAData, ORADataFactory {
 
     protected MutableStruct _struct;
 
-    protected static int[] _sqlType = { 4, 12 };
-    protected static ORADataFactory[] _factory = new ORADataFactory[2];
+    protected static int[] _sqlType = { 4, 12, 4 };
+    protected static ORADataFactory[] _factory = new ORADataFactory[3];
     protected static final DbPerson _DbPersonFactory = new DbPerson();
 
     public static ORADataFactory getORADataFactory() {
@@ -43,24 +43,27 @@ public class DbPerson extends Entity implements ORAData, ORADataFactory {
             _map.put("BASKET_USER.T_TREASURER",
                     puf.m2.basket.model.entity.Treasurer.getORADataFactory());
             _map.put("BASKET_USER.T_VICE_PRESIDENT",
-                    puf.m2.basket.model.entity.VicePresident.getORADataFactory());
+                    puf.m2.basket.model.entity.VicePresident
+                            .getORADataFactory());
         }
     }
 
     /* constructors */
     protected void _init_struct(boolean init) {
         if (init)
-            _struct = new MutableStruct(new Object[2], _sqlType, _factory);
+            _struct = new MutableStruct(new Object[3], _sqlType, _factory);
     }
 
     protected DbPerson() {
         _init_struct(true);
     }
 
-    protected DbPerson(Integer id, String personName) throws SQLException {
+    protected DbPerson(Integer id, String personName, Integer deleted)
+            throws SQLException {
         _init_struct(true);
         setId(id);
         setPersonName(personName);
+        setDeleted(deleted);
     }
 
     /* ORAData interface */
@@ -111,6 +114,7 @@ public class DbPerson extends Entity implements ORAData, ORADataFactory {
     }
 
     /* accessor methods */
+    @Override
     @DbProp
     public Integer getId() throws SQLException {
         return (Integer) _struct.getAttribute(0);
@@ -127,6 +131,15 @@ public class DbPerson extends Entity implements ORAData, ORADataFactory {
 
     public void setPersonName(String personName) throws SQLException {
         _struct.setAttribute(1, personName);
+    }
+
+    @DbProp
+    public Integer getDeleted() throws SQLException {
+        return (Integer) _struct.getAttribute(2);
+    }
+
+    public void setDeleted(Integer deleted) throws SQLException {
+        _struct.setAttribute(2, deleted);
     }
 
 }

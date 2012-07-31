@@ -7,6 +7,7 @@ import oracle.sql.ORAData;
 import oracle.sql.ORADataFactory;
 import oracle.sql.Datum;
 import oracle.sql.REF;
+import oracle.sql.STRUCT;
 
 public class DbTeamManyRef implements ORAData, ORADataFactory {
     public static final String _SQL_BASETYPE = "BASKET_USER.T_TEAM_MANY";

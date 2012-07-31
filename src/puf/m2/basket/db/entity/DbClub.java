@@ -9,6 +9,12 @@ import oracle.sql.Datum;
 import oracle.sql.STRUCT;
 import oracle.jpub.runtime.MutableStruct;
 import puf.m2.basket.model.entity.Club;
+import puf.m2.basket.model.entity.ref.OfficeRef;
+import puf.m2.basket.model.entity.ref.PresidentRef;
+import puf.m2.basket.model.entity.ref.SecretaryRef;
+import puf.m2.basket.model.entity.ref.TreasurerRef;
+import puf.m2.basket.model.entity.ref.VicePresidentRef;
+import puf.m2.basket.model.support.DbProp;
 
 public class DbClub extends Entity implements ORAData, ORADataFactory {
     public static final String _SQL_NAME = "BASKET_USER.T_CLUB";
@@ -17,8 +23,8 @@ public class DbClub extends Entity implements ORAData, ORADataFactory {
     protected MutableStruct _struct;
 
     protected static int[] _sqlType = { 4, 12, 2006, 2006, 2006, 2006, 2006,
-            2003 };
-    protected static ORADataFactory[] _factory = new ORADataFactory[8];
+            2003, 4 };
+    protected static ORADataFactory[] _factory = new ORADataFactory[9];
     static {
         _factory[2] = OfficeRef.getORADataFactory();
         _factory[3] = PresidentRef.getORADataFactory();
@@ -36,7 +42,7 @@ public class DbClub extends Entity implements ORAData, ORADataFactory {
     /* constructors */
     protected void _init_struct(boolean init) {
         if (init)
-            _struct = new MutableStruct(new Object[8], _sqlType, _factory);
+            _struct = new MutableStruct(new Object[9], _sqlType, _factory);
     }
 
     public DbClub() {
@@ -46,7 +52,7 @@ public class DbClub extends Entity implements ORAData, ORADataFactory {
     public DbClub(Integer id, String clubName, OfficeRef clubOffice,
             PresidentRef clubPresident, VicePresidentRef clubVicePresident,
             TreasurerRef clubTreasurer, SecretaryRef clubSecretary,
-            DbCategories listcategory) throws SQLException {
+            DbCategories listcategory, Integer deleted) throws SQLException {
         _init_struct(true);
         setId(id);
         setClubName(clubName);
@@ -56,6 +62,7 @@ public class DbClub extends Entity implements ORAData, ORADataFactory {
         setClubTreasurer(clubTreasurer);
         setClubSecretary(clubSecretary);
         setListcategory(listcategory);
+        setDeleted(deleted);
     }
 
     /* ORAData interface */
@@ -81,6 +88,8 @@ public class DbClub extends Entity implements ORAData, ORADataFactory {
     }
 
     /* accessor methods */
+    @Override
+    @DbProp
     public Integer getId() throws SQLException {
         return (Integer) _struct.getAttribute(0);
     }
@@ -89,6 +98,7 @@ public class DbClub extends Entity implements ORAData, ORADataFactory {
         _struct.setAttribute(0, id);
     }
 
+    @DbProp
     public String getClubName() throws SQLException {
         return (String) _struct.getAttribute(1);
     }
@@ -97,6 +107,7 @@ public class DbClub extends Entity implements ORAData, ORADataFactory {
         _struct.setAttribute(1, clubName);
     }
 
+    @DbProp
     public OfficeRef getClubOffice() throws SQLException {
         return (OfficeRef) _struct.getAttribute(2);
     }
@@ -105,6 +116,7 @@ public class DbClub extends Entity implements ORAData, ORADataFactory {
         _struct.setAttribute(2, clubOffice);
     }
 
+    @DbProp
     public PresidentRef getClubPresident() throws SQLException {
         return (PresidentRef) _struct.getAttribute(3);
     }
@@ -114,6 +126,7 @@ public class DbClub extends Entity implements ORAData, ORADataFactory {
         _struct.setAttribute(3, clubPresident);
     }
 
+    @DbProp
     public VicePresidentRef getClubVicePresident() throws SQLException {
         return (VicePresidentRef) _struct.getAttribute(4);
     }
@@ -123,6 +136,7 @@ public class DbClub extends Entity implements ORAData, ORADataFactory {
         _struct.setAttribute(4, clubVicePresident);
     }
 
+    @DbProp
     public TreasurerRef getClubTreasurer() throws SQLException {
         return (TreasurerRef) _struct.getAttribute(5);
     }
@@ -132,6 +146,7 @@ public class DbClub extends Entity implements ORAData, ORADataFactory {
         _struct.setAttribute(5, clubTreasurer);
     }
 
+    @DbProp
     public SecretaryRef getClubSecretary() throws SQLException {
         return (SecretaryRef) _struct.getAttribute(6);
     }
@@ -141,12 +156,22 @@ public class DbClub extends Entity implements ORAData, ORADataFactory {
         _struct.setAttribute(6, clubSecretary);
     }
 
+    @DbProp
     public DbCategories getListcategory() throws SQLException {
         return (DbCategories) _struct.getAttribute(7);
     }
 
     public void setListcategory(DbCategories listcategory) throws SQLException {
         _struct.setAttribute(7, listcategory);
+    }
+
+    @DbProp
+    public Integer getDeleted() throws SQLException {
+        return (Integer) _struct.getAttribute(8);
+    }
+
+    public void setDeleted(Integer deleted) throws SQLException {
+        _struct.setAttribute(8, deleted);
     }
 
 }

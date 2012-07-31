@@ -17,8 +17,8 @@ public class DbSeason extends Entity implements ORAData, ORADataFactory {
 
     protected MutableStruct _struct;
 
-    protected static int[] _sqlType = { 4, 91, 91 };
-    protected static ORADataFactory[] _factory = new ORADataFactory[3];
+    protected static int[] _sqlType = { 4, 12, 91, 91, 4 };
+    protected static ORADataFactory[] _factory = new ORADataFactory[5];
     protected static final DbSeason _DbSeasonFactory = new DbSeason();
 
     public static ORADataFactory getORADataFactory() {
@@ -28,19 +28,23 @@ public class DbSeason extends Entity implements ORAData, ORADataFactory {
     /* constructors */
     protected void _init_struct(boolean init) {
         if (init)
-            _struct = new MutableStruct(new Object[3], _sqlType, _factory);
+            _struct = new MutableStruct(new Object[5], _sqlType, _factory);
     }
 
     public DbSeason() {
         _init_struct(true);
     }
 
-    public DbSeason(Integer id, java.sql.Timestamp seasonStartdate,
-            java.sql.Timestamp seasonEnddate) throws SQLException {
+    public DbSeason(Integer id, String seasonName,
+            java.sql.Timestamp seasonStartdate,
+            java.sql.Timestamp seasonEnddate, Integer deleted)
+            throws SQLException {
         _init_struct(true);
         setId(id);
+        setSeasonName(seasonName);
         setSeasonStartdate(seasonStartdate);
         setSeasonEnddate(seasonEnddate);
+        setDeleted(deleted);
     }
 
     /* ORAData interface */
@@ -66,6 +70,7 @@ public class DbSeason extends Entity implements ORAData, ORADataFactory {
     }
 
     /* accessor methods */
+    @Override
     @DbProp
     public Integer getId() throws SQLException {
         return (Integer) _struct.getAttribute(0);
@@ -76,23 +81,41 @@ public class DbSeason extends Entity implements ORAData, ORADataFactory {
     }
 
     @DbProp
+    public String getSeasonName() throws SQLException {
+        return (String) _struct.getAttribute(1);
+    }
+
+    public void setSeasonName(String seasonName) throws SQLException {
+        _struct.setAttribute(1, seasonName);
+    }
+
+    @DbProp
     public java.sql.Timestamp getSeasonStartdate() throws SQLException {
-        return (java.sql.Timestamp) _struct.getAttribute(1);
+        return (java.sql.Timestamp) _struct.getAttribute(2);
     }
 
     public void setSeasonStartdate(java.sql.Timestamp seasonStartdate)
             throws SQLException {
-        _struct.setAttribute(1, seasonStartdate);
+        _struct.setAttribute(2, seasonStartdate);
     }
 
     @DbProp
     public java.sql.Timestamp getSeasonEnddate() throws SQLException {
-        return (java.sql.Timestamp) _struct.getAttribute(2);
+        return (java.sql.Timestamp) _struct.getAttribute(3);
     }
 
     public void setSeasonEnddate(java.sql.Timestamp seasonEnddate)
             throws SQLException {
-        _struct.setAttribute(2, seasonEnddate);
+        _struct.setAttribute(3, seasonEnddate);
+    }
+
+    @DbProp
+    public Integer getDeleted() throws SQLException {
+        return (Integer) _struct.getAttribute(4);
+    }
+
+    public void setDeleted(Integer deleted) throws SQLException {
+        _struct.setAttribute(4, deleted);
     }
 
 }

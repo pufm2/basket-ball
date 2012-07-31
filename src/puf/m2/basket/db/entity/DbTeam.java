@@ -17,8 +17,8 @@ public class DbTeam extends Entity implements ORAData, ORADataFactory {
 
     protected MutableStruct _struct;
 
-    protected static int[] _sqlType = { 4, 12 };
-    protected static ORADataFactory[] _factory = new ORADataFactory[2];
+    protected static int[] _sqlType = { 4, 12, 4 };
+    protected static ORADataFactory[] _factory = new ORADataFactory[3];
     protected static final DbTeam _DbTeamFactory = new DbTeam();
 
     public static ORADataFactory getORADataFactory() {
@@ -28,17 +28,19 @@ public class DbTeam extends Entity implements ORAData, ORADataFactory {
     /* constructors */
     protected void _init_struct(boolean init) {
         if (init)
-            _struct = new MutableStruct(new Object[2], _sqlType, _factory);
+            _struct = new MutableStruct(new Object[3], _sqlType, _factory);
     }
 
     public DbTeam() {
         _init_struct(true);
     }
 
-    public DbTeam(Integer id, String teamName) throws SQLException {
+    public DbTeam(Integer id, String teamName, Integer deleted)
+            throws SQLException {
         _init_struct(true);
         setId(id);
         setTeamName(teamName);
+        setDeleted(deleted);
     }
 
     /* ORAData interface */
@@ -64,6 +66,7 @@ public class DbTeam extends Entity implements ORAData, ORADataFactory {
     }
 
     /* accessor methods */
+    @Override
     @DbProp
     public Integer getId() throws SQLException {
         return (Integer) _struct.getAttribute(0);
@@ -72,7 +75,7 @@ public class DbTeam extends Entity implements ORAData, ORADataFactory {
     public void setId(Integer id) throws SQLException {
         _struct.setAttribute(0, id);
     }
-    
+
     @DbProp
     public String getTeamName() throws SQLException {
         return (String) _struct.getAttribute(1);
@@ -80,6 +83,15 @@ public class DbTeam extends Entity implements ORAData, ORADataFactory {
 
     public void setTeamName(String teamName) throws SQLException {
         _struct.setAttribute(1, teamName);
+    }
+
+    @DbProp
+    public Integer getDeleted() throws SQLException {
+        return (Integer) _struct.getAttribute(2);
+    }
+
+    public void setDeleted(Integer deleted) throws SQLException {
+        _struct.setAttribute(2, deleted);
     }
 
 }

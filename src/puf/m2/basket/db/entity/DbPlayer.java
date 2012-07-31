@@ -16,11 +16,11 @@ public class DbPlayer extends Person implements ORAData, ORADataFactory {
     public static final String _SQL_NAME = "BASKET_USER.T_PLAYER";
     public static final int _SQL_TYPECODE = OracleTypes.STRUCT;
 
-    protected static int[] _sqlType = { 4, 12, 12, 91, 2002, 2003 };
-    protected static ORADataFactory[] _factory = new ORADataFactory[6];
+    protected static int[] _sqlType = { 4, 12, 4, 12, 91, 2002, 2003 };
+    protected static ORADataFactory[] _factory = new ORADataFactory[7];
     static {
-        _factory[4] = Address.getORADataFactory();
-        _factory[5] = DbTeamWithPlayer.getORADataFactory();
+        _factory[5] = Address.getORADataFactory();
+        _factory[6] = DbTeamWithPlayer.getORADataFactory();
     }
     protected static final DbPlayer _DbPlayerFactory = new DbPlayer();
 
@@ -36,19 +36,21 @@ public class DbPlayer extends Person implements ORAData, ORADataFactory {
     @Override
     protected void _init_struct(boolean init) {
         if (init)
-            _struct = new MutableStruct(new Object[6], _sqlType, _factory);
+            _struct = new MutableStruct(new Object[7], _sqlType, _factory);
     }
 
     public DbPlayer() {
         _init_struct(true);
     }
 
-    public DbPlayer(Integer id, String personName, String playerLicenceNumber,
-            java.sql.Timestamp playerBirthday, Address playerAddress,
-            DbTeamWithPlayer teamWithPlayers) throws SQLException {
+    public DbPlayer(Integer id, String personName, Integer deleted,
+            String playerLicenceNumber, java.sql.Timestamp playerBirthday,
+            Address playerAddress, DbTeamWithPlayer teamWithPlayers)
+            throws SQLException {
         _init_struct(true);
         setId(id);
         setPersonName(personName);
+        setDeleted(deleted);
         setPlayerLicenceNumber(playerLicenceNumber);
         setPlayerBirthday(playerBirthday);
         setPlayerAddress(playerAddress);
@@ -87,41 +89,41 @@ public class DbPlayer extends Person implements ORAData, ORADataFactory {
     /* accessor methods */
     @DbProp
     public String getPlayerLicenceNumber() throws SQLException {
-        return (String) _struct.getAttribute(2);
+        return (String) _struct.getAttribute(3);
     }
 
     public void setPlayerLicenceNumber(String playerLicenceNumber)
             throws SQLException {
-        _struct.setAttribute(2, playerLicenceNumber);
+        _struct.setAttribute(3, playerLicenceNumber);
     }
 
     @DbProp
     public java.sql.Timestamp getPlayerBirthday() throws SQLException {
-        return (java.sql.Timestamp) _struct.getAttribute(3);
+        return (java.sql.Timestamp) _struct.getAttribute(4);
     }
 
     public void setPlayerBirthday(java.sql.Timestamp playerBirthday)
             throws SQLException {
-        _struct.setAttribute(3, playerBirthday);
+        _struct.setAttribute(4, playerBirthday);
     }
 
     @DbProp
     public Address getPlayerAddress() throws SQLException {
-        return (Address) _struct.getAttribute(4);
+        return (Address) _struct.getAttribute(5);
     }
 
     public void setPlayerAddress(Address playerAddress) throws SQLException {
-        _struct.setAttribute(4, playerAddress);
+        _struct.setAttribute(5, playerAddress);
     }
 
     @DbProp
     public DbTeamWithPlayer getTeamWithPlayers() throws SQLException {
-        return (DbTeamWithPlayer) _struct.getAttribute(5);
+        return (DbTeamWithPlayer) _struct.getAttribute(6);
     }
 
     public void setTeamWithPlayers(DbTeamWithPlayer teamWithPlayers)
             throws SQLException {
-        _struct.setAttribute(5, teamWithPlayers);
+        _struct.setAttribute(6, teamWithPlayers);
     }
 
 }

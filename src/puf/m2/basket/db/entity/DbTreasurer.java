@@ -15,8 +15,8 @@ public class DbTreasurer extends Person implements ORAData, ORADataFactory {
     public static final String _SQL_NAME = "BASKET_USER.T_TREASURER";
     public static final int _SQL_TYPECODE = OracleTypes.STRUCT;
 
-    protected static int[] _sqlType = { 4, 12 };
-    protected static ORADataFactory[] _factory = new ORADataFactory[2];
+    protected static int[] _sqlType = { 4, 12, 4 };
+    protected static ORADataFactory[] _factory = new ORADataFactory[3];
     protected static final DbTreasurer _DbTreasurerFactory = new DbTreasurer();
 
     public static ORADataFactory getORADataFactory() {
@@ -31,17 +31,19 @@ public class DbTreasurer extends Person implements ORAData, ORADataFactory {
     @Override
     protected void _init_struct(boolean init) {
         if (init)
-            _struct = new MutableStruct(new Object[2], _sqlType, _factory);
+            _struct = new MutableStruct(new Object[3], _sqlType, _factory);
     }
 
     public DbTreasurer() {
         _init_struct(true);
     }
 
-    public DbTreasurer(Integer id, String personName) throws SQLException {
+    public DbTreasurer(Integer id, String personName, Integer deleted)
+            throws SQLException {
         _init_struct(true);
         setId(id);
         setPersonName(personName);
+        setDeleted(deleted);
     }
 
     /* ORAData interface */

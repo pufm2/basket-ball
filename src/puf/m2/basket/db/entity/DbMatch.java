@@ -9,6 +9,7 @@ import oracle.sql.Datum;
 import oracle.sql.STRUCT;
 import oracle.jpub.runtime.MutableStruct;
 import puf.m2.basket.model.entity.Match;
+import puf.m2.basket.model.entity.ref.SeasonRef;
 import puf.m2.basket.model.support.DbProp;
 
 public class DbMatch extends Entity implements ORAData, ORADataFactory {
@@ -17,8 +18,8 @@ public class DbMatch extends Entity implements ORAData, ORADataFactory {
 
     protected MutableStruct _struct;
 
-    protected static int[] _sqlType = { 4, 91, 2006, 2003 };
-    protected static ORADataFactory[] _factory = new ORADataFactory[4];
+    protected static int[] _sqlType = { 4, 91, 2006, 2003, 4 };
+    protected static ORADataFactory[] _factory = new ORADataFactory[5];
     static {
         _factory[2] = SeasonRef.getORADataFactory();
         _factory[3] = DbScoreDetails.getORADataFactory();
@@ -32,7 +33,7 @@ public class DbMatch extends Entity implements ORAData, ORADataFactory {
     /* constructors */
     protected void _init_struct(boolean init) {
         if (init)
-            _struct = new MutableStruct(new Object[4], _sqlType, _factory);
+            _struct = new MutableStruct(new Object[5], _sqlType, _factory);
     }
 
     public DbMatch() {
@@ -40,12 +41,13 @@ public class DbMatch extends Entity implements ORAData, ORADataFactory {
     }
 
     public DbMatch(Integer id, java.sql.Timestamp matchDate, SeasonRef season,
-            DbScoreDetails details) throws SQLException {
+            DbScoreDetails details, Integer deleted) throws SQLException {
         _init_struct(true);
         setId(id);
         setMatchDate(matchDate);
         setSeason(season);
         setDetails(details);
+        setDeleted(deleted);
     }
 
     /* ORAData interface */
@@ -71,6 +73,7 @@ public class DbMatch extends Entity implements ORAData, ORADataFactory {
     }
 
     /* accessor methods */
+    @Override
     @DbProp
     public Integer getId() throws SQLException {
         return (Integer) _struct.getAttribute(0);
@@ -105,6 +108,15 @@ public class DbMatch extends Entity implements ORAData, ORADataFactory {
 
     public void setDetails(DbScoreDetails details) throws SQLException {
         _struct.setAttribute(3, details);
+    }
+
+    @DbProp
+    public Integer getDeleted() throws SQLException {
+        return (Integer) _struct.getAttribute(4);
+    }
+
+    public void setDeleted(Integer deleted) throws SQLException {
+        _struct.setAttribute(4, deleted);
     }
 
 }

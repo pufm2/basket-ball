@@ -13,9 +13,11 @@ import puf.m2.basket.model.support.BasketException;
 
 public class Category extends DbCategory implements ORAData, ORADataFactory {
     public static final String TABLE_NAME = "category";
-    
+
     private static final Category _CategoryFactory = new Category();
     
+   // private CategoryRef ref;
+
     private List<Team> teams = new ArrayList<Team>();
 
     public static ORADataFactory getORADataFactory() {
@@ -26,11 +28,9 @@ public class Category extends DbCategory implements ORAData, ORADataFactory {
         super();
     }
 
-    public Category(Integer id, String categoryName, DbTeams listteam)
-            throws SQLException {
-        setId(id);
-        setCategoryName(categoryName);
-        setListteam(listteam);
+    public Category(Integer id, String categoryName, DbTeams listteam,
+            Integer deleted) throws SQLException {
+        super(id, categoryName, listteam, deleted);
     }
 
     /* ORAData interface */
@@ -38,7 +38,7 @@ public class Category extends DbCategory implements ORAData, ORADataFactory {
     public ORAData create(Datum d, int sqlType) throws SQLException {
         return create(new Category(), d, sqlType);
     }
-    
+
     public List<Team> getTeams() {
         return teams;
     }
@@ -46,7 +46,8 @@ public class Category extends DbCategory implements ORAData, ORADataFactory {
     public void addTeam(Team team) {
         teams.add(team);
     }
-    
+
+    @Override
     public void save() throws BasketException {
         DbTeams dbTeams = new DbTeams(teams.toArray(new Team[] {}));
         try {
@@ -54,8 +55,18 @@ public class Category extends DbCategory implements ORAData, ORADataFactory {
         } catch (SQLException e) {
             throw new BasketException(e);
         }
-        
+
         super.save();
+    }
+    
+    public String toString(){
+    	String result = "";
+    	try {
+			result = getCategoryName();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	return result;
     }
 
 }
