@@ -19,7 +19,7 @@ public class Coach extends DbCoach implements ORAData, ORADataFactory {
     public static final String TABLE_NAME = "coach";
     private static final Coach _CoachFactory = new Coach();
     
-   // private CoachRef ref;
+    private CoachRef ref;
 
     private List<Team> teams = new ArrayList<Team>();
 

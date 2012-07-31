@@ -16,7 +16,7 @@ public class Office extends DbOffice implements ORAData, ORADataFactory {
     public static final String TABLE_NAME = "office";
     private static final Office _OfficeFactory = new Office();
     
-    //private OfficeRef ref;
+    private OfficeRef ref;
 
     public static ORADataFactory getORADataFactory() {
         return _OfficeFactory;

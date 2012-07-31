@@ -9,6 +9,7 @@ import oracle.sql.ORADataFactory;
 import oracle.sql.Datum;
 import puf.m2.basket.db.entity.DbCategory;
 import puf.m2.basket.db.entity.DbTeams;
+import puf.m2.basket.model.entity.ref.CategoryRef;
 import puf.m2.basket.model.support.BasketException;
 
 public class Category extends DbCategory implements ORAData, ORADataFactory {
@@ -16,7 +17,7 @@ public class Category extends DbCategory implements ORAData, ORADataFactory {
 
     private static final Category _CategoryFactory = new Category();
     
-   // private CategoryRef ref;
+    private CategoryRef ref;
 
     private List<Team> teams = new ArrayList<Team>();
 

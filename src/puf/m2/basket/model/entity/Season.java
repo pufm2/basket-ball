@@ -11,7 +11,7 @@ public class Season extends DbSeason implements ORAData, ORADataFactory {
     
     public static final String TABLE_NAME = "season";
     
-   // private SeasonRef ref;
+    private SeasonRef ref;
     
     private static final Season _SeasonFactory = new Season();
 

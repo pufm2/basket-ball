@@ -11,6 +11,7 @@ import puf.m2.basket.db.entity.DbMatch;
 import puf.m2.basket.db.entity.DbScoreDetails;
 import puf.m2.basket.model.entity.ref.MatchRef;
 import puf.m2.basket.model.entity.ref.SeasonRef;
+import puf.m2.basket.model.entity.ref.TeamRef;
 import puf.m2.basket.model.support.BasketException;
 
 public class Match extends DbMatch implements ORAData, ORADataFactory {
@@ -30,9 +31,10 @@ public class Match extends DbMatch implements ORAData, ORADataFactory {
         super();
     }
 
-    public Match(Integer id, java.sql.Timestamp matchDate, SeasonRef season,
-            DbScoreDetails details, Integer deleted) throws SQLException {
-        super(id, matchDate, season, details, deleted);
+    public Match(Integer id, java.sql.Timestamp matchDate, TeamRef team1,
+            TeamRef team2, SeasonRef season, DbScoreDetails details,
+            Integer deleted) throws SQLException {
+        super(id, matchDate, team1, team2, season, details, deleted);
     }
 
     /* ORAData interface */

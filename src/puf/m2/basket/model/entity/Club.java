@@ -23,7 +23,7 @@ public class Club extends DbClub implements ORAData, ORADataFactory {
 
     private static final Club _ClubFactory = new Club();
     
-   // private ClubRef ref;
+    private ClubRef ref;
 
     List<Category> categories = new ArrayList<Category>();
 
