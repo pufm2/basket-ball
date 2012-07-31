@@ -22,8 +22,8 @@ INSERT INTO OFFICE VALUES (
         8236, -- other fields are set to NULL.
         SDO_POINT_TYPE -- Specifies the coordinates of the point
         (
-        106.632843, -- first ordinate, i.e., value in longitude dimension
-        10.881859, -- second ordinate, i.e., value in latitude dimension
+        106.625061, -- first ordinate, i.e., value in longitude dimension
+        10.887254, -- second ordinate, i.e., value in latitude dimension
         NULL -- third ordinate, if any
         ),
         NULL,
@@ -37,8 +37,8 @@ INSERT INTO OFFICE VALUES (
         8236, -- other fields are set to NULL.
         SDO_POINT_TYPE -- Specifies the coordinates of the point
         (
-        105.849981, -- first ordinate, i.e., value in longitude dimension
-        21.036281, -- second ordinate, i.e., value in latitude dimension
+        105.849838, -- first ordinate, i.e., value in longitude dimension
+        21.036442, -- second ordinate, i.e., value in latitude dimension
         NULL -- third ordinate, if any
         ),
         NULL,
@@ -52,14 +52,14 @@ INSERT INTO OFFICE VALUES (
         8236, -- other fields are set to NULL.
         SDO_POINT_TYPE -- Specifies the coordinates of the point
         (
-        105.925827, -- first ordinate, i.e., value in longitude dimension
-        20.61222, -- second ordinate, i.e., value in latitude dimension
+       107.045288, -- first ordinate, i.e., value in longitude dimension
+       20.985162, -- second ordinate, i.e., value in latitude dimension
         NULL -- third ordinate, if any
         ),
         NULL,
         NULL
     ),
-    'OFFICE 3',T_ADDRESS (93,'CAO THANG','3','Ha Nam'), 0);
+    'OFFICE 3',T_ADDRESS (93,'CAO THANG','3','Ha Long'), 0);
 INSERT INTO OFFICE VALUES (
     4,
     SDO_GEOMETRY (
@@ -67,8 +67,8 @@ INSERT INTO OFFICE VALUES (
         8236, -- other fields are set to NULL.
         SDO_POINT_TYPE -- Specifies the coordinates of the point
         (
-        108.458977, -- first ordinate, i.e., value in longitude dimension
-        11.956036, -- second ordinate, i.e., value in latitude dimension
+       108.456345, -- first ordinate, i.e., value in longitude dimension
+       11.956708, -- second ordinate, i.e., value in latitude dimension
         NULL -- third ordinate, if any
         ),
         NULL,
@@ -82,8 +82,8 @@ INSERT INTO OFFICE VALUES (
         8236, -- other fields are set to NULL.
         SDO_POINT_TYPE -- Specifies the coordinates of the point
         (
-        105.784206, -- first ordinate, i.e., value in longitude dimension
-        10.039514, -- second ordinate, i.e., value in latitude dimension
+        105.783749, -- first ordinate, i.e., value in longitude dimension
+        10.035457, -- second ordinate, i.e., value in latitude dimension
         NULL -- third ordinate, if any
         ),
         NULL,
