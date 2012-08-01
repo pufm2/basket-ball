@@ -22,10 +22,4 @@ public class Utils {
         frame.setLocation(width, height);
         frame.setVisible(true);
     }
-	
-	public static Date toDate(java.sql.Timestamp timestamp) {
-		long milliseconds = timestamp.getTime()
-				+ (timestamp.getNanos() / 1000000);
-		return new Date(milliseconds);
-	}
 }

@@ -14,37 +14,39 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 
-import puf.m2.basket.model.entity.Team;
+import puf.m2.basket.model.entity.President;
 import puf.m2.basket.model.support.BasketException;
 import puf.m2.basket.model.support.Condition;
 import puf.m2.basket.model.support.EntityUtils;
 
-public class TeamView extends JPanel implements ActionListener {
-
-	private static final long serialVersionUID = -580791303394022630L;
+public class PresidentView extends JPanel implements ActionListener {
+	private static final long serialVersionUID = -1265877891170734060L;
 
 	// Variables declaration - do not modify
-	Team team;
-	FormState formState;
+	President president = new President();
 	boolean pressUpdate = false;
+	FormState formState;
 
 	private JButton btnCancel;
 	private JButton btnDelete;
+
 	private JButton btnFind;
 	private JButton btnNew;
 	private JButton btnSave;
 	private JButton btnUpdate;
+
 	private JButton jButton2;
 	private JLabel jLabel1;
 	private JLabel jLabel2;
-	private JTextField txtTeamID;
-	private JTextField txtTeamName;
 
-	public TeamView() {
+	private JTextField txtPresidentID;
+	private JTextField txtPresidentName;
+
+	// End of variables declaration
+	public PresidentView() {
 		initComponents();
 		addActionListeners();
 
-		team = new Team();
 		formState = FormState.INITIAL;
 		updateForm();
 	}
@@ -55,62 +57,66 @@ public class TeamView extends JPanel implements ActionListener {
 			formState = FormState.INITIAL;
 
 		} else if ("Delete".equals(e.getActionCommand())) {
-			Team teamToDelete = null;
+			President presidentToDelete = null;
 
-			if (!isInteger(txtTeamID.getText())) {
+			if (!isInteger(txtPresidentID.getText())) {
 				JOptionPane.showMessageDialog(this,
-						"Please input correct team ID", "Error",
+						"Please input correct president ID", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 
 			try {
-				team = makeTeam();
-				teamToDelete = EntityUtils.loadById(team.getId(), Team.class);
+				president = makePresident();
+				presidentToDelete = EntityUtils.loadById(president.getId(),
+						President.class);
 			} catch (BasketException | SQLException e1) {
 				e1.printStackTrace();
 			}
-			if (teamToDelete == null) {
+			if (presidentToDelete == null) {
 				JOptionPane.showMessageDialog(this,
-						"This team ID does not exists, can not delete",
+						"This president ID does not exists, can not delete",
 						"Error", JOptionPane.ERROR_MESSAGE);
 			} else if (JOptionPane.showConfirmDialog(this,
-					"Do you really to delete this team?",
-					"Confirm to delete team", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-				// Delete this team
-				deleteTeam();
+					"Do you really to delete this president?",
+					"Confirm to delete president", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				// Delete this president
+				deletePresident();
 				JOptionPane
 						.showMessageDialog(this, "This president is deleted");
 			}
 			formState = FormState.INITIAL;
 
 		} else if ("Find".equals(e.getActionCommand())) {
-			String teamName = (String) JOptionPane.showInputDialog(this,
-					"Please give a name of team", "Team 1");
+			String presidentName = (String) JOptionPane.showInputDialog(this,
+					"Please give a name of president", "President 1");
 
-			if (teamName == null)
+			if (presidentName == null)
 				return;
 
-			teamName = teamName.toUpperCase();
-			// Find team with that name
-			List<Team> teams = null;
+			presidentName = presidentName.toUpperCase();
+			// Find president with that name
+			List<President> presidents = null;
 			try {
-				teams = EntityUtils.loadByCondition(new Condition("TEAM_NAME",
-						teamName), Team.class, "Team_Name");
+				presidents = EntityUtils.loadByCondition(new Condition(
+						"PERSON_NAME", presidentName), President.class,
+						"PERSON_NAME");
 			} catch (BasketException e1) {
 				e1.printStackTrace();
 			}
-			// If exist team, show its information
-			if (teams.size() > 0) {
-				team = teams.get(0);
-				setTextField(team);
-				JOptionPane.showMessageDialog(this, "Team founded", "Notice",
-						JOptionPane.INFORMATION_MESSAGE);
+			// If exist president, show its information
+			if (presidents.size() > 0) {
+				president = presidents.get(0);
+				setTextField(president);
+				JOptionPane.showMessageDialog(this, "President founded",
+						"Notice", JOptionPane.INFORMATION_MESSAGE);
 				formState = FormState.FIND;
 			} else {
-				// If not exist team, show error message
-				JOptionPane.showMessageDialog(this, "Can not found that team",
-						"Error", JOptionPane.ERROR_MESSAGE);
+				// If not exist president, show error message
+				JOptionPane.showMessageDialog(this,
+						"Can not found that president", "Error",
+						JOptionPane.ERROR_MESSAGE);
 				formState = FormState.INITIAL;
+				return;
 			}
 
 		} else if ("New".equals(e.getActionCommand())) {
@@ -120,8 +126,8 @@ public class TeamView extends JPanel implements ActionListener {
 		} else if ("Save".equals(e.getActionCommand())) {
 			if (isEmptyData()) {
 				JOptionPane.showMessageDialog(this,
-						"Please give enought information of team", "Error",
-						JOptionPane.ERROR_MESSAGE);
+						"Please give enought information of president",
+						"Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			if (isTypeMismatch()) {
@@ -131,27 +137,25 @@ public class TeamView extends JPanel implements ActionListener {
 				return;
 			} else {
 				if (!pressUpdate) {
-					team = makeTeam();
-					if (isDuplicateData(team)) {
+					president = makePresident();
+					if (isDuplicateData(president)) {
 						JOptionPane
 								.showMessageDialog(
 										this,
-										"Can not insert new team which is duplicate ID/ Name with existing team",
+										"Can not insert new president which is duplicate ID/ Name with existing president",
 										"Error", JOptionPane.ERROR_MESSAGE);
-						return;
 					} else {
-						// Save new team
-						saveTeam(team);
+						// Save new president
+						savePresident();
 						JOptionPane.showMessageDialog(this,
-								"Save new team successful", "Success",
+								"Save new president successful", "Success",
 								JOptionPane.INFORMATION_MESSAGE);
 					}
 				} else {
-					// Update existing team
-					team = makeTeam();
-					updateTeam(team);
+					// Update existing president
+					updatePresident();
 					JOptionPane.showMessageDialog(this,
-							"Update team successful", "Success",
+							"Update president successful", "Success",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
@@ -159,21 +163,11 @@ public class TeamView extends JPanel implements ActionListener {
 
 		} else if ("Update".equals(e.getActionCommand())) {
 			pressUpdate = true;
-			formState = FormState.NEW;
+			formState = FormState.INITIAL;
 		}
 
 		// Finally for each button
 		updateForm();
-	}
-
-	private void deleteTeam() {
-		try {
-			team.setDeleted(1);
-			team.update();
-		} catch (SQLException | BasketException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	private void addActionListeners() {
@@ -196,12 +190,22 @@ public class TeamView extends JPanel implements ActionListener {
 		btnUpdate.addActionListener(this);
 	}
 
+	private void deletePresident() {
+		try {
+			president.setDeleted(1);
+			president.update();
+		} catch (BasketException | SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	private void initComponents() {
 
 		jButton2 = new JButton();
-		txtTeamID = new JTextField();
+		txtPresidentID = new JTextField();
 		jLabel1 = new JLabel();
-		txtTeamName = new JTextField();
+		txtPresidentName = new JTextField();
 		jLabel2 = new JLabel();
 		btnNew = new JButton();
 		btnFind = new JButton();
@@ -212,18 +216,18 @@ public class TeamView extends JPanel implements ActionListener {
 
 		jButton2.setText("jButton2");
 
-		jLabel1.setText("Team ID");
+		jLabel1.setText("President ID");
 
-		jLabel2.setText("Team name");
+		jLabel2.setText("President name");
 
 		btnNew.setText("New");
-		btnNew.setToolTipText("Add new office");
+		btnNew.setToolTipText("Add new president");
 
 		btnFind.setText("Find");
-		btnFind.setToolTipText("Find an existing office");
+		btnFind.setToolTipText("Find an existing president");
 
 		btnSave.setText("Save");
-		btnSave.setToolTipText("Save new office");
+		btnSave.setToolTipText("Save new president");
 
 		btnCancel.setText("Cancel");
 
@@ -237,80 +241,59 @@ public class TeamView extends JPanel implements ActionListener {
 				.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addGroup(
 						layout.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(btnNew,
+										GroupLayout.PREFERRED_SIZE, 76,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(btnFind,
+										GroupLayout.PREFERRED_SIZE, 78,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(btnCancel,
+										GroupLayout.PREFERRED_SIZE, 78,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(btnSave,
+										GroupLayout.PREFERRED_SIZE, 76,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(btnUpdate,
+										GroupLayout.PREFERRED_SIZE, 78,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(btnDelete,
+										GroupLayout.PREFERRED_SIZE, 82,
+										GroupLayout.PREFERRED_SIZE)
+								.addContainerGap())
+				.addGroup(
+						layout.createSequentialGroup()
+								.addGap(19, 19, 19)
 								.addGroup(
 										layout.createParallelGroup(
 												GroupLayout.Alignment.LEADING)
-												.addGroup(
-														layout.createSequentialGroup()
-																.addContainerGap()
-																.addComponent(
-																		btnNew,
-																		GroupLayout.PREFERRED_SIZE,
-																		76,
-																		GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(
-																		LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(
-																		btnFind,
-																		GroupLayout.PREFERRED_SIZE,
-																		78,
-																		GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(
-																		LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(
-																		btnCancel,
-																		GroupLayout.PREFERRED_SIZE,
-																		78,
-																		GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(
-																		LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(
-																		btnSave,
-																		GroupLayout.PREFERRED_SIZE,
-																		76,
-																		GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(
-																		LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(
-																		btnUpdate,
-																		GroupLayout.PREFERRED_SIZE,
-																		78,
-																		GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(
-																		LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(
-																		btnDelete,
-																		GroupLayout.PREFERRED_SIZE,
-																		82,
-																		GroupLayout.PREFERRED_SIZE))
-												.addGroup(
-														layout.createSequentialGroup()
-																.addGap(19, 19,
-																		19)
-																.addGroup(
-																		layout.createParallelGroup(
-																				GroupLayout.Alignment.LEADING)
-																				.addComponent(
-																						jLabel1)
-																				.addComponent(
-																						jLabel2))
-																.addGap(23, 23,
-																		23)
-																.addGroup(
-																		layout.createParallelGroup(
-																				GroupLayout.Alignment.LEADING)
-																				.addComponent(
-																						txtTeamName,
-																						GroupLayout.PREFERRED_SIZE,
-																						234,
-																						GroupLayout.PREFERRED_SIZE)
-																				.addComponent(
-																						txtTeamID,
-																						GroupLayout.PREFERRED_SIZE,
-																						91,
-																						GroupLayout.PREFERRED_SIZE))))
-								.addContainerGap(GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)));
+												.addComponent(jLabel1)
+												.addComponent(jLabel2))
+								.addGap(16, 16, 16)
+								.addGroup(
+										layout.createParallelGroup(
+												GroupLayout.Alignment.LEADING)
+												.addComponent(
+														txtPresidentName,
+														GroupLayout.PREFERRED_SIZE,
+														234,
+														GroupLayout.PREFERRED_SIZE)
+												.addComponent(
+														txtPresidentID,
+														GroupLayout.PREFERRED_SIZE,
+														91,
+														GroupLayout.PREFERRED_SIZE))
+								.addContainerGap(191, Short.MAX_VALUE)));
 		layout.setVerticalGroup(layout
 				.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addGroup(
@@ -320,7 +303,7 @@ public class TeamView extends JPanel implements ActionListener {
 										layout.createParallelGroup(
 												GroupLayout.Alignment.BASELINE)
 												.addComponent(
-														txtTeamID,
+														txtPresidentID,
 														GroupLayout.PREFERRED_SIZE,
 														GroupLayout.DEFAULT_SIZE,
 														GroupLayout.PREFERRED_SIZE)
@@ -332,51 +315,50 @@ public class TeamView extends JPanel implements ActionListener {
 												GroupLayout.Alignment.BASELINE)
 												.addComponent(jLabel2)
 												.addComponent(
-														txtTeamName,
+														txtPresidentName,
 														GroupLayout.PREFERRED_SIZE,
 														GroupLayout.DEFAULT_SIZE,
 														GroupLayout.PREFERRED_SIZE))
-								.addGap(18, 18, 18)
+								.addGap(36, 36, 36)
 								.addGroup(
 										layout.createParallelGroup(
 												GroupLayout.Alignment.BASELINE)
 												.addComponent(btnNew)
 												.addComponent(btnFind)
 												.addComponent(btnCancel)
+												.addComponent(btnSave)
 												.addComponent(btnUpdate)
-												.addComponent(btnDelete)
-												.addComponent(btnSave))
-								.addContainerGap(GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)));
+												.addComponent(btnDelete))
+								.addContainerGap(17, Short.MAX_VALUE)));
 
 		layout.linkSize(SwingConstants.VERTICAL, new java.awt.Component[] {
-				txtTeamID, txtTeamName });
+				txtPresidentID, txtPresidentName });
 
 	}// </editor-fold>
 
-	private boolean isDuplicateData(Team team) {
-		List<Team> teams = null;
+	private boolean isDuplicateData(President presidentToSave) {
+		List<President> president = null;
 
-		// check if duplicate team ID
+		// check if duplicate president ID
 		try {
-			teams = EntityUtils.loadByCondition(new Condition("id", team
-					.getId().toString()), Team.class, "id");
+			president = EntityUtils.loadByCondition(new Condition("id",
+					presidentToSave.getId().toString()), President.class, "id");
 		} catch (BasketException | SQLException e) {
 			e.printStackTrace();
 		}
-		if (teams.size() > 0)
+		if (president.size() > 0)
 			return true;
 
-		// Check if duplicate team name
-		teams = null;
+		// Check if duplicate president name
+		president = null;
 		try {
-			teams = EntityUtils.loadByCondition(
-					new Condition("Team_name", team.getTeamName()), Team.class,
-					"Team_name");
+			president = EntityUtils.loadByCondition(new Condition(
+					"Person_Name", presidentToSave.getPersonName()),
+					President.class, "PERSON_NAME");
 		} catch (BasketException | SQLException e) {
 			e.printStackTrace();
 		}
-		if (teams.size() > 0)
+		if (president.size() > 0)
 			return true;
 
 		return false;
@@ -384,7 +366,8 @@ public class TeamView extends JPanel implements ActionListener {
 	}
 
 	private boolean isEmptyData() {
-		if (txtTeamID.getText().equals("") || txtTeamName.getText().equals(""))
+		if (txtPresidentID.getText().equals("")
+				|| txtPresidentName.getText().equals(""))
 			return true;
 		return false;
 	}
@@ -399,27 +382,27 @@ public class TeamView extends JPanel implements ActionListener {
 	}
 
 	private boolean isTypeMismatch() {
-		if (!isInteger(txtTeamID.getText()))
+		if (!isInteger(txtPresidentID.getText()))
 			return true;
 		return false;
 	}
 
-	private Team makeTeam() {
+	private President makePresident() {
 		setFieldtoAttribute();
 		try {
-			team.setDeleted(0);
+			president.setDeleted(0);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return team;
+		return president;
 	}
 
-	private void saveTeam(Team team) {
+	private void savePresident() {
 		setFieldtoAttribute();
 		try {
-			team.setDeleted(0);
-			team.save();
+			president.setDeleted(0);
+			president.save();
 		} catch (BasketException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -427,28 +410,20 @@ public class TeamView extends JPanel implements ActionListener {
 
 	private void setFieldtoAttribute() {
 		try {
-			// season.setId(Integer.parseInt(txtSeasonID.getText().trim()));
-			// season.setSeasonStartdate(new
-			// Timestamp(txtStartDate.getDate().getTime()));
-			// season.setSeasonEnddate(new
-			// Timestamp(txtEndDate.getDate().getTime()));
-
-			team.setId(Integer.parseInt(txtTeamID.getText().trim()));
-			team.setTeamName(txtTeamName.getText().trim());
+			president.setId(Integer.parseInt(txtPresidentID.getText().trim()));
+			president.setPersonName(txtPresidentName.getText().trim());
 		} catch (NumberFormatException | SQLException e1) {
 			e1.printStackTrace();
 		}
 	}
 
-	private void setTextField(Team foundedTeam) {
+	private void setTextField(President foundedPresident) {
 		try {
-			txtTeamID.setText(foundedTeam.getId().toString());
-			txtTeamName.setText(foundedTeam.getTeamName());
+			txtPresidentID.setText(foundedPresident.getId().toString());
+			txtPresidentName.setText(foundedPresident.getPersonName());
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 		}
-
 	}
 
 	private void updateForm() {
@@ -483,11 +458,11 @@ public class TeamView extends JPanel implements ActionListener {
 		}
 	}
 
-	private void updateTeam(Team team) {
+	private void updatePresident() {
 		setFieldtoAttribute();
 		try {
-			team.setDeleted(0);
-			team.update();
+			president.setDeleted(0);
+			president.update();
 		} catch (BasketException | SQLException e) {
 			e.printStackTrace();
 		}

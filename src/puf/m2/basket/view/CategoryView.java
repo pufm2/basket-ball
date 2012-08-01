@@ -597,10 +597,6 @@ public class CategoryView extends JPanel implements ActionListener {
 
 			btnSave.setVisible(true);
 			btnCancel.setVisible(true);
-			
-			txtCategoryID.setText("");
-			txtCategoryName.setText("");
-			
 			break;
 		case FIND:
 			btnSave.setVisible(false);

@@ -3,17 +3,18 @@ package puf.m2.basket.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import puf.m2.basket.db.entity.SdoGeometry;
 import puf.m2.basket.model.entity.Address;
 import puf.m2.basket.model.entity.Office;
 import puf.m2.basket.model.support.BasketException;
 import puf.m2.basket.model.support.Condition;
 import puf.m2.basket.model.support.EntityUtils;
+import puf.m2.basket.view.support.City;
+import puf.m2.basket.view.support.ViewSupport;
 
 public class OfficeView extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 7015383120837706444L;
@@ -23,33 +24,30 @@ public class OfficeView extends JPanel implements ActionListener {
 	boolean pressUpdate = false;
 	FormState formState;
 
-	ArrayList<City> cities;
-	
-	private javax.swing.JButton btnCancel;
-	private javax.swing.JButton btnDelete;
-	private javax.swing.JButton btnFind;
-	private javax.swing.JButton btnNew;
-	private javax.swing.JButton btnSave;
-	private javax.swing.JButton btnUpdate;
-	private javax.swing.JComboBox<String> cboCity;
-	private javax.swing.JButton jButton2;
-	private javax.swing.JLabel jLabel1;
-	private javax.swing.JLabel jLabel2;
-	private javax.swing.JLabel jLabel3;
-	private javax.swing.JLabel jLabel4;
-	private javax.swing.JLabel jLabel5;
-	private javax.swing.JLabel jLabel6;
-	private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel lblLatitude;
-    private javax.swing.JLabel lblLatitudeValue;
-    private javax.swing.JLabel lblLongitude;
-    private javax.swing.JLabel lblLongitudeValue;
-	private javax.swing.JTextField txtAddressDistrict;
-	private javax.swing.JTextField txtAddressNumber;
-	private javax.swing.JTextField txtAddressStreet;
-	private javax.swing.JTextField txtOfficeID;
-	private javax.swing.JTextField txtOfficeName;
-
+	 private javax.swing.JButton btnCancel;
+	    private javax.swing.JButton btnDelete;
+	    private javax.swing.JButton btnFind;
+	    private javax.swing.JButton btnNew;
+	    private javax.swing.JButton btnSave;
+	    private javax.swing.JButton btnUpdate;
+	    private javax.swing.JComboBox<City> cboCity;
+	    private javax.swing.JButton jButton2;
+	    private javax.swing.JLabel jLabel1;
+	    private javax.swing.JLabel jLabel2;
+	    private javax.swing.JLabel jLabel3;
+	    private javax.swing.JLabel jLabel4;
+	    private javax.swing.JLabel jLabel5;
+	    private javax.swing.JLabel jLabel6;
+	    private javax.swing.JLabel jLabel7;
+	    private javax.swing.JLabel lblLatitude;
+	    private javax.swing.JLabel lblLatitudeValue;
+	    private javax.swing.JLabel lblLongitude;
+	    private javax.swing.JLabel lblLongitudeValue;
+	    private javax.swing.JTextField txtAddressDistrict;
+	    private javax.swing.JTextField txtAddressNumber;
+	    private javax.swing.JTextField txtAddressStreet;
+	    private javax.swing.JTextField txtOfficeID;
+	    private javax.swing.JTextField txtOfficeName;
 	// End of variables declaration
 
 	public OfficeView() {
@@ -60,45 +58,14 @@ public class OfficeView extends JPanel implements ActionListener {
 		updateForm();
 		office = new Office();
 		
-		cities = new ArrayList<City>();
-		addCititesToList();
 		fillComboCity();
 	}
 
 	private void fillComboCity() {
-		for (int i=0; i<cities.size();i++)
-			cboCity.addItem(cities.get(i).getCityName());		
-	}
+		for (int i = 0; i < ViewSupport.getCities().size(); i++)
+			cboCity.addItem(ViewSupport.getCities().get(i));
 
-	private void addCititesToList() {
-		City city;
-		
-		city = new City("Ben Tre",10.248033,106.375809);
-		cities.add(city);
-			
-		city = new City("Ca Mau",9.197682,105.150146);
-		cities.add(city);
-		
-		city = new City("Can Tho",10.035457,105.783749);
-		cities.add(city);
-		
-		city = new City("Da Lat",11.956708,108.456345);
-		cities.add(city);
-		
-		city = new City("Ha Noi",21.036442,105.849838);
-		cities.add(city);
-		
-		city = new City("Ha Long",20.985162,107.045288);
-		cities.add(city);
-		
-		city = new City("Ho Chi Minh city",10.887254,106.625061);
-		cities.add(city);
-		
-		city = new City("Nha Trang", 12.254799,109.195175);
-		cities.add(city);
-		
-		city = new City("Vung Tau",10.418261,107.134895);
-		cities.add(city);
+		updateLatitude_Longitude();
 	}
 
 	@Override
@@ -156,7 +123,7 @@ public class OfficeView extends JPanel implements ActionListener {
 			// If exist office, show its information
 			if (offices.size() > 0) {
 				office = offices.get(0);
-				setTextField();
+				setTextField(office);
 				JOptionPane.showMessageDialog(this, "Office founded", "Notice",
 						JOptionPane.INFORMATION_MESSAGE);
 				formState = FormState.FIND;
@@ -214,12 +181,7 @@ public class OfficeView extends JPanel implements ActionListener {
 			pressUpdate = true;
 			formState = FormState.NEW;
 		} else if ("ChangeCity".equals(e.getActionCommand())) {
-			for (City city : cities){
-				if (city.getCityName().equals(cboCity.getSelectedItem().toString())){
-					lblLatitudeValue.setText(String.valueOf(city.getLatitude()));
-					lblLongitudeValue.setText(String.valueOf(city.getLongitude()));
-				}
-			}
+			updateLatitude_Longitude();
 		}
 
 		// Finally for each button
@@ -256,6 +218,7 @@ public class OfficeView extends JPanel implements ActionListener {
 		} catch (SQLException | BasketException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	private void initComponents() {
@@ -279,7 +242,7 @@ public class OfficeView extends JPanel implements ActionListener {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         txtAddressDistrict = new javax.swing.JTextField();
-        cboCity = new javax.swing.JComboBox<String>();
+        cboCity = new javax.swing.JComboBox<City>();
         lblLongitude = new javax.swing.JLabel();
         lblLatitude = new javax.swing.JLabel();
         lblLongitudeValue = new javax.swing.JLabel();
@@ -525,15 +488,14 @@ public class OfficeView extends JPanel implements ActionListener {
 			office.setId(Integer.parseInt(txtOfficeID.getText().trim()));
 			office.setOfficeName(txtOfficeName.getText().trim());
 
-			double latitude = Double.parseDouble(lblLatitudeValue.getText());
-			double longitude = Double.parseDouble(lblLongitudeValue.getText());
-			office.setLoc(new SdoGeometry(latitude, longitude));
-			
 			Address address = new Address();
 			address.setAddressNumber(txtAddressNumber.getText());
 			address.setAddressStreet(txtAddressStreet.getText());
 			address.setAddressDistrict(txtAddressDistrict.getText());
-			address.setAddressCity(cboCity.getSelectedItem().toString());
+		
+			City city = (City) cboCity.getSelectedItem();
+			address.setAddressCity(city.getCityName());
+						
 			office.setOfficeAddress(address);
 
 		} catch (NumberFormatException | SQLException e1) {
@@ -541,21 +503,37 @@ public class OfficeView extends JPanel implements ActionListener {
 		}
 	}
 
-	private void setTextField() {
+	private void setTextField(Office foundedOffice) {
 		try {
-			txtOfficeID.setText(office.getId().toString());
-			txtOfficeName.setText(office.getOfficeName());
+			txtOfficeID.setText(foundedOffice.getId().toString());
+			txtOfficeName.setText(foundedOffice.getOfficeName());
 
-			Address officeAddress = office.getOfficeAddress();
+			Address officeAddress = foundedOffice.getOfficeAddress();
 			txtAddressNumber.setText(officeAddress.getAddressNumber());
 			txtAddressStreet.setText(officeAddress.getAddressStreet());
 			txtAddressDistrict.setText(officeAddress.getAddressDistrict());
+
+			for (int i = 0; i < cboCity.getItemCount(); i++) {
+				//System.out.println(cboAddressCity.getItemAt(i).getCityName());
+				if (cboCity.getItemAt(i).getCityName()
+						.equals(office.getOfficeAddress().getAddressCity())) {
+					cboCity.setSelectedIndex(i);
+					updateLatitude_Longitude();
+				}
+			}
 			
-			System.out.println("vi do: " + office.getLoc().getSdoPoint().getX());
-			System.out.println("kinh do: " + office.getLoc().getSdoPoint().getY());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void updateLatitude_Longitude() {
+		String cityName = ((City) cboCity.getSelectedItem())
+				.getCityName();
+		lblLatitudeValue.setText(String.valueOf(ViewSupport.getCityByName(
+				cityName).getLatitude()));
+		lblLongitudeValue.setText(String.valueOf(ViewSupport.getCityByName(
+				cityName).getLongitude()));
 	}
 
 	private void updateForm() {
@@ -577,14 +555,6 @@ public class OfficeView extends JPanel implements ActionListener {
 
 			btnSave.setVisible(true);
 			btnCancel.setVisible(true);
-
-			txtOfficeID.setText("");
-			txtOfficeName.setText("");
-			txtAddressNumber.setText("");
-			txtAddressStreet.setText("");
-			txtAddressDistrict.setText("");
-			cboCity.setSelectedIndex(0);
-
 			break;
 		case FIND:
 			btnSave.setVisible(false);

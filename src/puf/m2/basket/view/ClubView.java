@@ -848,10 +848,6 @@ public class ClubView extends JPanel implements ActionListener {
 
 			btnSave.setVisible(true);
 			btnCancel.setVisible(true);
-			
-			txtClubID.setText("");
-			txtClubName.setText("");
-			
 			break;
 		case FIND:
 			btnSave.setVisible(false);
