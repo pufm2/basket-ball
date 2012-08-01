@@ -78,6 +78,9 @@ public class AvgScoreOfDateView extends javax.swing.JPanel implements ActionList
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Date dateOfMatch = txtDateOfMeeting.getDate();
+		if (dateOfMatch==null)
+			return;
+		
 		Stat stat = new Stat();
 		double result = stat.getAvgPointsOfDate(dateOfMatch);
 		

@@ -16,12 +16,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ListModel;
 
-import puf.m2.basket.db.entity.DbTeamMany;
 import puf.m2.basket.model.entity.Match;
 import puf.m2.basket.model.entity.Player;
 import puf.m2.basket.model.entity.ScoreDetail;
 import puf.m2.basket.model.entity.Season;
 import puf.m2.basket.model.entity.Team;
+import puf.m2.basket.model.entity.ref.ScoreDetailRef;
 import puf.m2.basket.model.entity.ref.SeasonRef;
 import puf.m2.basket.model.support.BasketException;
 import puf.m2.basket.model.support.Condition;
@@ -174,10 +174,10 @@ public class MatchView extends JPanel implements ActionListener {
 					match = makeMatch();
 					if (isDuplicateID()) {
 						JOptionPane
-								.showMessageDialog(
-										this,
-										"Can not insert new match which is duplicate ID with existing match",
-										"Error", JOptionPane.ERROR_MESSAGE);
+						.showMessageDialog(
+								this,
+								"Can not insert new match which is duplicate ID with existing match",
+								"Error", JOptionPane.ERROR_MESSAGE);
 						return;
 					} else {
 						// Save new match
@@ -314,7 +314,7 @@ public class MatchView extends JPanel implements ActionListener {
 		arrScoreDetail.add(scoreDetail);
 
 		((DefaultListModel<ScoreDetail>) lstModelScoreDetail)
-				.addElement(scoreDetail);
+		.addElement(scoreDetail);
 		lstDetails.setModel(lstModelScoreDetail);
 	}
 
@@ -333,10 +333,10 @@ public class MatchView extends JPanel implements ActionListener {
 					Season.class, null);
 			if (seasons.size() <= 0) {
 				JOptionPane
-						.showMessageDialog(
-								this,
-								"There are no season in this system \n Please add season first",
-								"Error", JOptionPane.ERROR_MESSAGE);
+				.showMessageDialog(
+						this,
+						"There are no season in this system \n Please add season first",
+						"Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			cboSeason.removeAll();
@@ -374,10 +374,10 @@ public class MatchView extends JPanel implements ActionListener {
 					null);
 			if (teams.size() <= 0) {
 				JOptionPane
-						.showMessageDialog(
-								this,
-								"There are no team in this system \n Please add team first",
-								"Error", JOptionPane.ERROR_MESSAGE);
+				.showMessageDialog(
+						this,
+						"There are no team in this system \n Please add team first",
+						"Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			cboTeam1.removeAll();
@@ -470,300 +470,300 @@ public class MatchView extends JPanel implements ActionListener {
 				.addGroup(
 						javax.swing.GroupLayout.Alignment.TRAILING,
 						layout.createSequentialGroup()
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.LEADING)
-												.addGroup(
-														layout.createSequentialGroup()
-																.addGap(20, 20,
-																		20)
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(
+								layout.createParallelGroup(
+										javax.swing.GroupLayout.Alignment.LEADING)
+										.addGroup(
+												layout.createSequentialGroup()
+												.addGap(20, 20,
+														20)
+														.addGroup(
+																layout.createParallelGroup(
+																		javax.swing.GroupLayout.Alignment.LEADING)
+																		.addGroup(
+																				layout.createSequentialGroup()
 																				.addGroup(
-																						layout.createSequentialGroup()
+																						layout.createParallelGroup(
+																								javax.swing.GroupLayout.Alignment.LEADING)
 																								.addGroup(
-																										layout.createParallelGroup(
-																												javax.swing.GroupLayout.Alignment.LEADING)
-																												.addGroup(
-																														layout.createSequentialGroup()
-																																.addGap(45,
-																																		45,
-																																		45)
-																																.addComponent(
-																																		jLabel9))
-																												.addGroup(
-																														layout.createSequentialGroup()
+																										layout.createSequentialGroup()
+																										.addGap(45,
+																												45,
+																												45)
+																												.addComponent(
+																														jLabel9))
+																														.addGroup(
+																																layout.createSequentialGroup()
 																																.addGap(3,
 																																		3,
 																																		3)
-																																.addComponent(
-																																		jLabel4)))
-																								.addGap(66,
-																										66,
-																										66)
-																								.addComponent(
-																										jLabel6)
-																								.addGap(69,
-																										69,
-																										69)
-																								.addComponent(
-																										jLabel7))
-																				.addGroup(
-																						javax.swing.GroupLayout.Alignment.TRAILING,
-																						layout.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.LEADING,
-																								false)
-																								.addComponent(
-																										jScrollPane1)
-																								.addGroup(
-																										layout.createSequentialGroup()
-																												.addComponent(
-																														cboTeam,
-																														javax.swing.GroupLayout.PREFERRED_SIZE,
-																														82,
-																														javax.swing.GroupLayout.PREFERRED_SIZE)
-																												.addPreferredGap(
-																														javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-																												.addComponent(
-																														cboPlayer,
-																														javax.swing.GroupLayout.PREFERRED_SIZE,
-																														100,
-																														javax.swing.GroupLayout.PREFERRED_SIZE)
-																												.addPreferredGap(
-																														javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-																												.addComponent(
-																														txtPoint,
-																														javax.swing.GroupLayout.PREFERRED_SIZE,
-																														76,
-																														javax.swing.GroupLayout.PREFERRED_SIZE)
-																												.addPreferredGap(
-																														javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-																												.addComponent(
-																														btnAddDetails)))))
-												.addGroup(
-														layout.createSequentialGroup()
-																.addComponent(
-																		btnNew,
-																		javax.swing.GroupLayout.PREFERRED_SIZE,
-																		76,
-																		javax.swing.GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(
-																		btnFind,
-																		javax.swing.GroupLayout.PREFERRED_SIZE,
-																		78,
-																		javax.swing.GroupLayout.PREFERRED_SIZE)
-																.addGap(0, 0, 0)
-																.addComponent(
-																		btnCancel,
-																		javax.swing.GroupLayout.PREFERRED_SIZE,
-																		78,
-																		javax.swing.GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(
-																		btnSave,
-																		javax.swing.GroupLayout.PREFERRED_SIZE,
-																		76,
-																		javax.swing.GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(
-																		btnUpdate,
-																		javax.swing.GroupLayout.PREFERRED_SIZE,
-																		78,
-																		javax.swing.GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(
-																		btnDelete,
-																		javax.swing.GroupLayout.PREFERRED_SIZE,
-																		82,
-																		javax.swing.GroupLayout.PREFERRED_SIZE))
-												.addGroup(
-														layout.createSequentialGroup()
-																.addGap(19, 19,
-																		19)
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(
-																						jLabel1)
-																				.addComponent(
-																						jLabel2)
-																				.addComponent(
-																						jLabel3)
-																				.addComponent(
-																						jLabel5)
-																				.addComponent(
-																						jLabel8))
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(
-																						txtMatchDate,
-																						javax.swing.GroupLayout.PREFERRED_SIZE,
-																						234,
-																						javax.swing.GroupLayout.PREFERRED_SIZE)
-																				.addComponent(
-																						txtMatchID,
-																						javax.swing.GroupLayout.PREFERRED_SIZE,
-																						91,
-																						javax.swing.GroupLayout.PREFERRED_SIZE)
-																				.addComponent(
-																						cboSeason,
-																						javax.swing.GroupLayout.PREFERRED_SIZE,
-																						93,
-																						javax.swing.GroupLayout.PREFERRED_SIZE)
-																				.addComponent(
-																						cboTeam1,
-																						javax.swing.GroupLayout.PREFERRED_SIZE,
-																						155,
-																						javax.swing.GroupLayout.PREFERRED_SIZE)
-																				.addComponent(
-																						cboTeam2,
-																						javax.swing.GroupLayout.PREFERRED_SIZE,
-																						155,
-																						javax.swing.GroupLayout.PREFERRED_SIZE))))
-								.addContainerGap(34, Short.MAX_VALUE))
-				.addGroup(
-						layout.createSequentialGroup().addGap(100, 100, 100)
-								.addComponent(btnSetTeams).addContainerGap()));
+																																		.addComponent(
+																																				jLabel4)))
+																																				.addGap(66,
+																																						66,
+																																						66)
+																																						.addComponent(
+																																								jLabel6)
+																																								.addGap(69,
+																																										69,
+																																										69)
+																																										.addComponent(
+																																												jLabel7))
+																																												.addGroup(
+																																														javax.swing.GroupLayout.Alignment.TRAILING,
+																																														layout.createParallelGroup(
+																																																javax.swing.GroupLayout.Alignment.LEADING,
+																																																false)
+																																																.addComponent(
+																																																		jScrollPane1)
+																																																		.addGroup(
+																																																				layout.createSequentialGroup()
+																																																				.addComponent(
+																																																						cboTeam,
+																																																						javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																						82,
+																																																						javax.swing.GroupLayout.PREFERRED_SIZE)
+																																																						.addPreferredGap(
+																																																								javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																																																								.addComponent(
+																																																										cboPlayer,
+																																																										javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																										100,
+																																																										javax.swing.GroupLayout.PREFERRED_SIZE)
+																																																										.addPreferredGap(
+																																																												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																																																												.addComponent(
+																																																														txtPoint,
+																																																														javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																														76,
+																																																														javax.swing.GroupLayout.PREFERRED_SIZE)
+																																																														.addPreferredGap(
+																																																																javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																																																																.addComponent(
+																																																																		btnAddDetails)))))
+																																																																		.addGroup(
+																																																																				layout.createSequentialGroup()
+																																																																				.addComponent(
+																																																																						btnNew,
+																																																																						javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																																						76,
+																																																																						javax.swing.GroupLayout.PREFERRED_SIZE)
+																																																																						.addPreferredGap(
+																																																																								javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																																																								.addComponent(
+																																																																										btnFind,
+																																																																										javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																																										78,
+																																																																										javax.swing.GroupLayout.PREFERRED_SIZE)
+																																																																										.addGap(0, 0, 0)
+																																																																										.addComponent(
+																																																																												btnCancel,
+																																																																												javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																																												78,
+																																																																												javax.swing.GroupLayout.PREFERRED_SIZE)
+																																																																												.addPreferredGap(
+																																																																														javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																																																														.addComponent(
+																																																																																btnSave,
+																																																																																javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																																																76,
+																																																																																javax.swing.GroupLayout.PREFERRED_SIZE)
+																																																																																.addPreferredGap(
+																																																																																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																																																																		.addComponent(
+																																																																																				btnUpdate,
+																																																																																				javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																																																				78,
+																																																																																				javax.swing.GroupLayout.PREFERRED_SIZE)
+																																																																																				.addPreferredGap(
+																																																																																						javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																																																																						.addComponent(
+																																																																																								btnDelete,
+																																																																																								javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																																																								82,
+																																																																																								javax.swing.GroupLayout.PREFERRED_SIZE))
+																																																																																								.addGroup(
+																																																																																										layout.createSequentialGroup()
+																																																																																										.addGap(19, 19,
+																																																																																												19)
+																																																																																												.addGroup(
+																																																																																														layout.createParallelGroup(
+																																																																																																javax.swing.GroupLayout.Alignment.LEADING)
+																																																																																																.addComponent(
+																																																																																																		jLabel1)
+																																																																																																		.addComponent(
+																																																																																																				jLabel2)
+																																																																																																				.addComponent(
+																																																																																																						jLabel3)
+																																																																																																						.addComponent(
+																																																																																																								jLabel5)
+																																																																																																								.addComponent(
+																																																																																																										jLabel8))
+																																																																																																										.addPreferredGap(
+																																																																																																												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																																																																																																												.addGroup(
+																																																																																																														layout.createParallelGroup(
+																																																																																																																javax.swing.GroupLayout.Alignment.LEADING)
+																																																																																																																.addComponent(
+																																																																																																																		txtMatchDate,
+																																																																																																																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																																																																																		234,
+																																																																																																																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																																																																																																																		.addComponent(
+																																																																																																																				txtMatchID,
+																																																																																																																				javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																																																																																				91,
+																																																																																																																				javax.swing.GroupLayout.PREFERRED_SIZE)
+																																																																																																																				.addComponent(
+																																																																																																																						cboSeason,
+																																																																																																																						javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																																																																																						93,
+																																																																																																																						javax.swing.GroupLayout.PREFERRED_SIZE)
+																																																																																																																						.addComponent(
+																																																																																																																								cboTeam1,
+																																																																																																																								javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																																																																																								155,
+																																																																																																																								javax.swing.GroupLayout.PREFERRED_SIZE)
+																																																																																																																								.addComponent(
+																																																																																																																										cboTeam2,
+																																																																																																																										javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																																																																																										155,
+																																																																																																																										javax.swing.GroupLayout.PREFERRED_SIZE))))
+																																																																																																																										.addContainerGap(34, Short.MAX_VALUE))
+																																																																																																																										.addGroup(
+																																																																																																																												layout.createSequentialGroup().addGap(100, 100, 100)
+																																																																																																																												.addComponent(btnSetTeams).addContainerGap()));
 		layout.setVerticalGroup(layout
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(
 						layout.createSequentialGroup()
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(
+								layout.createParallelGroup(
+										javax.swing.GroupLayout.Alignment.LEADING)
+										.addGroup(
+												layout.createSequentialGroup()
+												.addContainerGap()
 												.addGroup(
-														layout.createSequentialGroup()
-																.addContainerGap()
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.BASELINE)
-																				.addComponent(
-																						txtMatchID,
-																						javax.swing.GroupLayout.PREFERRED_SIZE,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						javax.swing.GroupLayout.PREFERRED_SIZE)
-																				.addComponent(
-																						jLabel1))
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+														layout.createParallelGroup(
+																javax.swing.GroupLayout.Alignment.BASELINE)
 																.addComponent(
-																		txtMatchDate,
+																		txtMatchID,
 																		javax.swing.GroupLayout.PREFERRED_SIZE,
 																		javax.swing.GroupLayout.DEFAULT_SIZE,
 																		javax.swing.GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.BASELINE)
-																				.addComponent(
-																						cboSeason,
-																						javax.swing.GroupLayout.PREFERRED_SIZE,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						javax.swing.GroupLayout.PREFERRED_SIZE)
-																				.addComponent(
-																						jLabel3)))
-												.addGroup(
-														layout.createSequentialGroup()
-																.addGap(39, 39,
-																		39)
-																.addComponent(
-																		jLabel2)))
-								.addGap(18, 18, 18)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(jLabel5)
-												.addComponent(
-														cboTeam1,
-														javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(
-														cboTeam2,
-														javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addComponent(jLabel8))
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.LEADING)
-												.addGroup(
-														layout.createSequentialGroup()
-																.addGap(0,
-																		0,
-																		Short.MAX_VALUE)
-																.addComponent(
-																		jLabel4))
-												.addGroup(
-														layout.createSequentialGroup()
-																.addGap(18, 18,
-																		18)
-																.addComponent(
-																		btnSetTeams)
-																.addGap(0,
-																		16,
-																		Short.MAX_VALUE)))
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(jLabel6)
-												.addComponent(jLabel7)
-												.addComponent(jLabel9))
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(
-														cboTeam,
-														javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addComponent(
-														cboPlayer,
-														javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addComponent(
-														txtPoint,
-														javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addComponent(btnAddDetails))
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-								.addComponent(jScrollPane1,
-										javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addGap(18, 18, 18)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(btnNew)
-												.addComponent(btnFind)
-												.addComponent(btnCancel)
-												.addComponent(btnUpdate)
-												.addComponent(btnDelete)
-												.addComponent(btnSave))
-								.addGap(20, 20, 20)));
+																		.addComponent(
+																				jLabel1))
+																				.addPreferredGap(
+																						javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																						.addComponent(
+																								txtMatchDate,
+																								javax.swing.GroupLayout.PREFERRED_SIZE,
+																								javax.swing.GroupLayout.DEFAULT_SIZE,
+																								javax.swing.GroupLayout.PREFERRED_SIZE)
+																								.addPreferredGap(
+																										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																										.addGroup(
+																												layout.createParallelGroup(
+																														javax.swing.GroupLayout.Alignment.BASELINE)
+																														.addComponent(
+																																cboSeason,
+																																javax.swing.GroupLayout.PREFERRED_SIZE,
+																																javax.swing.GroupLayout.DEFAULT_SIZE,
+																																javax.swing.GroupLayout.PREFERRED_SIZE)
+																																.addComponent(
+																																		jLabel3)))
+																																		.addGroup(
+																																				layout.createSequentialGroup()
+																																				.addGap(39, 39,
+																																						39)
+																																						.addComponent(
+																																								jLabel2)))
+																																								.addGap(18, 18, 18)
+																																								.addGroup(
+																																										layout.createParallelGroup(
+																																												javax.swing.GroupLayout.Alignment.BASELINE)
+																																												.addComponent(jLabel5)
+																																												.addComponent(
+																																														cboTeam1,
+																																														javax.swing.GroupLayout.PREFERRED_SIZE,
+																																														javax.swing.GroupLayout.DEFAULT_SIZE,
+																																														javax.swing.GroupLayout.PREFERRED_SIZE))
+																																														.addPreferredGap(
+																																																javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																																.addGroup(
+																																																		layout.createParallelGroup(
+																																																				javax.swing.GroupLayout.Alignment.BASELINE)
+																																																				.addComponent(
+																																																						cboTeam2,
+																																																						javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																						javax.swing.GroupLayout.DEFAULT_SIZE,
+																																																						javax.swing.GroupLayout.PREFERRED_SIZE)
+																																																						.addComponent(jLabel8))
+																																																						.addGroup(
+																																																								layout.createParallelGroup(
+																																																										javax.swing.GroupLayout.Alignment.LEADING)
+																																																										.addGroup(
+																																																												layout.createSequentialGroup()
+																																																												.addGap(0,
+																																																														0,
+																																																														Short.MAX_VALUE)
+																																																														.addComponent(
+																																																																jLabel4))
+																																																																.addGroup(
+																																																																		layout.createSequentialGroup()
+																																																																		.addGap(18, 18,
+																																																																				18)
+																																																																				.addComponent(
+																																																																						btnSetTeams)
+																																																																						.addGap(0,
+																																																																								16,
+																																																																								Short.MAX_VALUE)))
+																																																																								.addPreferredGap(
+																																																																										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																																																										.addGroup(
+																																																																												layout.createParallelGroup(
+																																																																														javax.swing.GroupLayout.Alignment.BASELINE)
+																																																																														.addComponent(jLabel6)
+																																																																														.addComponent(jLabel7)
+																																																																														.addComponent(jLabel9))
+																																																																														.addPreferredGap(
+																																																																																javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																																																																.addGroup(
+																																																																																		layout.createParallelGroup(
+																																																																																				javax.swing.GroupLayout.Alignment.BASELINE)
+																																																																																				.addComponent(
+																																																																																						cboTeam,
+																																																																																						javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																																																						javax.swing.GroupLayout.DEFAULT_SIZE,
+																																																																																						javax.swing.GroupLayout.PREFERRED_SIZE)
+																																																																																						.addComponent(
+																																																																																								cboPlayer,
+																																																																																								javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																																																								javax.swing.GroupLayout.DEFAULT_SIZE,
+																																																																																								javax.swing.GroupLayout.PREFERRED_SIZE)
+																																																																																								.addComponent(
+																																																																																										txtPoint,
+																																																																																										javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																																																										javax.swing.GroupLayout.DEFAULT_SIZE,
+																																																																																										javax.swing.GroupLayout.PREFERRED_SIZE)
+																																																																																										.addComponent(btnAddDetails))
+																																																																																										.addPreferredGap(
+																																																																																												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																																																																																												.addComponent(jScrollPane1,
+																																																																																														javax.swing.GroupLayout.PREFERRED_SIZE,
+																																																																																														javax.swing.GroupLayout.DEFAULT_SIZE,
+																																																																																														javax.swing.GroupLayout.PREFERRED_SIZE)
+																																																																																														.addGap(18, 18, 18)
+																																																																																														.addGroup(
+																																																																																																layout.createParallelGroup(
+																																																																																																		javax.swing.GroupLayout.Alignment.BASELINE)
+																																																																																																		.addComponent(btnNew)
+																																																																																																		.addComponent(btnFind)
+																																																																																																		.addComponent(btnCancel)
+																																																																																																		.addComponent(btnUpdate)
+																																																																																																		.addComponent(btnDelete)
+																																																																																																		.addComponent(btnSave))
+																																																																																																		.addGap(20, 20, 20)));
 
 		layout.linkSize(javax.swing.SwingConstants.VERTICAL,
 				new java.awt.Component[] { txtMatchDate, txtMatchID });
@@ -873,9 +873,31 @@ public class MatchView extends JPanel implements ActionListener {
 			// Update combo box Team 1 and Team 2
 			fillComboTeams();
 
+			// Update list of score detail
+			fillListDetails();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void fillListDetails() {
+		// Create a list that allows adds and removes
+		DefaultListModel<ScoreDetail> model = new DefaultListModel<ScoreDetail>();
+		int i=0;
+
+		ScoreDetail scoreDetails[];
+		try {
+			scoreDetails = match.getDetails().getArray();
+			for (ScoreDetail scoreDetail : scoreDetails){
+				model.add(i++, scoreDetail);
+			}
+			lstDetails.setModel(model);		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	private void updateForm() {
