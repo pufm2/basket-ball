@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ListModel;
 
+import puf.m2.basket.db.entity.DbTeamMany;
 import puf.m2.basket.model.entity.Match;
 import puf.m2.basket.model.entity.Player;
 import puf.m2.basket.model.entity.ScoreDetail;
@@ -38,6 +38,7 @@ public class MatchView extends JPanel implements ActionListener {
 	ListModel<ScoreDetail> lstModelScoreDetail;
 	Match match;
 	Timestamp matchDate;
+
 	// Class attribute
 	int matchID;
 	boolean pressUpdate = false;
@@ -45,34 +46,35 @@ public class MatchView extends JPanel implements ActionListener {
 	Season season;
 
 	private javax.swing.JButton btnAddDetails;
-    private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnFind;
-    private javax.swing.JButton btnNew;
-    private javax.swing.JButton btnSave;
-    private javax.swing.JButton btnSetTeams;
-    private javax.swing.JButton btnUpdate;
-    private javax.swing.JComboBox<Player> cboPlayer;
-    private javax.swing.JComboBox<Season> cboSeason;
-    private javax.swing.JComboBox<Team> cboTeam;
-    private javax.swing.JComboBox<Team> cboTeam1;
-    private javax.swing.JComboBox<Team> cboTeam2;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList<ScoreDetail> lstDetails;
-    private JDateChooser txtMatchDate;
-    private javax.swing.JTextField txtMatchID;
-    private javax.swing.JTextField txtPoint;
-    // End of variables declaration
+	private javax.swing.JButton btnCancel;
+	private javax.swing.JButton btnDelete;
+	private javax.swing.JButton btnFind;
+	private javax.swing.JButton btnNew;
+	private javax.swing.JButton btnSave;
+	private javax.swing.JButton btnSetTeams;
+	private javax.swing.JButton btnUpdate;
+	private javax.swing.JComboBox<Player> cboPlayer;
+	private javax.swing.JComboBox<Season> cboSeason;
+	private javax.swing.JComboBox<Team> cboTeam;
+	private javax.swing.JComboBox<Team> cboTeam1;
+	private javax.swing.JComboBox<Team> cboTeam2;
+	private javax.swing.JButton jButton2;
+	private javax.swing.JLabel jLabel1;
+	private javax.swing.JLabel jLabel2;
+	private javax.swing.JLabel jLabel3;
+	private javax.swing.JLabel jLabel4;
+	private javax.swing.JLabel jLabel5;
+	private javax.swing.JLabel jLabel6;
+	private javax.swing.JLabel jLabel7;
+	private javax.swing.JLabel jLabel8;
+	private javax.swing.JLabel jLabel9;
+	private javax.swing.JScrollPane jScrollPane1;
+	private javax.swing.JList<ScoreDetail> lstDetails;
+	private JDateChooser txtMatchDate;
+	private javax.swing.JTextField txtMatchID;
+	private javax.swing.JTextField txtPoint;
+
+	// End of variables declaration
 
 	public MatchView() {
 		initComponents();
@@ -85,8 +87,7 @@ public class MatchView extends JPanel implements ActionListener {
 
 		formState = FormState.INITIAL;
 		fillComboSeason();
-		fillComboPlayer();
-		fillComboTeam();
+		fillTwoComboTeam();
 	}
 
 	@Override
@@ -128,6 +129,7 @@ public class MatchView extends JPanel implements ActionListener {
 			formState = FormState.FIND;
 			String matchId = JOptionPane.showInputDialog(this,
 					"Please give an ID of match", "1");
+
 			// Find match with that id
 			List<Match> matches = null;
 			try {
@@ -136,10 +138,11 @@ public class MatchView extends JPanel implements ActionListener {
 			} catch (BasketException e1) {
 				e1.printStackTrace();
 			}
+
 			// If exist match, show its information
 			if (matches.size() > 0) {
 				match = matches.get(0);
-				setTextField(match);
+				setTextField();
 				JOptionPane.showMessageDialog(this, "Match is founded",
 						"Notice", JOptionPane.INFORMATION_MESSAGE);
 				formState = FormState.FIND;
@@ -169,7 +172,7 @@ public class MatchView extends JPanel implements ActionListener {
 			} else {
 				if (!pressUpdate) {
 					match = makeMatch();
-					if (isDuplicateData(match)) {
+					if (isDuplicateID()) {
 						JOptionPane
 								.showMessageDialog(
 										this,
@@ -178,7 +181,7 @@ public class MatchView extends JPanel implements ActionListener {
 						return;
 					} else {
 						// Save new match
-						saveMatch(match);
+						saveMatch();
 						JOptionPane.showMessageDialog(this,
 								"Save new match successful", "Success",
 								JOptionPane.INFORMATION_MESSAGE);
@@ -186,7 +189,7 @@ public class MatchView extends JPanel implements ActionListener {
 				} else {
 					// Update existing match
 					match = makeMatch();
-					updateMatch(match);
+					updateMatch();
 					JOptionPane.showMessageDialog(this,
 							"Update match successful", "Success",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -197,8 +200,18 @@ public class MatchView extends JPanel implements ActionListener {
 		} else if ("Update".equals(e.getActionCommand())) {
 			pressUpdate = true;
 			formState = FormState.NEW;
+		} else if ("AddTeams".equals(e.getActionCommand())) {
+			if (isDuplicateTeams()) {
+				JOptionPane.showMessageDialog(this,
+						"Please choose team 1 is difference with team 2",
+						"Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			addComboTeam();
 		} else if ("AddDetails".equals(e.getActionCommand())) {
 			addDetailsToList();
+		} else if ("ChangeTeam".equals(e.getActionCommand())) {
+			addComboPlayer();
 		}
 
 		// Finally for each button
@@ -225,8 +238,54 @@ public class MatchView extends JPanel implements ActionListener {
 		btnUpdate.setActionCommand("Update");
 		btnUpdate.addActionListener(this);
 
+		btnSetTeams.setActionCommand("AddTeams");
+		btnSetTeams.addActionListener(this);
+
 		btnAddDetails.setActionCommand("AddDetails");
 		btnAddDetails.addActionListener(this);
+
+		cboTeam.setActionCommand("ChangeTeam");
+		cboTeam.addActionListener(this);
+	}
+
+	private void addComboPlayer() {
+		// Remove exists player in combo box
+		cboPlayer.removeAllItems();
+
+		List<Player> players;
+		try {
+			players = EntityUtils.loadByCondition(null, Player.class, null);
+			for (Player player : players) {
+				cboPlayer.addItem(player);
+			}
+		} catch (BasketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void addComboTeam() {
+		Team team = null;
+		cboTeam.removeAllItems();
+
+		team = (Team) cboTeam1.getSelectedItem();
+		try {
+			System.out.println(team.getTeamName());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		cboTeam.addItem(team);
+
+		team = null;
+		team = (Team) cboTeam2.getSelectedItem();
+		try {
+			System.out.println(team.getTeamName());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		cboTeam.addItem(team);
 	}
 
 	private void addDetailsToList() {
@@ -268,27 +327,6 @@ public class MatchView extends JPanel implements ActionListener {
 		}
 	}
 
-	private void fillComboPlayer() {
-		try {
-			List<Player> players = EntityUtils.loadByCondition(null,
-					Player.class, null);
-			if (players.size() <= 0) {
-				JOptionPane
-						.showMessageDialog(
-								this,
-								"There are no player in this system \n Please add player first",
-								"Error", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			cboPlayer.removeAll();
-			for (Player player : players) {
-				cboPlayer.addItem(player);
-			}
-		} catch (BasketException e) {
-			e.printStackTrace();
-		}
-	}
-
 	private void fillComboSeason() {
 		try {
 			List<Season> seasons = EntityUtils.loadByCondition(null,
@@ -311,15 +349,26 @@ public class MatchView extends JPanel implements ActionListener {
 	}
 
 	private void fillComboSeason(Season season) {
-
-		DefaultComboBoxModel<Season> theModel = (DefaultComboBoxModel<Season>) cboSeason
-				.getModel();
-		theModel.removeAllElements();
-
 		cboSeason.addItem(season);
 	}
 
-	private void fillComboTeam() {
+	private void fillComboTeams() {
+		cboTeam1.removeAll();
+		try {
+			cboTeam1.addItem(match.getTeam1().getValue());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		cboTeam2.removeAll();
+		try {
+			cboTeam2.addItem(match.getTeam1().getValue());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void fillTwoComboTeam() {
 		try {
 			List<Team> teams = EntityUtils.loadByCondition(null, Team.class,
 					null);
@@ -331,9 +380,11 @@ public class MatchView extends JPanel implements ActionListener {
 								"Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			cboTeam.removeAll();
+			cboTeam1.removeAll();
+			cboTeam2.removeAll();
 			for (Team team : teams) {
-				cboTeam.addItem(team);
+				cboTeam1.addItem(team);
+				cboTeam2.addItem(team);
 			}
 		} catch (BasketException e) {
 			e.printStackTrace();
@@ -343,202 +394,383 @@ public class MatchView extends JPanel implements ActionListener {
 	private void initComponents() {
 
 		jButton2 = new javax.swing.JButton();
-        txtMatchID = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        txtMatchDate = new JDateChooser();
-        jLabel2 = new javax.swing.JLabel();
-        btnNew = new javax.swing.JButton();
-        btnFind = new javax.swing.JButton();
-        btnSave = new javax.swing.JButton();
-        btnCancel = new javax.swing.JButton();
-        btnUpdate = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        cboSeason = new javax.swing.JComboBox<Season>();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        cboTeam = new javax.swing.JComboBox<Team>();
-        cboPlayer = new javax.swing.JComboBox<Player>();
-        txtPoint = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        lstDetails = new javax.swing.JList<ScoreDetail>();
-        btnAddDetails = new javax.swing.JButton();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        cboTeam1 = new javax.swing.JComboBox<Team>();
-        cboTeam2 = new javax.swing.JComboBox<Team>();
-        btnSetTeams = new javax.swing.JButton();
+		txtMatchID = new javax.swing.JTextField();
+		jLabel1 = new javax.swing.JLabel();
+		txtMatchDate = new JDateChooser();
+		jLabel2 = new javax.swing.JLabel();
+		btnNew = new javax.swing.JButton();
+		btnFind = new javax.swing.JButton();
+		btnSave = new javax.swing.JButton();
+		btnCancel = new javax.swing.JButton();
+		btnUpdate = new javax.swing.JButton();
+		btnDelete = new javax.swing.JButton();
+		jLabel3 = new javax.swing.JLabel();
+		cboSeason = new javax.swing.JComboBox<Season>();
+		jLabel4 = new javax.swing.JLabel();
+		jLabel6 = new javax.swing.JLabel();
+		jLabel7 = new javax.swing.JLabel();
+		cboTeam = new javax.swing.JComboBox<Team>();
+		cboPlayer = new javax.swing.JComboBox<Player>();
+		txtPoint = new javax.swing.JTextField();
+		jScrollPane1 = new javax.swing.JScrollPane();
+		lstDetails = new javax.swing.JList<ScoreDetail>();
+		btnAddDetails = new javax.swing.JButton();
+		jLabel9 = new javax.swing.JLabel();
+		jLabel5 = new javax.swing.JLabel();
+		jLabel8 = new javax.swing.JLabel();
+		cboTeam1 = new javax.swing.JComboBox<Team>();
+		cboTeam2 = new javax.swing.JComboBox<Team>();
+		btnSetTeams = new javax.swing.JButton();
 
-        jButton2.setText("jButton2");
+		jButton2.setText("jButton2");
 
-        jLabel1.setText("Match ID");
+		jLabel1.setText("Match ID");
 
-        jLabel2.setText("Match Date");
+		jLabel2.setText("Match Date");
 
-        btnNew.setText("New");
-        btnNew.setToolTipText("Add new office");
+		btnNew.setText("New");
+		btnNew.setToolTipText("Add new office");
 
-        btnFind.setText("Find");
-        btnFind.setToolTipText("Find an existing office");
+		btnFind.setText("Find");
+		btnFind.setToolTipText("Find an existing office");
 
-        btnSave.setText("Save");
-        btnSave.setToolTipText("Save new office");
+		btnSave.setText("Save");
+		btnSave.setToolTipText("Save new office");
 
-        btnCancel.setText("Cancel");
+		btnCancel.setText("Cancel");
 
-        btnUpdate.setText("Update");
+		btnUpdate.setText("Update");
 
-        btnDelete.setText("Delete");
+		btnDelete.setText("Delete");
 
-        jLabel3.setText("Season");
+		jLabel3.setText("Season");
 
-        jLabel4.setText("Details");
+		jLabel4.setText("Details");
 
-        jLabel6.setText("Player");
+		jLabel6.setText("Player");
 
-        jLabel7.setText("Point(s)");
+		jLabel7.setText("Point(s)");
 
-        jScrollPane1.setViewportView(lstDetails);
+		jScrollPane1.setViewportView(lstDetails);
 
-        btnAddDetails.setText("Add");
+		btnAddDetails.setText("Add");
 
-        jLabel9.setText("Team");
+		jLabel9.setText("Team");
 
-        jLabel5.setText("Team 1");
+		jLabel5.setText("Team 1");
 
-        jLabel8.setText("Team 2");
+		jLabel8.setText("Team 2");
 
-        btnSetTeams.setText("Set teams of match");
+		btnSetTeams.setText("Set teams of match");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(45, 45, 45)
-                                        .addComponent(jLabel9))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(3, 3, 3)
-                                        .addComponent(jLabel4)))
-                                .addGap(66, 66, 66)
-                                .addComponent(jLabel6)
-                                .addGap(69, 69, 69)
-                                .addComponent(jLabel7))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane1)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(cboTeam, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(cboPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(txtPoint, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnAddDetails)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnFind, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel8))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtMatchDate, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtMatchID, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cboSeason, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cboTeam1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cboTeam2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(34, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addComponent(btnSetTeams)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtMatchID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtMatchDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cboSeason, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jLabel2)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(cboTeam1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cboTeam2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel4))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSetTeams)
-                        .addGap(0, 16, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cboTeam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPoint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAddDetails))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNew)
-                    .addComponent(btnFind)
-                    .addComponent(btnCancel)
-                    .addComponent(btnUpdate)
-                    .addComponent(btnDelete)
-                    .addComponent(btnSave))
-                .addGap(20, 20, 20))
-        );
+		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+		this.setLayout(layout);
+		layout.setHorizontalGroup(layout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(
+						javax.swing.GroupLayout.Alignment.TRAILING,
+						layout.createSequentialGroup()
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.LEADING)
+												.addGroup(
+														layout.createSequentialGroup()
+																.addGap(20, 20,
+																		20)
+																.addGroup(
+																		layout.createParallelGroup(
+																				javax.swing.GroupLayout.Alignment.LEADING)
+																				.addGroup(
+																						layout.createSequentialGroup()
+																								.addGroup(
+																										layout.createParallelGroup(
+																												javax.swing.GroupLayout.Alignment.LEADING)
+																												.addGroup(
+																														layout.createSequentialGroup()
+																																.addGap(45,
+																																		45,
+																																		45)
+																																.addComponent(
+																																		jLabel9))
+																												.addGroup(
+																														layout.createSequentialGroup()
+																																.addGap(3,
+																																		3,
+																																		3)
+																																.addComponent(
+																																		jLabel4)))
+																								.addGap(66,
+																										66,
+																										66)
+																								.addComponent(
+																										jLabel6)
+																								.addGap(69,
+																										69,
+																										69)
+																								.addComponent(
+																										jLabel7))
+																				.addGroup(
+																						javax.swing.GroupLayout.Alignment.TRAILING,
+																						layout.createParallelGroup(
+																								javax.swing.GroupLayout.Alignment.LEADING,
+																								false)
+																								.addComponent(
+																										jScrollPane1)
+																								.addGroup(
+																										layout.createSequentialGroup()
+																												.addComponent(
+																														cboTeam,
+																														javax.swing.GroupLayout.PREFERRED_SIZE,
+																														82,
+																														javax.swing.GroupLayout.PREFERRED_SIZE)
+																												.addPreferredGap(
+																														javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																												.addComponent(
+																														cboPlayer,
+																														javax.swing.GroupLayout.PREFERRED_SIZE,
+																														100,
+																														javax.swing.GroupLayout.PREFERRED_SIZE)
+																												.addPreferredGap(
+																														javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																												.addComponent(
+																														txtPoint,
+																														javax.swing.GroupLayout.PREFERRED_SIZE,
+																														76,
+																														javax.swing.GroupLayout.PREFERRED_SIZE)
+																												.addPreferredGap(
+																														javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																												.addComponent(
+																														btnAddDetails)))))
+												.addGroup(
+														layout.createSequentialGroup()
+																.addComponent(
+																		btnNew,
+																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		76,
+																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(
+																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnFind,
+																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		78,
+																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addGap(0, 0, 0)
+																.addComponent(
+																		btnCancel,
+																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		78,
+																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(
+																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnSave,
+																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		76,
+																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(
+																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnUpdate,
+																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		78,
+																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(
+																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnDelete,
+																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		82,
+																		javax.swing.GroupLayout.PREFERRED_SIZE))
+												.addGroup(
+														layout.createSequentialGroup()
+																.addGap(19, 19,
+																		19)
+																.addGroup(
+																		layout.createParallelGroup(
+																				javax.swing.GroupLayout.Alignment.LEADING)
+																				.addComponent(
+																						jLabel1)
+																				.addComponent(
+																						jLabel2)
+																				.addComponent(
+																						jLabel3)
+																				.addComponent(
+																						jLabel5)
+																				.addComponent(
+																						jLabel8))
+																.addPreferredGap(
+																		javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																.addGroup(
+																		layout.createParallelGroup(
+																				javax.swing.GroupLayout.Alignment.LEADING)
+																				.addComponent(
+																						txtMatchDate,
+																						javax.swing.GroupLayout.PREFERRED_SIZE,
+																						234,
+																						javax.swing.GroupLayout.PREFERRED_SIZE)
+																				.addComponent(
+																						txtMatchID,
+																						javax.swing.GroupLayout.PREFERRED_SIZE,
+																						91,
+																						javax.swing.GroupLayout.PREFERRED_SIZE)
+																				.addComponent(
+																						cboSeason,
+																						javax.swing.GroupLayout.PREFERRED_SIZE,
+																						93,
+																						javax.swing.GroupLayout.PREFERRED_SIZE)
+																				.addComponent(
+																						cboTeam1,
+																						javax.swing.GroupLayout.PREFERRED_SIZE,
+																						155,
+																						javax.swing.GroupLayout.PREFERRED_SIZE)
+																				.addComponent(
+																						cboTeam2,
+																						javax.swing.GroupLayout.PREFERRED_SIZE,
+																						155,
+																						javax.swing.GroupLayout.PREFERRED_SIZE))))
+								.addContainerGap(34, Short.MAX_VALUE))
+				.addGroup(
+						layout.createSequentialGroup().addGap(100, 100, 100)
+								.addComponent(btnSetTeams).addContainerGap()));
+		layout.setVerticalGroup(layout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(
+						layout.createSequentialGroup()
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.LEADING)
+												.addGroup(
+														layout.createSequentialGroup()
+																.addContainerGap()
+																.addGroup(
+																		layout.createParallelGroup(
+																				javax.swing.GroupLayout.Alignment.BASELINE)
+																				.addComponent(
+																						txtMatchID,
+																						javax.swing.GroupLayout.PREFERRED_SIZE,
+																						javax.swing.GroupLayout.DEFAULT_SIZE,
+																						javax.swing.GroupLayout.PREFERRED_SIZE)
+																				.addComponent(
+																						jLabel1))
+																.addPreferredGap(
+																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		txtMatchDate,
+																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		javax.swing.GroupLayout.DEFAULT_SIZE,
+																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(
+																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																.addGroup(
+																		layout.createParallelGroup(
+																				javax.swing.GroupLayout.Alignment.BASELINE)
+																				.addComponent(
+																						cboSeason,
+																						javax.swing.GroupLayout.PREFERRED_SIZE,
+																						javax.swing.GroupLayout.DEFAULT_SIZE,
+																						javax.swing.GroupLayout.PREFERRED_SIZE)
+																				.addComponent(
+																						jLabel3)))
+												.addGroup(
+														layout.createSequentialGroup()
+																.addGap(39, 39,
+																		39)
+																.addComponent(
+																		jLabel2)))
+								.addGap(18, 18, 18)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(jLabel5)
+												.addComponent(
+														cboTeam1,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(
+														cboTeam2,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addComponent(jLabel8))
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.LEADING)
+												.addGroup(
+														layout.createSequentialGroup()
+																.addGap(0,
+																		0,
+																		Short.MAX_VALUE)
+																.addComponent(
+																		jLabel4))
+												.addGroup(
+														layout.createSequentialGroup()
+																.addGap(18, 18,
+																		18)
+																.addComponent(
+																		btnSetTeams)
+																.addGap(0,
+																		16,
+																		Short.MAX_VALUE)))
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(jLabel6)
+												.addComponent(jLabel7)
+												.addComponent(jLabel9))
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(
+														cboTeam,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addComponent(
+														cboPlayer,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addComponent(
+														txtPoint,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addComponent(btnAddDetails))
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+								.addComponent(jScrollPane1,
+										javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addGap(18, 18, 18)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(btnNew)
+												.addComponent(btnFind)
+												.addComponent(btnCancel)
+												.addComponent(btnUpdate)
+												.addComponent(btnDelete)
+												.addComponent(btnSave))
+								.addGap(20, 20, 20)));
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtMatchDate, txtMatchID});
+		layout.linkSize(javax.swing.SwingConstants.VERTICAL,
+				new java.awt.Component[] { txtMatchDate, txtMatchID });
 
 	}// </editor-fold>
 
-	private boolean isDuplicateData(Match match) {
+	private boolean isDuplicateID() {
 		List<Match> matches = null;
 
 		// check if duplicate match ID
@@ -552,6 +784,20 @@ public class MatchView extends JPanel implements ActionListener {
 			return true;
 
 		return false;
+	}
+
+	public boolean isDuplicateTeams() {
+		boolean result = false;
+		try {
+			if (((Team) cboTeam1.getSelectedItem()).getId() == ((Team) cboTeam2
+					.getSelectedItem()).getId())
+				result = true;
+			else
+				result = false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	private boolean isEmptyData() {
@@ -586,7 +832,7 @@ public class MatchView extends JPanel implements ActionListener {
 		return match;
 	}
 
-	private void saveMatch(Match match) {
+	private void saveMatch() {
 		setFieldtoAttribute();
 		try {
 			match.setDeleted(0);
@@ -604,6 +850,9 @@ public class MatchView extends JPanel implements ActionListener {
 					((Season) cboSeason.getSelectedItem()).getId(),
 					Season.class).getRef(SeasonRef.class));
 
+			match.setTeam1(cboTeam1.getItemAt(0).getRef());
+			match.setTeam2(cboTeam1.getItemAt(0).getRef());
+
 			for (ScoreDetail scoreDetail : arrScoreDetail) {
 				match.addScoreDetail(scoreDetail);
 			}
@@ -613,21 +862,17 @@ public class MatchView extends JPanel implements ActionListener {
 		}
 	}
 
-	private void setTextField(Match foundedMatch) {
+	private void setTextField() {
 		try {
-			txtMatchID.setText(foundedMatch.getId().toString());
-			txtMatchDate
-					.setDate(new Date(foundedMatch.getMatchDate().getTime()));
+			txtMatchID.setText(match.getId().toString());
+			txtMatchDate.setDate(new Date(match.getMatchDate().getTime()));
 
 			// Update combo box Season when change matchID
-			SeasonRef seasonRef = null;
-			try {
-				seasonRef = match.getSeason();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-			Season season = seasonRef.getValue();
-			fillComboSeason(season);
+			fillComboSeason(match.getSeason().getValue());
+
+			// Update combo box Team 1 and Team 2
+			fillComboTeams();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -665,7 +910,7 @@ public class MatchView extends JPanel implements ActionListener {
 		}
 	}
 
-	private void updateMatch(Match match) {
+	private void updateMatch() {
 		setFieldtoAttribute();
 		try {
 			match.setDeleted(0);
@@ -673,6 +918,5 @@ public class MatchView extends JPanel implements ActionListener {
 		} catch (SQLException | BasketException e) {
 			e.printStackTrace();
 		}
-
 	}
 }

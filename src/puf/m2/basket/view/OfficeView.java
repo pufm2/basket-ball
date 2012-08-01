@@ -24,30 +24,31 @@ public class OfficeView extends JPanel implements ActionListener {
 	boolean pressUpdate = false;
 	FormState formState;
 
-	 private javax.swing.JButton btnCancel;
-	    private javax.swing.JButton btnDelete;
-	    private javax.swing.JButton btnFind;
-	    private javax.swing.JButton btnNew;
-	    private javax.swing.JButton btnSave;
-	    private javax.swing.JButton btnUpdate;
-	    private javax.swing.JComboBox<City> cboCity;
-	    private javax.swing.JButton jButton2;
-	    private javax.swing.JLabel jLabel1;
-	    private javax.swing.JLabel jLabel2;
-	    private javax.swing.JLabel jLabel3;
-	    private javax.swing.JLabel jLabel4;
-	    private javax.swing.JLabel jLabel5;
-	    private javax.swing.JLabel jLabel6;
-	    private javax.swing.JLabel jLabel7;
-	    private javax.swing.JLabel lblLatitude;
-	    private javax.swing.JLabel lblLatitudeValue;
-	    private javax.swing.JLabel lblLongitude;
-	    private javax.swing.JLabel lblLongitudeValue;
-	    private javax.swing.JTextField txtAddressDistrict;
-	    private javax.swing.JTextField txtAddressNumber;
-	    private javax.swing.JTextField txtAddressStreet;
-	    private javax.swing.JTextField txtOfficeID;
-	    private javax.swing.JTextField txtOfficeName;
+	private javax.swing.JButton btnCancel;
+	private javax.swing.JButton btnDelete;
+	private javax.swing.JButton btnFind;
+	private javax.swing.JButton btnNew;
+	private javax.swing.JButton btnSave;
+	private javax.swing.JButton btnUpdate;
+	private javax.swing.JComboBox<City> cboCity;
+	private javax.swing.JButton jButton2;
+	private javax.swing.JLabel jLabel1;
+	private javax.swing.JLabel jLabel2;
+	private javax.swing.JLabel jLabel3;
+	private javax.swing.JLabel jLabel4;
+	private javax.swing.JLabel jLabel5;
+	private javax.swing.JLabel jLabel6;
+	private javax.swing.JLabel jLabel7;
+	private javax.swing.JLabel lblLatitude;
+	private javax.swing.JLabel lblLatitudeValue;
+	private javax.swing.JLabel lblLongitude;
+	private javax.swing.JLabel lblLongitudeValue;
+	private javax.swing.JTextField txtAddressDistrict;
+	private javax.swing.JTextField txtAddressNumber;
+	private javax.swing.JTextField txtAddressStreet;
+	private javax.swing.JTextField txtOfficeID;
+	private javax.swing.JTextField txtOfficeName;
+
 	// End of variables declaration
 
 	public OfficeView() {
@@ -57,7 +58,7 @@ public class OfficeView extends JPanel implements ActionListener {
 		formState = FormState.INITIAL;
 		updateForm();
 		office = new Office();
-		
+
 		fillComboCity();
 	}
 
@@ -206,7 +207,7 @@ public class OfficeView extends JPanel implements ActionListener {
 
 		btnUpdate.setActionCommand("Update");
 		btnUpdate.addActionListener(this);
-		
+
 		cboCity.setActionCommand("ChangeCity");
 		cboCity.addActionListener(this);
 	}
@@ -224,190 +225,360 @@ public class OfficeView extends JPanel implements ActionListener {
 	private void initComponents() {
 
 		jButton2 = new javax.swing.JButton();
-        txtOfficeID = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        txtOfficeName = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        btnNew = new javax.swing.JButton();
-        btnFind = new javax.swing.JButton();
-        btnSave = new javax.swing.JButton();
-        btnCancel = new javax.swing.JButton();
-        btnUpdate = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
-        txtAddressNumber = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        txtAddressStreet = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        txtAddressDistrict = new javax.swing.JTextField();
-        cboCity = new javax.swing.JComboBox<City>();
-        lblLongitude = new javax.swing.JLabel();
-        lblLatitude = new javax.swing.JLabel();
-        lblLongitudeValue = new javax.swing.JLabel();
-        lblLatitudeValue = new javax.swing.JLabel();
+		txtOfficeID = new javax.swing.JTextField();
+		jLabel1 = new javax.swing.JLabel();
+		txtOfficeName = new javax.swing.JTextField();
+		jLabel2 = new javax.swing.JLabel();
+		jLabel3 = new javax.swing.JLabel();
+		btnNew = new javax.swing.JButton();
+		btnFind = new javax.swing.JButton();
+		btnSave = new javax.swing.JButton();
+		btnCancel = new javax.swing.JButton();
+		btnUpdate = new javax.swing.JButton();
+		btnDelete = new javax.swing.JButton();
+		txtAddressNumber = new javax.swing.JTextField();
+		jLabel4 = new javax.swing.JLabel();
+		txtAddressStreet = new javax.swing.JTextField();
+		jLabel5 = new javax.swing.JLabel();
+		jLabel6 = new javax.swing.JLabel();
+		jLabel7 = new javax.swing.JLabel();
+		txtAddressDistrict = new javax.swing.JTextField();
+		cboCity = new javax.swing.JComboBox<City>();
+		lblLongitude = new javax.swing.JLabel();
+		lblLatitude = new javax.swing.JLabel();
+		lblLongitudeValue = new javax.swing.JLabel();
+		lblLatitudeValue = new javax.swing.JLabel();
 
-        jButton2.setText("jButton2");
+		jButton2.setText("jButton2");
 
-        jLabel1.setText("Office ID");
+		jLabel1.setText("Office ID");
 
-        jLabel2.setText("Office name");
+		jLabel2.setText("Office name");
 
-        jLabel3.setText("Address");
+		jLabel3.setText("Address");
 
-        btnNew.setText("New");
-        btnNew.setToolTipText("Add new office");
+		btnNew.setText("New");
+		btnNew.setToolTipText("Add new office");
 
-        btnFind.setText("Find");
-        btnFind.setToolTipText("Find an existing office");
+		btnFind.setText("Find");
+		btnFind.setToolTipText("Find an existing office");
 
-        btnSave.setText("Save");
-        btnSave.setToolTipText("Save new office");
+		btnSave.setText("Save");
+		btnSave.setToolTipText("Save new office");
 
-        btnCancel.setText("Cancel");
+		btnCancel.setText("Cancel");
 
-        btnUpdate.setText("Update");
+		btnUpdate.setText("Update");
 
-        btnDelete.setText("Delete");
+		btnDelete.setText("Delete");
 
-        txtAddressNumber.setName("txtAddressNumber");
+		txtAddressNumber.setName("txtAddressNumber");
 
-        jLabel4.setText("Number");
+		jLabel4.setText("Number");
 
-        jLabel5.setText("Street");
+		jLabel5.setText("Street");
 
-        jLabel6.setText("District");
+		jLabel6.setText("District");
 
-        jLabel7.setText("City");
+		jLabel7.setText("City");
 
-        lblLongitude.setText("Longitude");
+		lblLongitude.setText("Longitude");
 
-        lblLatitude.setText("Latitude");
+		lblLatitude.setText("Latitude");
 
-        lblLongitudeValue.setText("longitude value");
+		lblLongitudeValue.setText("longitude value");
 
-        lblLatitudeValue.setText("latitude value");
+		lblLatitudeValue.setText("latitude value");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addGap(5, 5, 5)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
-                        .addGap(72, 72, 72))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtOfficeID, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtOfficeName, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(7, 7, 7)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnFind, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(layout.createSequentialGroup()
-                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel6)
-                                                        .addComponent(jLabel5))
-                                                    .addGap(22, 22, 22))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                    .addComponent(jLabel4)
-                                                    .addGap(18, 18, 18)))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel7)
-                                                .addGap(36, 36, 36)))
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txtAddressStreet)
-                                            .addComponent(txtAddressDistrict)
-                                            .addComponent(txtAddressNumber, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
-                                            .addComponent(cboCity, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addGap(10, 10, 10)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addGroup(layout.createSequentialGroup()
-                                                        .addGap(10, 10, 10)
-                                                        .addComponent(lblLatitudeValue))
-                                                    .addComponent(lblLatitude))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(lblLongitude)
-                                                    .addGroup(layout.createSequentialGroup()
-                                                        .addGap(10, 10, 10)
-                                                        .addComponent(lblLongitudeValue)))
-                                                .addGap(99, 99, 99)))))))
-                        .addContainerGap())))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtOfficeID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtOfficeName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtAddressNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtAddressStreet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtAddressDistrict, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
-                    .addComponent(cboCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblLongitude)
-                    .addComponent(lblLatitude))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblLongitudeValue)
-                    .addComponent(lblLatitudeValue))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNew)
-                    .addComponent(btnFind)
-                    .addComponent(btnCancel)
-                    .addComponent(btnSave)
-                    .addComponent(btnUpdate)
-                    .addComponent(btnDelete))
-                .addGap(29, 29, 29))
-        );
+		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+		this.setLayout(layout);
+		layout.setHorizontalGroup(layout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(
+						layout.createSequentialGroup()
+								.addGap(19, 19, 19)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.LEADING)
+												.addGroup(
+														layout.createSequentialGroup()
+																.addGap(58, 58,
+																		58)
+																.addGap(5, 5, 5)
+																.addComponent(
+																		jLabel3,
+																		javax.swing.GroupLayout.DEFAULT_SIZE,
+																		415,
+																		Short.MAX_VALUE)
+																.addGap(72, 72,
+																		72))
+												.addGroup(
+														layout.createSequentialGroup()
+																.addGroup(
+																		layout.createParallelGroup(
+																				javax.swing.GroupLayout.Alignment.LEADING)
+																				.addGroup(
+																						layout.createSequentialGroup()
+																								.addGroup(
+																										layout.createParallelGroup(
+																												javax.swing.GroupLayout.Alignment.LEADING)
+																												.addComponent(
+																														jLabel1)
+																												.addComponent(
+																														jLabel2))
+																								.addPreferredGap(
+																										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																								.addGroup(
+																										layout.createParallelGroup(
+																												javax.swing.GroupLayout.Alignment.LEADING)
+																												.addComponent(
+																														txtOfficeID,
+																														javax.swing.GroupLayout.PREFERRED_SIZE,
+																														83,
+																														javax.swing.GroupLayout.PREFERRED_SIZE)
+																												.addComponent(
+																														txtOfficeName,
+																														javax.swing.GroupLayout.PREFERRED_SIZE,
+																														234,
+																														javax.swing.GroupLayout.PREFERRED_SIZE)))
+																				.addGroup(
+																						layout.createSequentialGroup()
+																								.addGap(7,
+																										7,
+																										7)
+																								.addGroup(
+																										layout.createParallelGroup(
+																												javax.swing.GroupLayout.Alignment.TRAILING)
+																												.addGroup(
+																														layout.createSequentialGroup()
+																																.addComponent(
+																																		btnNew,
+																																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																																		76,
+																																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																																.addPreferredGap(
+																																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																.addComponent(
+																																		btnFind,
+																																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																																		78,
+																																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																																.addPreferredGap(
+																																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																.addComponent(
+																																		btnCancel,
+																																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																																		78,
+																																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																																.addPreferredGap(
+																																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																.addComponent(
+																																		btnSave,
+																																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																																		76,
+																																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																																.addPreferredGap(
+																																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																.addComponent(
+																																		btnUpdate,
+																																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																																		78,
+																																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																																.addPreferredGap(
+																																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																																.addComponent(
+																																		btnDelete,
+																																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																																		78,
+																																		javax.swing.GroupLayout.PREFERRED_SIZE))
+																												.addGroup(
+																														layout.createSequentialGroup()
+																																.addGroup(
+																																		layout.createParallelGroup(
+																																				javax.swing.GroupLayout.Alignment.LEADING)
+																																				.addGroup(
+																																						layout.createParallelGroup(
+																																								javax.swing.GroupLayout.Alignment.LEADING)
+																																								.addGroup(
+																																										layout.createSequentialGroup()
+																																												.addGroup(
+																																														layout.createParallelGroup(
+																																																javax.swing.GroupLayout.Alignment.LEADING)
+																																																.addComponent(
+																																																		jLabel6)
+																																																.addComponent(
+																																																		jLabel5))
+																																												.addGap(22,
+																																														22,
+																																														22))
+																																								.addGroup(
+																																										javax.swing.GroupLayout.Alignment.TRAILING,
+																																										layout.createSequentialGroup()
+																																												.addComponent(
+																																														jLabel4)
+																																												.addGap(18,
+																																														18,
+																																														18)))
+																																				.addGroup(
+																																						layout.createSequentialGroup()
+																																								.addComponent(
+																																										jLabel7)
+																																								.addGap(36,
+																																										36,
+																																										36)))
+																																.addGroup(
+																																		layout.createParallelGroup(
+																																				javax.swing.GroupLayout.Alignment.LEADING,
+																																				false)
+																																				.addComponent(
+																																						txtAddressStreet)
+																																				.addComponent(
+																																						txtAddressDistrict)
+																																				.addComponent(
+																																						txtAddressNumber,
+																																						javax.swing.GroupLayout.DEFAULT_SIZE,
+																																						355,
+																																						Short.MAX_VALUE)
+																																				.addComponent(
+																																						cboCity,
+																																						0,
+																																						javax.swing.GroupLayout.DEFAULT_SIZE,
+																																						Short.MAX_VALUE)
+																																				.addGroup(
+																																						javax.swing.GroupLayout.Alignment.TRAILING,
+																																						layout.createSequentialGroup()
+																																								.addGap(10,
+																																										10,
+																																										10)
+																																								.addGroup(
+																																										layout.createParallelGroup(
+																																												javax.swing.GroupLayout.Alignment.LEADING)
+																																												.addGroup(
+																																														layout.createSequentialGroup()
+																																																.addGap(10,
+																																																		10,
+																																																		10)
+																																																.addComponent(
+																																																		lblLatitudeValue))
+																																												.addComponent(
+																																														lblLatitude))
+																																								.addPreferredGap(
+																																										javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+																																										javax.swing.GroupLayout.DEFAULT_SIZE,
+																																										Short.MAX_VALUE)
+																																								.addGroup(
+																																										layout.createParallelGroup(
+																																												javax.swing.GroupLayout.Alignment.LEADING)
+																																												.addComponent(
+																																														lblLongitude)
+																																												.addGroup(
+																																														layout.createSequentialGroup()
+																																																.addGap(10,
+																																																		10,
+																																																		10)
+																																																.addComponent(
+																																																		lblLongitudeValue)))
+																																								.addGap(99,
+																																										99,
+																																										99)))))))
+																.addContainerGap()))));
+		layout.setVerticalGroup(layout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(
+						layout.createSequentialGroup()
+								.addContainerGap()
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(
+														txtOfficeID,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addComponent(jLabel1))
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(
+														txtOfficeName,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addComponent(jLabel2))
+								.addGap(18, 18, 18)
+								.addComponent(jLabel3)
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(
+														txtAddressNumber,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addComponent(jLabel4))
+								.addGap(6, 6, 6)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(
+														txtAddressStreet,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addComponent(jLabel5))
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(
+														txtAddressDistrict,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addComponent(jLabel6))
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(jLabel7)
+												.addComponent(
+														cboCity,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(lblLongitude)
+												.addComponent(lblLatitude))
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(lblLongitudeValue)
+												.addComponent(lblLatitudeValue))
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+										21, Short.MAX_VALUE)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(btnNew)
+												.addComponent(btnFind)
+												.addComponent(btnCancel)
+												.addComponent(btnSave)
+												.addComponent(btnUpdate)
+												.addComponent(btnDelete))
+								.addGap(29, 29, 29)));
 	}// </editor-fold>
 
 	private boolean isDuplicateData(Office officeToSave) {
@@ -492,10 +663,10 @@ public class OfficeView extends JPanel implements ActionListener {
 			address.setAddressNumber(txtAddressNumber.getText());
 			address.setAddressStreet(txtAddressStreet.getText());
 			address.setAddressDistrict(txtAddressDistrict.getText());
-		
+
 			City city = (City) cboCity.getSelectedItem();
 			address.setAddressCity(city.getCityName());
-						
+
 			office.setOfficeAddress(address);
 
 		} catch (NumberFormatException | SQLException e1) {
@@ -514,22 +685,21 @@ public class OfficeView extends JPanel implements ActionListener {
 			txtAddressDistrict.setText(officeAddress.getAddressDistrict());
 
 			for (int i = 0; i < cboCity.getItemCount(); i++) {
-				//System.out.println(cboAddressCity.getItemAt(i).getCityName());
+				// System.out.println(cboAddressCity.getItemAt(i).getCityName());
 				if (cboCity.getItemAt(i).getCityName()
 						.equals(office.getOfficeAddress().getAddressCity())) {
 					cboCity.setSelectedIndex(i);
 					updateLatitude_Longitude();
 				}
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void updateLatitude_Longitude() {
-		String cityName = ((City) cboCity.getSelectedItem())
-				.getCityName();
+		String cityName = ((City) cboCity.getSelectedItem()).getCityName();
 		lblLatitudeValue.setText(String.valueOf(ViewSupport.getCityByName(
 				cityName).getLatitude()));
 		lblLongitudeValue.setText(String.valueOf(ViewSupport.getCityByName(

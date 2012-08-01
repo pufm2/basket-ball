@@ -38,7 +38,7 @@ public class ScoreDetail extends DbScoreDetail implements ORAData,
     public String toString(){
     	String result = "";
     	try {
-			result = getTeam().getValue().getTeamName() + " - " + getPlayer().getValue().getPersonName() + getValue();
+			result = getTeam().getValue().getTeamName() + " - " + getPlayer().getValue().getPersonName() + " - " + getValue();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
