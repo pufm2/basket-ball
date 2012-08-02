@@ -141,7 +141,7 @@ public class TeamView extends JPanel implements ActionListener {
 						return;
 					} else {
 						// Save new team
-						saveTeam(team);
+						saveTeam();
 						JOptionPane.showMessageDialog(this,
 								"Save new team successful", "Success",
 								JOptionPane.INFORMATION_MESSAGE);
@@ -166,16 +166,6 @@ public class TeamView extends JPanel implements ActionListener {
 		updateForm();
 	}
 
-	private void deleteTeam() {
-		try {
-			team.setDeleted(1);
-			team.update();
-		} catch (SQLException | BasketException e) {
-			e.printStackTrace();
-		}
-
-	}
-
 	private void addActionListeners() {
 		btnCancel.setActionCommand("Cancel");
 		btnCancel.addActionListener(this);
@@ -194,6 +184,16 @@ public class TeamView extends JPanel implements ActionListener {
 
 		btnUpdate.setActionCommand("Update");
 		btnUpdate.addActionListener(this);
+	}
+
+	private void deleteTeam() {
+		try {
+			team.setDeleted(1);
+			team.update();
+		} catch (SQLException | BasketException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private void initComponents() {
@@ -371,8 +371,8 @@ public class TeamView extends JPanel implements ActionListener {
 		teams = null;
 		try {
 			teams = EntityUtils.loadByCondition(
-					new Condition("Team_name", team.getTeamName()), String.class,
-					"Team_name");
+					new Condition("Team_name", team.getTeamName()),
+					String.class, "Team_name");
 		} catch (BasketException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -414,7 +414,7 @@ public class TeamView extends JPanel implements ActionListener {
 		return team;
 	}
 
-	private void saveTeam(Team team) {
+	private void saveTeam() {
 		setFieldtoAttribute();
 		try {
 			team.setDeleted(0);

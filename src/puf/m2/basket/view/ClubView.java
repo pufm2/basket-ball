@@ -189,7 +189,7 @@ public class ClubView extends JPanel implements ActionListener {
 										"Error", JOptionPane.ERROR_MESSAGE);
 					} else {
 						// Save new club
-						saveClub(club);
+						saveClub();
 						JOptionPane.showMessageDialog(this,
 								"Save new club successful", "Success",
 								JOptionPane.INFORMATION_MESSAGE);
@@ -197,7 +197,7 @@ public class ClubView extends JPanel implements ActionListener {
 				} else {
 					// Update existing club
 					club = makeClub();
-					updateClub(club);
+					updateClub();
 					JOptionPane.showMessageDialog(this,
 							"Update club successful", "Success",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -721,7 +721,7 @@ public class ClubView extends JPanel implements ActionListener {
 		return club;
 	}
 
-	private void saveClub(Club club) {
+	private void saveClub() {
 		setFieldtoAttribute();
 		try {
 			club.setDeleted(0);
@@ -773,7 +773,7 @@ public class ClubView extends JPanel implements ActionListener {
 		}
 	}
 
-	private void updateClub(Club club) {
+	private void updateClub() {
 		setFieldtoAttribute();
 		try {
 			club.update();

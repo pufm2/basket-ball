@@ -24,6 +24,43 @@ import puf.m2.basket.view.support.ViewSupport;
 
 public class Stat {
 
+	public String dateToString(Date date, Format formatter) {
+		return formatter.format(date);
+	}
+
+	public double getAvgDistanceBetweenMeetings() {
+		double result = 0;
+
+		return result;
+	}
+
+	public double getAvgPointsFromSeason(Season season) {
+		double result = 0;
+		int totalPoints = 0;
+		int matchesInSeason = 0;
+		try {
+			List<Match> matches = EntityUtils.loadByCondition(null,
+					Match.class, null);
+			for (Match match : matches) {
+				if (match.getSeason().getValue().getId() == season.getId()) {
+					ScoreDetail[] scoreDetails = match.getDetails().getArray();
+					for (ScoreDetail scoreDetail : scoreDetails) {
+						totalPoints += scoreDetail.getValue();
+					}
+				}
+				matchesInSeason++;
+			}
+		} catch (BasketException | SQLException e) {
+
+			e.printStackTrace();
+		}
+		if (matchesInSeason == 0)
+			result = 0;
+		else
+			result = totalPoints / matchesInSeason;
+		return result;
+	}
+
 	public double getAvgPointsOfDate(Date date) {
 		double result = 0;
 		int totalPoints = 0;
@@ -59,43 +96,6 @@ public class Stat {
 		else
 			result = totalPoints / matchesInDate;
 		return result;
-	}
-
-	public double getAvgPointsFromSeason(Season season) {
-		double result = 0;
-		int totalPoints = 0;
-		int matchesInSeason = 0;
-		try {
-			List<Match> matches = EntityUtils.loadByCondition(null,
-					Match.class, null);
-			for (Match match : matches) {
-				if (match.getSeason().getValue().getId() == season.getId()) {
-					ScoreDetail[] scoreDetails = match.getDetails().getArray();
-					for (ScoreDetail scoreDetail : scoreDetails) {
-						totalPoints += scoreDetail.getValue();
-					}
-				}
-				matchesInSeason++;
-			}
-		} catch (BasketException | SQLException e) {
-
-			e.printStackTrace();
-		}
-		if (matchesInSeason == 0)
-			result = 0;
-		else
-			result = totalPoints / matchesInSeason;
-		return result;
-	}
-
-	public double getAvgDistanceBetweenMeetings() {
-		double result = 0;
-
-		return result;
-	}
-
-	public String dateToString(Date date, Format formatter) {
-		return formatter.format(date);
 	}
 
 	public Player getBestPlayer(String inputDate, Category inputCategory) {
@@ -200,18 +200,16 @@ public class Stat {
 		// Move next key and value of Map by iterator
 		Iterator<Entry<Team, Integer>> it = set.iterator();
 
-		// Sort hash map
-		// rankTeams = ViewSupport.sortHashMap(rankTeams);
-
+		@SuppressWarnings("rawtypes")
 		Map.Entry m;
 
 		Team team = null;
 		int value = 0;
-		
+
 		ArrayList<RankTeam> arrRankTeam = new ArrayList<RankTeam>();
 
 		while (it.hasNext()) {
-			// get record from map playerScore
+			// get record from map team
 			m = it.next();
 
 			team = (Team) m.getKey();
@@ -223,28 +221,27 @@ public class Stat {
 				e.printStackTrace();
 			}
 			try {
-				arrRankTeam.add(new RankTeam(team.getTeamName(), value,0));
+				arrRankTeam.add(new RankTeam(team.getTeamName(), value, 0));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		HashMap<String, Integer> sortTeams = new HashMap<String, Integer>();
 		String teamName = null;
-		
-		for (int i=0; i<arrRankTeam.size(); i++){
+
+		for (int i = 0; i < arrRankTeam.size(); i++) {
 			teamName = arrRankTeam.get(i).getTeamName();
-			if (!sortTeams.containsKey(teamName)){
-				sortTeams.put(teamName,arrRankTeam.get(i).getValue());
-			}
-			else{
+			if (!sortTeams.containsKey(teamName)) {
+				sortTeams.put(teamName, arrRankTeam.get(i).getValue());
+			} else {
 				int oldValue = sortTeams.get(teamName);
 				int newValue = arrRankTeam.get(i).getValue() + oldValue;
 				sortTeams.remove(teamName);
 				sortTeams.put(teamName, newValue);
-			}				
+			}
 		}
-		
+
 		Set<Entry<String, Integer>> setRankTeam = sortTeams.entrySet();
 
 		// Move next key and value of Map by iterator
@@ -254,9 +251,9 @@ public class Stat {
 		Map.Entry entryRankTeam;
 		String entryTeamName = "";
 		Integer entryValue = null;
-		
+
 		while (itr.hasNext()) {
-			// get record from map playerScore
+			// get record from map team
 			entryRankTeam = itr.next();
 
 			entryTeamName = (String) entryRankTeam.getKey();
@@ -264,22 +261,23 @@ public class Stat {
 
 			System.out.println(entryTeamName + " - " + entryValue.intValue());
 		}
-		
+
 		sortTeams = ViewSupport.sortByValue(sortTeams);
-		
+
 		// Ranking by value
-		int rank=1;
+		int rank = 1;
 		itr = setRankTeam.iterator();
-		
+
 		ArrayList<RankTeam> arrRankTeams = new ArrayList<RankTeam>();
-		
+
 		while (itr.hasNext()) {
-			Entry<String,Integer> entry = itr.next();
-			RankTeam rankTeam = new RankTeam(entry.getKey(), entry.getValue().intValue(), rank);
+			Entry<String, Integer> entry = itr.next();
+			RankTeam rankTeam = new RankTeam(entry.getKey(), entry.getValue()
+					.intValue(), rank);
 			arrRankTeams.add(rankTeam);
 			rank++;
 		}
-		
+
 		return arrRankTeams;
 	}
 }

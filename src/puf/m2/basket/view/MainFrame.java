@@ -18,9 +18,55 @@ import puf.m2.basket.view.support.*;
 
 public class MainFrame extends JFrame implements ActionListener {
 
+	private static final long serialVersionUID = 8548809193653203342L;
+
 	public MainFrame() {
 		super("Basket-ball management system");
 		initFrame();
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		String cmd = e.getActionCommand();
+
+		if ("Player".equals(cmd))
+			Utils.createAndShowGUI(this, new PlayerView());
+		else if ("President".equals(cmd))
+			Utils.createAndShowGUI(this, new PresidentView());
+		else if ("Vice President".equals(cmd))
+			Utils.createAndShowGUI(this, new VicePresidentView());
+		else if ("Secretary".equals(cmd))
+			Utils.createAndShowGUI(this, new SecretaryView());
+		else if ("Treasurer".equals(cmd))
+			Utils.createAndShowGUI(this, new TreasurerView());
+		else if ("Coach".equals(cmd))
+			Utils.createAndShowGUI(this, new CoachView());
+
+		else if ("Category".equals(cmd))
+			Utils.createAndShowGUI(this, new CategoryView());
+		else if ("Club".equals(cmd))
+			Utils.createAndShowGUI(this, new ClubView());
+		else if ("Office".equals(cmd))
+			Utils.createAndShowGUI(this, new OfficeView());
+
+		else if ("Season".equals(cmd))
+			Utils.createAndShowGUI(this, new SeasonView());
+		else if ("Match".equals(cmd))
+			Utils.createAndShowGUI(this, new MatchView());
+		else if ("Team".equals(cmd))
+			Utils.createAndShowGUI(this, new TeamView());
+
+		else if ("AvgScoreOfDate".equals(cmd))
+			Utils.createAndShowGUI(this, new AvgScoreOfDateView());
+		else if ("AvgScoreOfSeason".equals(cmd))
+			Utils.createAndShowGUI(this, new AvgScoreOfSeasonView());
+		else if ("AvgDistance".equals(cmd))
+			Utils.createAndShowGUI(this, new AvgDistanceView());
+		else if ("BestPlayerOfDate".equals(cmd))
+			Utils.createAndShowGUI(this, new BestPlayerOfDateView());
+		else if ("RankTeams".equals(cmd))
+			rankTeams();
+		else if (cmd.equals("About"))
+			showAbout();
 	}
 
 	private void initFrame() {
@@ -161,63 +207,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		setCenter(this);
 	}
 
-	private static final long serialVersionUID = 8548809193653203342L;
-
-	public void setCenter(JFrame frame) {
-		// Set at center of screen
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = (screenSize.height - this.getHeight()) / 2;
-		int width = (screenSize.width - this.getWidth()) / 2;
-
-		this.setLocation(width, height);
-
-		frame.setVisible(true);
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		String cmd = e.getActionCommand();
-
-		if ("Player".equals(cmd))
-			Utils.createAndShowGUI(this, new PlayerView());
-		else if ("President".equals(cmd))
-			Utils.createAndShowGUI(this, new PresidentView());
-		else if ("Vice President".equals(cmd))
-			Utils.createAndShowGUI(this, new VicePresidentView());
-		else if ("Secretary".equals(cmd))
-			Utils.createAndShowGUI(this, new SecretaryView());
-		else if ("Treasurer".equals(cmd))
-			Utils.createAndShowGUI(this, new TreasurerView());
-		else if ("Coach".equals(cmd))
-			Utils.createAndShowGUI(this, new CoachView());
-
-		else if ("Category".equals(cmd))
-			Utils.createAndShowGUI(this, new CategoryView());
-		else if ("Club".equals(cmd))
-			Utils.createAndShowGUI(this, new ClubView());
-		else if ("Office".equals(cmd))
-			Utils.createAndShowGUI(this, new OfficeView());
-
-		else if ("Season".equals(cmd))
-			Utils.createAndShowGUI(this, new SeasonView());
-		else if ("Match".equals(cmd))
-			Utils.createAndShowGUI(this, new MatchView());
-		else if ("Team".equals(cmd))
-			Utils.createAndShowGUI(this, new TeamView());
-
-		else if ("AvgScoreOfDate".equals(cmd))
-			Utils.createAndShowGUI(this, new AvgScoreOfDateView());
-		else if ("AvgScoreOfSeason".equals(cmd))
-			Utils.createAndShowGUI(this, new AvgScoreOfSeasonView());
-		else if ("AvgDistance".equals(cmd))
-			Utils.createAndShowGUI(this, new AvgDistanceView());
-		else if ("BestPlayerOfDate".equals(cmd))
-			Utils.createAndShowGUI(this, new BestPlayerOfDateView());
-		else if ("RankTeams".equals(cmd))
-			rankTeams();
-		else if (cmd.equals("About"))
-			showAbout();
-	}
-
 	private void rankTeams() {
 		Stat stat = new Stat();
 		ArrayList<RankTeam> rankTeams = new ArrayList<RankTeam>();
@@ -231,6 +220,17 @@ public class MainFrame extends JFrame implements ActionListener {
 		}
 		JOptionPane.showMessageDialog(this, result, "Ranking teams",
 				JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	public void setCenter(JFrame frame) {
+		// Set at center of screen
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int height = (screenSize.height - this.getHeight()) / 2;
+		int width = (screenSize.width - this.getWidth()) / 2;
+
+		this.setLocation(width, height);
+
+		frame.setVisible(true);
 	}
 
 	private void showAbout() {

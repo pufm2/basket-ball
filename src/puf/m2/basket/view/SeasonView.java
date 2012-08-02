@@ -25,20 +25,21 @@ public class SeasonView extends JPanel implements ActionListener {
 	boolean pressUpdate = false;
 
 	private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnFind;
-    private javax.swing.JButton btnNew;
-    private javax.swing.JButton btnSave;
-    private javax.swing.JButton btnUpdate;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private JDateChooser txtEndDate;
-    private javax.swing.JTextField txtSeasonID;
-    private javax.swing.JTextField txtSeasonName;
-    private JDateChooser txtStartDate;
+	private javax.swing.JButton btnDelete;
+	private javax.swing.JButton btnFind;
+	private javax.swing.JButton btnNew;
+	private javax.swing.JButton btnSave;
+	private javax.swing.JButton btnUpdate;
+	private javax.swing.JButton jButton2;
+	private javax.swing.JLabel jLabel1;
+	private javax.swing.JLabel jLabel2;
+	private javax.swing.JLabel jLabel3;
+	private javax.swing.JLabel jLabel4;
+	private JDateChooser txtEndDate;
+	private javax.swing.JTextField txtSeasonID;
+	private javax.swing.JTextField txtSeasonName;
+	private JDateChooser txtStartDate;
+
 	// End of variables declaration
 
 	public SeasonView() {
@@ -89,17 +90,18 @@ public class SeasonView extends JPanel implements ActionListener {
 			formState = FormState.FIND;
 			String seasonName = JOptionPane.showInputDialog(this,
 					"Please give name of season", "Season 1");
-			
+
 			// Find season with that name
 			if (seasonName == null)
 				return;
 			else
-				seasonName = seasonName.toUpperCase();			
+				seasonName = seasonName.toUpperCase();
 
 			List<Season> seasons = null;
 			try {
-				seasons = EntityUtils.loadByCondition(new Condition("SEASON_NAME",
-						seasonName), Season.class, "SEASON_NAME");
+				seasons = EntityUtils
+						.loadByCondition(new Condition("SEASON_NAME",
+								seasonName), Season.class, "SEASON_NAME");
 			} catch (BasketException e1) {
 				e1.printStackTrace();
 			}
@@ -202,111 +204,198 @@ public class SeasonView extends JPanel implements ActionListener {
 	private void initComponents() {
 
 		jButton2 = new javax.swing.JButton();
-        txtSeasonID = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        txtStartDate = new JDateChooser();
-        jLabel2 = new javax.swing.JLabel();
-        btnNew = new javax.swing.JButton();
-        btnFind = new javax.swing.JButton();
-        btnSave = new javax.swing.JButton();
-        btnCancel = new javax.swing.JButton();
-        btnUpdate = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        txtEndDate = new JDateChooser();
-        jLabel4 = new javax.swing.JLabel();
-        txtSeasonName = new javax.swing.JTextField();
+		txtSeasonID = new javax.swing.JTextField();
+		jLabel1 = new javax.swing.JLabel();
+		txtStartDate = new JDateChooser();
+		jLabel2 = new javax.swing.JLabel();
+		btnNew = new javax.swing.JButton();
+		btnFind = new javax.swing.JButton();
+		btnSave = new javax.swing.JButton();
+		btnCancel = new javax.swing.JButton();
+		btnUpdate = new javax.swing.JButton();
+		btnDelete = new javax.swing.JButton();
+		jLabel3 = new javax.swing.JLabel();
+		txtEndDate = new JDateChooser();
+		jLabel4 = new javax.swing.JLabel();
+		txtSeasonName = new javax.swing.JTextField();
 
-        jButton2.setText("jButton2");
+		jButton2.setText("jButton2");
 
-        jLabel1.setText("Season ID");
+		jLabel1.setText("Season ID");
 
-        jLabel2.setText("Start Date");
+		jLabel2.setText("Start Date");
 
-        btnNew.setText("New");
-        btnNew.setToolTipText("Add new office");
+		btnNew.setText("New");
+		btnNew.setToolTipText("Add new office");
 
-        btnFind.setText("Find");
-        btnFind.setToolTipText("Find an existing office");
+		btnFind.setText("Find");
+		btnFind.setToolTipText("Find an existing office");
 
-        btnSave.setText("Save");
-        btnSave.setToolTipText("Save new office");
+		btnSave.setText("Save");
+		btnSave.setToolTipText("Save new office");
 
-        btnCancel.setText("Cancel");
+		btnCancel.setText("Cancel");
 
-        btnUpdate.setText("Update");
+		btnUpdate.setText("Update");
 
-        btnDelete.setText("Delete");
+		btnDelete.setText("Delete");
 
-        jLabel3.setText("End Date");
+		jLabel3.setText("End Date");
 
-        jLabel4.setText("Season name");
+		jLabel4.setText("Season name");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnFind, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addGap(37, 37, 37)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
-                            .addComponent(txtSeasonID, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtEndDate, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
-                            .addComponent(txtSeasonName))))
-                .addContainerGap(23, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSeasonID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtSeasonName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(txtStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(txtEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNew)
-                    .addComponent(btnFind)
-                    .addComponent(btnCancel)
-                    .addComponent(btnUpdate)
-                    .addComponent(btnDelete)
-                    .addComponent(btnSave))
-                .addContainerGap(20, Short.MAX_VALUE))
-        );
+		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+		this.setLayout(layout);
+		layout.setHorizontalGroup(layout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(
+						layout.createSequentialGroup()
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.LEADING)
+												.addGroup(
+														layout.createSequentialGroup()
+																.addContainerGap()
+																.addComponent(
+																		btnNew,
+																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		76,
+																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(
+																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnFind,
+																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		78,
+																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(
+																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnCancel,
+																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		78,
+																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(
+																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnSave,
+																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		76,
+																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(
+																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnUpdate,
+																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		78,
+																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(
+																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(
+																		btnDelete,
+																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		82,
+																		javax.swing.GroupLayout.PREFERRED_SIZE))
+												.addGroup(
+														layout.createSequentialGroup()
+																.addGap(19, 19,
+																		19)
+																.addGroup(
+																		layout.createParallelGroup(
+																				javax.swing.GroupLayout.Alignment.LEADING)
+																				.addComponent(
+																						jLabel1)
+																				.addComponent(
+																						jLabel2)
+																				.addComponent(
+																						jLabel3)
+																				.addComponent(
+																						jLabel4))
+																.addGap(37, 37,
+																		37)
+																.addGroup(
+																		layout.createParallelGroup(
+																				javax.swing.GroupLayout.Alignment.LEADING,
+																				false)
+																				.addComponent(
+																						txtStartDate,
+																						javax.swing.GroupLayout.DEFAULT_SIZE,
+																						234,
+																						Short.MAX_VALUE)
+																				.addComponent(
+																						txtSeasonID,
+																						javax.swing.GroupLayout.PREFERRED_SIZE,
+																						91,
+																						javax.swing.GroupLayout.PREFERRED_SIZE)
+																				.addComponent(
+																						txtEndDate,
+																						javax.swing.GroupLayout.DEFAULT_SIZE,
+																						234,
+																						Short.MAX_VALUE)
+																				.addComponent(
+																						txtSeasonName))))
+								.addContainerGap(23, Short.MAX_VALUE)));
+		layout.setVerticalGroup(layout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(
+						layout.createSequentialGroup()
+								.addContainerGap()
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(
+														txtSeasonID,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addComponent(jLabel1))
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(jLabel4)
+												.addComponent(
+														txtSeasonName,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(jLabel2)
+												.addComponent(
+														txtStartDate,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(jLabel3)
+												.addComponent(
+														txtEndDate,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addGap(18, 18, 18)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(btnNew)
+												.addComponent(btnFind)
+												.addComponent(btnCancel)
+												.addComponent(btnUpdate)
+												.addComponent(btnDelete)
+												.addComponent(btnSave))
+								.addContainerGap(20, Short.MAX_VALUE)));
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtSeasonID, txtStartDate});
+		layout.linkSize(javax.swing.SwingConstants.VERTICAL,
+				new java.awt.Component[] { txtSeasonID, txtStartDate });
 
 	}// </editor-fold>
 
@@ -322,25 +411,25 @@ public class SeasonView extends JPanel implements ActionListener {
 		}
 		if (seasons.size() > 0)
 			return true;
-		
-		seasons=null;
-		
-		// check if duplicate season name
-				try {
-					seasons = EntityUtils.loadByCondition(new Condition("SEASON_NAME", season
-							.getId().toString()), Season.class, "SEASON_NAME");
-				} catch (BasketException | SQLException e) {
-					e.printStackTrace();
-				}
-				if (seasons.size() > 0)
-					return true;
 
+		seasons = null;
+
+		// check if duplicate season name
+		try {
+			seasons = EntityUtils.loadByCondition(new Condition("SEASON_NAME",
+					season.getId().toString()), Season.class, "SEASON_NAME");
+		} catch (BasketException | SQLException e) {
+			e.printStackTrace();
+		}
+		if (seasons.size() > 0)
+			return true;
 
 		return false;
 	}
 
 	private boolean isEmptyData() {
-		if (txtSeasonID.getText().equals("") || txtSeasonName.getText().equals(""))
+		if (txtSeasonID.getText().equals("")
+				|| txtSeasonName.getText().equals(""))
 			return true;
 		return false;
 	}
@@ -397,7 +486,8 @@ public class SeasonView extends JPanel implements ActionListener {
 		try {
 			txtSeasonID.setText(season.getId().toString());
 			txtSeasonName.setText(season.getSeasonName());
-			txtStartDate.setDate(ViewSupport.toDate(season.getSeasonStartdate()));
+			txtStartDate
+					.setDate(ViewSupport.toDate(season.getSeasonStartdate()));
 			txtEndDate.setDate(ViewSupport.toDate(season.getSeasonEnddate()));
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -22,7 +22,7 @@ public class TreasurerView extends javax.swing.JPanel implements ActionListener 
 	Treasurer treasurer = new Treasurer();
 	boolean pressUpdate = false;
 	FormState formState;
-	
+
 	private JButton btnCancel;
 	private JButton btnDelete;
 
@@ -30,7 +30,7 @@ public class TreasurerView extends javax.swing.JPanel implements ActionListener 
 	private JButton btnNew;
 	private JButton btnSave;
 	private JButton btnUpdate;
-	
+
 	private JButton jButton2;
 	private JLabel jLabel1;
 	private JLabel jLabel2;
@@ -39,7 +39,7 @@ public class TreasurerView extends javax.swing.JPanel implements ActionListener 
 	private JTextField txtTreasurerName;
 
 	// End of variables declaration
-	
+
 	public TreasurerView() {
 		initComponents();
 		addActionListeners();
@@ -142,14 +142,14 @@ public class TreasurerView extends javax.swing.JPanel implements ActionListener 
 										"Error", JOptionPane.ERROR_MESSAGE);
 					} else {
 						// Save new treasurer
-						saveTreasurer(treasurer);
+						saveTreasurer();
 						JOptionPane.showMessageDialog(this,
 								"Save new treasurer successful", "Success",
 								JOptionPane.INFORMATION_MESSAGE);
 					}
 				} else {
 					// Update existing treasurer
-					updateTreasurer(treasurer);
+					updateTreasurer();
 					JOptionPane.showMessageDialog(this,
 							"Update treasurer successful", "Success",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -400,7 +400,7 @@ public class TreasurerView extends javax.swing.JPanel implements ActionListener 
 		return treasurer;
 	}
 
-	private void saveTreasurer(Treasurer treasurer) {
+	private void saveTreasurer() {
 		setFieldtoAttribute();
 		try {
 			treasurer.setDeleted(0);
@@ -460,7 +460,7 @@ public class TreasurerView extends javax.swing.JPanel implements ActionListener 
 		}
 	}
 
-	private void updateTreasurer(Treasurer treasurer) {
+	private void updateTreasurer() {
 		setFieldtoAttribute();
 		try {
 			treasurer.setDeleted(0);

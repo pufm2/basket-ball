@@ -21,9 +21,14 @@ public class BestPlayerOfDateView extends javax.swing.JPanel implements
 
 	private static final long serialVersionUID = 1085807853591036268L;
 
+	public static java.util.Date toDate(java.sql.Timestamp timestamp) {
+		long milliseconds = timestamp.getTime()
+				+ (timestamp.getNanos() / 1000000);
+		return new java.util.Date(milliseconds);
+	}
+
 	// Variables declaration - do not modify
 	private javax.swing.JButton btnFindBestPlayer;
-
 	private javax.swing.JComboBox<Category> cboCategory;
 	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel jLabel10;
@@ -46,9 +51,10 @@ public class BestPlayerOfDateView extends javax.swing.JPanel implements
 	private javax.swing.JTextField txtID;
 	private javax.swing.JTextField txtLicenseNumber;
 	private javax.swing.JTextField txtPlayerName;
-	private javax.swing.JTextField txtStreet;
 
 	// End of variables declaration
+
+	private javax.swing.JTextField txtStreet;
 
 	public BestPlayerOfDateView() {
 		initComponents();
@@ -58,11 +64,48 @@ public class BestPlayerOfDateView extends javax.swing.JPanel implements
 		txtID.setEditable(false);
 		txtPlayerName.setEditable(false);
 		txtLicenseNumber.setEditable(false);
-		txtBirthday.setEditable(false);		
+		txtBirthday.setEditable(false);
 		txtAddressNumber.setEditable(false);
 		txtStreet.setEditable(false);
 		txtDistrict.setEditable(false);
 		txtCity.setEditable(false);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Player result = null;
+		Stat stat = new Stat();
+
+		Format formatter;
+		formatter = new SimpleDateFormat("dd-MMM-yy");
+
+		String inputDate = formatter.format(txtDate.getDate());
+		Category inputCategory = (Category) cboCategory.getSelectedItem();
+
+		result = stat.getBestPlayer(inputDate, inputCategory);
+
+		if (result != null) {
+			try {
+				txtID.setText(result.getId().toString());
+				txtPlayerName.setText(result.getPersonName());
+				txtLicenseNumber.setText(result.getPlayerLicenceNumber());
+				txtBirthday.setText(formatter.format(toDate(result
+						.getPlayerBirthday())));
+				txtAddressNumber.setText(result.getPlayerAddress()
+						.getAddressNumber());
+				txtStreet.setText(result.getPlayerAddress().getAddressStreet());
+				txtDistrict.setText(result.getPlayerAddress()
+						.getAddressDistrict());
+				txtCity.setText(result.getPlayerAddress().getAddressCity());
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+
+		} else {
+			JOptionPane.showMessageDialog(this,
+					"Does not have any player in that day for that category",
+					"Notice", JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 
 	private void addActionListeners() {
@@ -398,47 +441,4 @@ public class BestPlayerOfDateView extends javax.swing.JPanel implements
 										javax.swing.GroupLayout.DEFAULT_SIZE,
 										Short.MAX_VALUE)));
 	}// </editor-fold>
-
-	public static java.util.Date toDate(java.sql.Timestamp timestamp) {
-		long milliseconds = timestamp.getTime()
-				+ (timestamp.getNanos() / 1000000);
-		return new java.util.Date(milliseconds);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Player result = null;
-		Stat stat = new Stat();
-
-		Format formatter;
-		formatter = new SimpleDateFormat("dd-MMM-yy");
-
-		String inputDate = formatter.format(txtDate.getDate());
-		Category inputCategory = (Category) cboCategory.getSelectedItem();
-
-		result = stat.getBestPlayer(inputDate, inputCategory);
-
-		if (result != null) {
-			try {
-				txtID.setText(result.getId().toString());
-				txtPlayerName.setText(result.getPersonName());
-				txtLicenseNumber.setText(result.getPlayerLicenceNumber());
-				txtBirthday.setText(formatter.format(toDate(result
-						.getPlayerBirthday())));
-				txtAddressNumber.setText(result.getPlayerAddress()
-						.getAddressNumber());
-				txtStreet.setText(result.getPlayerAddress().getAddressStreet());
-				txtDistrict.setText(result.getPlayerAddress()
-						.getAddressDistrict());
-				txtCity.setText(result.getPlayerAddress().getAddressCity());
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-
-		} else {
-			JOptionPane.showMessageDialog(this,
-					"Does not have any player in that day for that category",
-					"Notice", JOptionPane.INFORMATION_MESSAGE);
-		}
-	}
 }

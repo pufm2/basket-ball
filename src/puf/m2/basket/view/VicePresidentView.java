@@ -146,14 +146,14 @@ public class VicePresidentView extends JPanel implements ActionListener {
 						return;
 					} else {
 						// Save new vice president
-						saveVicePresident(vicePresident);
+						saveVicePresident();
 						JOptionPane.showMessageDialog(this,
 								"Save new vice president successful",
 								"Success", JOptionPane.INFORMATION_MESSAGE);
 					}
 				} else {
 					// Update existing vice president
-					updateVicePresident(vicePresident);
+					updateVicePresident();
 					JOptionPane.showMessageDialog(this,
 							"Update vice president successful", "Success",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -400,7 +400,7 @@ public class VicePresidentView extends JPanel implements ActionListener {
 		return vicePresident;
 	}
 
-	private void saveVicePresident(VicePresident vicePresident) {
+	private void saveVicePresident() {
 		setFieldtoAttribute();
 		try {
 			vicePresident.setDeleted(0);
@@ -461,7 +461,7 @@ public class VicePresidentView extends JPanel implements ActionListener {
 		}
 	}
 
-	private void updateVicePresident(VicePresident vicePresident) {
+	private void updateVicePresident() {
 		setFieldtoAttribute();
 		try {
 			vicePresident.setDeleted(0);

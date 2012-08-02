@@ -47,7 +47,7 @@ public class CoachView extends JPanel implements ActionListener {
 		addActionListeners();
 
 		formState = FormState.INITIAL;
-		//updateForm();
+		updateForm();
 	}
 
 	@Override
@@ -67,8 +67,8 @@ public class CoachView extends JPanel implements ActionListener {
 
 			try {
 				coach = makeCoach();
-				coachToDelete = EntityUtils.loadById(coach.getId(),
-						Coach.class);
+				coachToDelete = EntityUtils
+						.loadById(coach.getId(), Coach.class);
 			} catch (BasketException | SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -99,35 +99,34 @@ public class CoachView extends JPanel implements ActionListener {
 			List<Coach> coaches = null;
 			try {
 				coaches = EntityUtils.loadByCondition(new Condition(
-						"PERSON_NAME", coachName), Coach.class,"PERSON_NAME");
+						"PERSON_NAME", coachName), Coach.class, "PERSON_NAME");
 			} catch (BasketException e1) {
 				e1.printStackTrace();
 			}
 			// If exist coach, show its information
 			if (coaches.size() > 0) {
 				coach = coaches.get(0);
-				setTextField(coach);
-				JOptionPane.showMessageDialog(this, "Coach founded",
-						"Notice", JOptionPane.INFORMATION_MESSAGE);
+				setTextField();
+				JOptionPane.showMessageDialog(this, "Coach founded", "Notice",
+						JOptionPane.INFORMATION_MESSAGE);
 				formState = FormState.FIND;
 
 			} else {
 				// If not exist coach, show error message
-				JOptionPane.showMessageDialog(this,
-						"Can not found that coach", "Error",
-						JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Can not found that coach",
+						"Error", JOptionPane.ERROR_MESSAGE);
 				formState = FormState.INITIAL;
 			}
 
 		} else if ("New".equals(e.getActionCommand())) {
-			pressUpdate=false;
+			pressUpdate = false;
 			formState = FormState.NEW;
 
 		} else if ("Save".equals(e.getActionCommand())) {
 			if (isEmptyData()) {
 				JOptionPane.showMessageDialog(this,
-						"Please give enought information of coach",
-						"Error", JOptionPane.ERROR_MESSAGE);
+						"Please give enought information of coach", "Error",
+						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			if (isTypeMismatch()) {
@@ -140,21 +139,21 @@ public class CoachView extends JPanel implements ActionListener {
 					coach = makeCoach();
 					if (isDuplicateData(coach)) {
 						JOptionPane
-						.showMessageDialog(
-								this,
-								"Can not insert new coach which is duplicate ID/ Name with existing coach",
-								"Error", JOptionPane.ERROR_MESSAGE);
+								.showMessageDialog(
+										this,
+										"Can not insert new coach which is duplicate ID/ Name with existing coach",
+										"Error", JOptionPane.ERROR_MESSAGE);
 						return;
 					} else {
 						// Save new coach
-						saveCoach(coach);
+						saveCoach();
 						JOptionPane.showMessageDialog(this,
 								"Save new coach successful", "Success",
 								JOptionPane.INFORMATION_MESSAGE);
 					}
 				} else {
 					// Update existing coach
-					updateCoach(coach);
+					updateCoach();
 					JOptionPane.showMessageDialog(this,
 							"Update coach successful", "Success",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -169,16 +168,6 @@ public class CoachView extends JPanel implements ActionListener {
 
 		// Finally for each button
 		updateForm();
-
-	}
-
-	private void deleteCoach() {
-		try {
-			coach.setDeleted(1);
-			coach.update();	
-		} catch (SQLException | BasketException e) {
-			e.printStackTrace();
-		}
 
 	}
 
@@ -200,6 +189,16 @@ public class CoachView extends JPanel implements ActionListener {
 
 		btnUpdate.setActionCommand("Update");
 		btnUpdate.addActionListener(this);
+	}
+
+	private void deleteCoach() {
+		try {
+			coach.setDeleted(1);
+			coach.update();
+		} catch (SQLException | BasketException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private void initComponents() {
@@ -243,130 +242,123 @@ public class CoachView extends JPanel implements ActionListener {
 				.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addGroup(
 						layout.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(btnNew,
-								GroupLayout.PREFERRED_SIZE,
-								76,
-								GroupLayout.PREFERRED_SIZE)
+								.addContainerGap()
+								.addComponent(btnNew,
+										GroupLayout.PREFERRED_SIZE, 76,
+										GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(
 										LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(btnFind,
-												GroupLayout.PREFERRED_SIZE,
-												78,
-												GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(
-														LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(btnCancel,
-																GroupLayout.PREFERRED_SIZE,
-																78,
-																GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(
-																		LayoutStyle.ComponentPlacement.RELATED)
-																		.addComponent(btnSave,
-																				GroupLayout.PREFERRED_SIZE,
-																				76,
-																				GroupLayout.PREFERRED_SIZE)
-																				.addPreferredGap(
-																						LayoutStyle.ComponentPlacement.RELATED)
-																						.addComponent(btnUpdate,
-																								GroupLayout.PREFERRED_SIZE,
-																								78,
-																								GroupLayout.PREFERRED_SIZE)
-																								.addPreferredGap(
-																										LayoutStyle.ComponentPlacement.RELATED)
-																										.addComponent(btnDelete,
-																												GroupLayout.PREFERRED_SIZE,
-																												82,
-																												GroupLayout.PREFERRED_SIZE)
-																												.addContainerGap())
-																												.addGroup(
-																														layout.createSequentialGroup()
-																														.addGap(19, 19, 19)
-																														.addGroup(
-																																layout.createParallelGroup(
-																																		GroupLayout.Alignment.LEADING)
-																																		.addComponent(jLabel1)
-																																		.addComponent(jLabel2))
-																																		.addGap(16, 16, 16)
-																																		.addGroup(
-																																				layout.createParallelGroup(
-																																						GroupLayout.Alignment.LEADING)
-																																						.addComponent(
-																																								txtCoachName,
-																																								GroupLayout.PREFERRED_SIZE,
-																																								234,
-																																								GroupLayout.PREFERRED_SIZE)
-																																								.addComponent(
-																																										txtCoachID,
-																																										GroupLayout.PREFERRED_SIZE,
-																																										91,
-																																										GroupLayout.PREFERRED_SIZE))
-																																										.addContainerGap(191, Short.MAX_VALUE)));
+								.addComponent(btnFind,
+										GroupLayout.PREFERRED_SIZE, 78,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(btnCancel,
+										GroupLayout.PREFERRED_SIZE, 78,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(btnSave,
+										GroupLayout.PREFERRED_SIZE, 76,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(btnUpdate,
+										GroupLayout.PREFERRED_SIZE, 78,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(btnDelete,
+										GroupLayout.PREFERRED_SIZE, 82,
+										GroupLayout.PREFERRED_SIZE)
+								.addContainerGap())
+				.addGroup(
+						layout.createSequentialGroup()
+								.addGap(19, 19, 19)
+								.addGroup(
+										layout.createParallelGroup(
+												GroupLayout.Alignment.LEADING)
+												.addComponent(jLabel1)
+												.addComponent(jLabel2))
+								.addGap(16, 16, 16)
+								.addGroup(
+										layout.createParallelGroup(
+												GroupLayout.Alignment.LEADING)
+												.addComponent(
+														txtCoachName,
+														GroupLayout.PREFERRED_SIZE,
+														234,
+														GroupLayout.PREFERRED_SIZE)
+												.addComponent(
+														txtCoachID,
+														GroupLayout.PREFERRED_SIZE,
+														91,
+														GroupLayout.PREFERRED_SIZE))
+								.addContainerGap(191, Short.MAX_VALUE)));
 		layout.setVerticalGroup(layout
 				.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addGroup(
 						layout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								layout.createParallelGroup(
-										GroupLayout.Alignment.BASELINE)
-										.addComponent(
-												txtCoachID,
-												GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
+								.addContainerGap()
+								.addGroup(
+										layout.createParallelGroup(
+												GroupLayout.Alignment.BASELINE)
+												.addComponent(
+														txtCoachID,
+														GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE,
+														GroupLayout.PREFERRED_SIZE)
 												.addComponent(jLabel1))
-												.addPreferredGap(
-														LayoutStyle.ComponentPlacement.RELATED)
-														.addGroup(
-																layout.createParallelGroup(
-																		GroupLayout.Alignment.BASELINE)
-																		.addComponent(jLabel2)
-																		.addComponent(
-																				txtCoachName,
-																				GroupLayout.PREFERRED_SIZE,
-																				GroupLayout.DEFAULT_SIZE,
-																				GroupLayout.PREFERRED_SIZE))
-																				.addGap(36, 36, 36)
-																				.addGroup(
-																						layout.createParallelGroup(
-																								GroupLayout.Alignment.BASELINE)
-																								.addComponent(btnNew)
-																								.addComponent(btnFind)
-																								.addComponent(btnCancel)
-																								.addComponent(btnSave)
-																								.addComponent(btnUpdate)
-																								.addComponent(btnDelete))
-																								.addContainerGap(17, Short.MAX_VALUE)));
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(
+										layout.createParallelGroup(
+												GroupLayout.Alignment.BASELINE)
+												.addComponent(jLabel2)
+												.addComponent(
+														txtCoachName,
+														GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE,
+														GroupLayout.PREFERRED_SIZE))
+								.addGap(36, 36, 36)
+								.addGroup(
+										layout.createParallelGroup(
+												GroupLayout.Alignment.BASELINE)
+												.addComponent(btnNew)
+												.addComponent(btnFind)
+												.addComponent(btnCancel)
+												.addComponent(btnSave)
+												.addComponent(btnUpdate)
+												.addComponent(btnDelete))
+								.addContainerGap(17, Short.MAX_VALUE)));
 
-		layout.linkSize(SwingConstants.VERTICAL,
-				new java.awt.Component[] { txtCoachID, txtCoachName });
+		layout.linkSize(SwingConstants.VERTICAL, new java.awt.Component[] {
+				txtCoachID, txtCoachName });
 
 	}// </editor-fold>
 
-	private boolean isDuplicateData(Coach presidentToSave) {
-		List<Coach> coach = null;
+	private boolean isDuplicateData(Coach coach) {
+		List<Coach> coaches = null;
 
 		// check if duplicate coach ID
 		try {
-			coach = EntityUtils.loadByCondition(new Condition("id",
-					presidentToSave.getId().toString()), Coach.class,"id");
+			coaches = EntityUtils.loadByCondition(new Condition("id", coach
+					.getId().toString()), Coach.class, "id");
 		} catch (BasketException | SQLException e) {
 			e.printStackTrace();
 		}
-		if (coach.size() > 0)
+		if (coaches.size() > 0)
 			return true;
 
 		// Check if duplicate coach name
-		coach = null;
+		coaches = null;
 		try {
-			coach = EntityUtils.loadByCondition(new Condition(
-					"Person_Name", presidentToSave.getPersonName()),
-					Coach.class,"PERSON_NAME");
+			coaches = EntityUtils.loadByCondition(new Condition("Person_Name",
+					coach.getPersonName()), Coach.class, "PERSON_NAME");
 		} catch (BasketException | SQLException e) {
 			e.printStackTrace();
 		}
-		if (coach.size() > 0)
+		if (coaches.size() > 0)
 			return true;
 
 		return false;
@@ -405,7 +397,7 @@ public class CoachView extends JPanel implements ActionListener {
 		return coach;
 	}
 
-	private void saveCoach(Coach coach) {
+	private void saveCoach() {
 		setFieldtoAttribute();
 		try {
 			coach.setDeleted(0);
@@ -415,7 +407,7 @@ public class CoachView extends JPanel implements ActionListener {
 		}
 	}
 
-	private void setFieldtoAttribute(){
+	private void setFieldtoAttribute() {
 		try {
 			coach.setId(Integer.parseInt(txtCoachID.getText().trim()));
 			coach.setPersonName(txtCoachName.getText().trim());
@@ -424,16 +416,16 @@ public class CoachView extends JPanel implements ActionListener {
 		}
 	}
 
-	private void setTextField(Coach foundedPresident) {
+	private void setTextField() {
 		try {
-			txtCoachID.setText(foundedPresident.getId().toString());
-			txtCoachName.setText(foundedPresident.getPersonName());
+			txtCoachID.setText(coach.getId().toString());
+			txtCoachName.setText(coach.getPersonName());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void updateCoach(Coach president2) {
+	private void updateCoach() {
 		setFieldtoAttribute();
 		try {
 			coach.setDeleted(0);
@@ -444,7 +436,7 @@ public class CoachView extends JPanel implements ActionListener {
 	}
 
 	private void updateForm() {
-		switch (formState){
+		switch (formState) {
 		case INITIAL:
 			btnCancel.setVisible(false);
 			btnSave.setVisible(false);

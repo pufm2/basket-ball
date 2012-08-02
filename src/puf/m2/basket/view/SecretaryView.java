@@ -22,7 +22,7 @@ public class SecretaryView extends javax.swing.JPanel implements ActionListener 
 	Secretary secretary = new Secretary();
 	FormState formState;
 	boolean pressUpdate = false;
-	
+
 	private JButton btnCancel;
 	private JButton btnDelete;
 	private JButton btnFind;
@@ -48,7 +48,7 @@ public class SecretaryView extends javax.swing.JPanel implements ActionListener 
 	public void actionPerformed(ActionEvent e) {
 		if ("Cancel".equals(e.getActionCommand())) {
 			formState = FormState.INITIAL;
-			
+
 		} else if ("Delete".equals(e.getActionCommand())) {
 			Secretary secretaryToDelete = null;
 
@@ -73,33 +73,34 @@ public class SecretaryView extends javax.swing.JPanel implements ActionListener 
 					"Do you really to delete this secretary?",
 					"Confirm to delete secretary", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 				// Delete this secretary
-			deleteSecretary();
+				deleteSecretary();
 				JOptionPane
-				.showMessageDialog(this, "This secretary is deleted");
+						.showMessageDialog(this, "This secretary is deleted");
 			}
 			formState = FormState.INITIAL;
-			
+
 		} else if ("Find".equals(e.getActionCommand())) {
 			formState = FormState.FIND;
 			String secretaryName = (String) JOptionPane.showInputDialog(this,
 					"Please give a name of secretary", "Secretary 1");
-		
-			if (secretaryName==null)
+
+			if (secretaryName == null)
 				return;
-			
+
 			secretaryName = secretaryName.toUpperCase();
 			// Find secretary with that name
 			List<Secretary> secretaries = null;
 			try {
 				secretaries = EntityUtils.loadByCondition(new Condition(
-						"PERSON_NAME", secretaryName), Secretary.class,"PERSON_NAME");
+						"PERSON_NAME", secretaryName), Secretary.class,
+						"PERSON_NAME");
 			} catch (BasketException e1) {
 				e1.printStackTrace();
 			}
 			// If exist secretary, show its information
 			if (secretaries.size() > 0) {
 				secretary = secretaries.get(0);
-				setTextField(secretary);
+				setTextField();
 				JOptionPane.showMessageDialog(this, "Secretary founded",
 						"Notice", JOptionPane.INFORMATION_MESSAGE);
 				formState = FormState.FIND;
@@ -109,10 +110,10 @@ public class SecretaryView extends javax.swing.JPanel implements ActionListener 
 						"Can not found that secretary", "Error",
 						JOptionPane.ERROR_MESSAGE);
 				formState = FormState.INITIAL;
-				}
+			}
 
 		} else if ("New".equals(e.getActionCommand())) {
-			pressUpdate=false;
+			pressUpdate = false;
 			formState = FormState.NEW;
 
 		} else if ("Save".equals(e.getActionCommand())) {
@@ -132,14 +133,14 @@ public class SecretaryView extends javax.swing.JPanel implements ActionListener 
 					secretary = makeSecretary();
 					if (isDuplicateData(secretary)) {
 						JOptionPane
-						.showMessageDialog(
-								this,
-								"Can not insert new secretary which is duplicate ID/ Name with existing secretary",
-								"Error", JOptionPane.ERROR_MESSAGE);
+								.showMessageDialog(
+										this,
+										"Can not insert new secretary which is duplicate ID/ Name with existing secretary",
+										"Error", JOptionPane.ERROR_MESSAGE);
 						return;
 					} else {
 						// Save new secretary
-						saveSecretary(secretary);
+						saveSecretary();
 						JOptionPane.showMessageDialog(this,
 								"Save new secretary successful", "Success",
 								JOptionPane.INFORMATION_MESSAGE);
@@ -147,16 +148,16 @@ public class SecretaryView extends javax.swing.JPanel implements ActionListener 
 				} else {
 					// Update existing secretary
 					secretary = makeSecretary();
-					updateSecretary(secretary);
+					updateSecretary();
 					JOptionPane.showMessageDialog(this,
 							"Update secretary successful", "Success",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 			formState = FormState.INITIAL;
-			
+
 		} else if ("Update".equals(e.getActionCommand())) {
-			pressUpdate=true;
+			pressUpdate = true;
 			formState = FormState.NEW;
 		}
 
@@ -188,10 +189,10 @@ public class SecretaryView extends javax.swing.JPanel implements ActionListener 
 	private void deleteSecretary() {
 		try {
 			secretary.setDeleted(1);
-			secretary.update();		
+			secretary.update();
 		} catch (SQLException | BasketException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	private void initComponents() {
@@ -235,101 +236,101 @@ public class SecretaryView extends javax.swing.JPanel implements ActionListener 
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(
 						layout.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(btnNew,
-								javax.swing.GroupLayout.PREFERRED_SIZE,
-								76,
-								javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addContainerGap()
+								.addComponent(btnNew,
+										javax.swing.GroupLayout.PREFERRED_SIZE,
+										76,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(
 										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(btnFind,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												78,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(
-														javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(btnCancel,
-																javax.swing.GroupLayout.PREFERRED_SIZE,
-																78,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																		.addComponent(btnSave,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				76,
-																				javax.swing.GroupLayout.PREFERRED_SIZE)
-																				.addPreferredGap(
-																						javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																						.addComponent(btnUpdate,
-																								javax.swing.GroupLayout.PREFERRED_SIZE,
-																								78,
-																								javax.swing.GroupLayout.PREFERRED_SIZE)
-																								.addPreferredGap(
-																										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																										.addComponent(btnDelete,
-																												javax.swing.GroupLayout.PREFERRED_SIZE,
-																												82,
-																												javax.swing.GroupLayout.PREFERRED_SIZE)
-																												.addContainerGap())
-																												.addGroup(
-																														layout.createSequentialGroup()
-																														.addGap(19, 19, 19)
-																														.addGroup(
-																																layout.createParallelGroup(
-																																		javax.swing.GroupLayout.Alignment.LEADING)
-																																		.addComponent(jLabel1)
-																																		.addComponent(jLabel2))
-																																		.addGap(16, 16, 16)
-																																		.addGroup(
-																																				layout.createParallelGroup(
-																																						javax.swing.GroupLayout.Alignment.LEADING)
-																																						.addComponent(
-																																								txtSecretaryName,
-																																								javax.swing.GroupLayout.PREFERRED_SIZE,
-																																								234,
-																																								javax.swing.GroupLayout.PREFERRED_SIZE)
-																																								.addComponent(
-																																										txtSecretaryID,
-																																										javax.swing.GroupLayout.PREFERRED_SIZE,
-																																										91,
-																																										javax.swing.GroupLayout.PREFERRED_SIZE))
-																																										.addContainerGap(191, Short.MAX_VALUE)));
+								.addComponent(btnFind,
+										javax.swing.GroupLayout.PREFERRED_SIZE,
+										78,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(btnCancel,
+										javax.swing.GroupLayout.PREFERRED_SIZE,
+										78,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(btnSave,
+										javax.swing.GroupLayout.PREFERRED_SIZE,
+										76,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(btnUpdate,
+										javax.swing.GroupLayout.PREFERRED_SIZE,
+										78,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(btnDelete,
+										javax.swing.GroupLayout.PREFERRED_SIZE,
+										82,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addContainerGap())
+				.addGroup(
+						layout.createSequentialGroup()
+								.addGap(19, 19, 19)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(jLabel1)
+												.addComponent(jLabel2))
+								.addGap(16, 16, 16)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(
+														txtSecretaryName,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														234,
+														javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addComponent(
+														txtSecretaryID,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														91,
+														javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addContainerGap(191, Short.MAX_VALUE)));
 		layout.setVerticalGroup(layout
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(
 						layout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								layout.createParallelGroup(
-										javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(
-												txtSecretaryID,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addContainerGap()
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(
+														txtSecretaryID,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE)
 												.addComponent(jLabel1))
-												.addPreferredGap(
-														javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addGroup(
-																layout.createParallelGroup(
-																		javax.swing.GroupLayout.Alignment.BASELINE)
-																		.addComponent(jLabel2)
-																		.addComponent(
-																				txtSecretaryName,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.PREFERRED_SIZE))
-																				.addGap(36, 36, 36)
-																				.addGroup(
-																						layout.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.BASELINE)
-																								.addComponent(btnNew)
-																								.addComponent(btnFind)
-																								.addComponent(btnCancel)
-																								.addComponent(btnSave)
-																								.addComponent(btnUpdate)
-																								.addComponent(btnDelete))
-																								.addContainerGap(17, Short.MAX_VALUE)));
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(jLabel2)
+												.addComponent(
+														txtSecretaryName,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addGap(36, 36, 36)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(btnNew)
+												.addComponent(btnFind)
+												.addComponent(btnCancel)
+												.addComponent(btnSave)
+												.addComponent(btnUpdate)
+												.addComponent(btnDelete))
+								.addContainerGap(17, Short.MAX_VALUE)));
 
 		layout.linkSize(javax.swing.SwingConstants.VERTICAL,
 				new java.awt.Component[] { txtSecretaryID, txtSecretaryName });
@@ -342,7 +343,7 @@ public class SecretaryView extends javax.swing.JPanel implements ActionListener 
 		// check if duplicate secretary ID
 		try {
 			secretaries = EntityUtils.loadByCondition(new Condition("id",
-					secretary.getId().toString()), Secretary.class,"id");
+					secretary.getId().toString()), Secretary.class, "id");
 		} catch (BasketException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -353,8 +354,8 @@ public class SecretaryView extends javax.swing.JPanel implements ActionListener 
 		secretaries = null;
 		try {
 			secretaries = EntityUtils.loadByCondition(new Condition(
-					"Person_Name", secretary.getPersonName()),
-					Secretary.class,"PERSON_NAME");
+					"Person_Name", secretary.getPersonName()), Secretary.class,
+					"PERSON_NAME");
 		} catch (BasketException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -371,7 +372,7 @@ public class SecretaryView extends javax.swing.JPanel implements ActionListener 
 			return true;
 		return false;
 	}
-	
+
 	public boolean isInteger(String s) {
 		try {
 			Integer.parseInt(s);
@@ -397,7 +398,7 @@ public class SecretaryView extends javax.swing.JPanel implements ActionListener 
 		return secretary;
 	}
 
-	private void saveSecretary(Secretary secretary) {
+	private void saveSecretary() {
 		setFieldtoAttribute();
 		try {
 			secretary.setDeleted(0);
@@ -416,38 +417,38 @@ public class SecretaryView extends javax.swing.JPanel implements ActionListener 
 		}
 	}
 
-	private void setTextField(Secretary foundedSecretary) {
+	private void setTextField() {
 		try {
-			txtSecretaryID.setText(foundedSecretary.getId().toString());
-			txtSecretaryName.setText(foundedSecretary.getPersonName());
+			txtSecretaryID.setText(secretary.getId().toString());
+			txtSecretaryName.setText(secretary.getPersonName());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	private void updateForm() {
-		switch (formState){
+		switch (formState) {
 		case INITIAL:
-				btnCancel.setVisible(false);
-				btnSave.setVisible(false);
-				btnUpdate.setVisible(false);
-				btnDelete.setVisible(false);
-				
-				btnNew.setVisible(true);
-				btnFind.setVisible(true);
+			btnCancel.setVisible(false);
+			btnSave.setVisible(false);
+			btnUpdate.setVisible(false);
+			btnDelete.setVisible(false);
+
+			btnNew.setVisible(true);
+			btnFind.setVisible(true);
 			break;
 		case NEW:
 			btnNew.setVisible(false);
 			btnFind.setVisible(false);
 			btnUpdate.setVisible(false);
 			btnDelete.setVisible(false);
-			
+
 			btnSave.setVisible(true);
 			btnCancel.setVisible(true);
 			break;
 		case FIND:
 			btnSave.setVisible(false);
-			
+
 			btnCancel.setVisible(true);
 			btnNew.setVisible(true);
 			btnFind.setVisible(true);
@@ -457,7 +458,7 @@ public class SecretaryView extends javax.swing.JPanel implements ActionListener 
 		}
 	}
 
-	private void updateSecretary(Secretary secretary) {
+	private void updateSecretary() {
 		setFieldtoAttribute();
 		try {
 			secretary.setDeleted(0);

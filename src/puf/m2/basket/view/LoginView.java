@@ -17,8 +17,7 @@ import puf.m2.basket.model.entity.User;
 import puf.m2.basket.model.support.BasketException;
 import puf.m2.basket.model.support.EntityUtils;
 
-public class LoginView extends javax.swing.JPanel implements
-		ActionListener {
+public class LoginView extends javax.swing.JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,6 +27,7 @@ public class LoginView extends javax.swing.JPanel implements
 	private JFrame parent;
 	private JPasswordField txtPassword;
 	private JTextField txtUsername;
+
 	// End of variables declaration
 
 	public LoginView(JFrame parent) {
@@ -40,7 +40,7 @@ public class LoginView extends javax.swing.JPanel implements
 			String username = txtUsername.getText();
 			@SuppressWarnings("deprecation")
 			String password = txtPassword.getText();
-	
+
 			requestLogin(username, password);
 		}
 	}
@@ -152,11 +152,11 @@ public class LoginView extends javax.swing.JPanel implements
 		} catch (BasketException e) {
 			e.printStackTrace();
 		}
-		
+
 		if (users != null) {
 			parent.setVisible(false);
 			new MainFrame();
-	
+
 		} else {
 			JOptionPane.showMessageDialog(parent, "Invalid Credential",
 					"Alert", JOptionPane.ERROR_MESSAGE);

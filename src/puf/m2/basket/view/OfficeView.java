@@ -62,13 +62,6 @@ public class OfficeView extends JPanel implements ActionListener {
 		fillComboCity();
 	}
 
-	private void fillComboCity() {
-		for (int i = 0; i < ViewSupport.getCities().size(); i++)
-			cboCity.addItem(ViewSupport.getCities().get(i));
-
-		updateLatitude_Longitude();
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ("Cancel".equals(e.getActionCommand())) {
@@ -220,6 +213,13 @@ public class OfficeView extends JPanel implements ActionListener {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void fillComboCity() {
+		for (int i = 0; i < ViewSupport.getCities().size(); i++)
+			cboCity.addItem(ViewSupport.getCities().get(i));
+
+		updateLatitude_Longitude();
 	}
 
 	private void initComponents() {
@@ -698,14 +698,6 @@ public class OfficeView extends JPanel implements ActionListener {
 		}
 	}
 
-	public void updateLatitude_Longitude() {
-		String cityName = ((City) cboCity.getSelectedItem()).getCityName();
-		lblLatitudeValue.setText(String.valueOf(ViewSupport.getCityByName(
-				cityName).getLatitude()));
-		lblLongitudeValue.setText(String.valueOf(ViewSupport.getCityByName(
-				cityName).getLongitude()));
-	}
-
 	private void updateForm() {
 		switch (formState) {
 		case INITIAL:
@@ -736,6 +728,14 @@ public class OfficeView extends JPanel implements ActionListener {
 			btnDelete.setVisible(true);
 			break;
 		}
+	}
+
+	public void updateLatitude_Longitude() {
+		String cityName = ((City) cboCity.getSelectedItem()).getCityName();
+		lblLatitudeValue.setText(String.valueOf(ViewSupport.getCityByName(
+				cityName).getLatitude()));
+		lblLongitudeValue.setText(String.valueOf(ViewSupport.getCityByName(
+				cityName).getLongitude()));
 	}
 
 	private void updateOffice() {

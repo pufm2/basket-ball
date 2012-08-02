@@ -66,8 +66,8 @@ public class CategoryView extends JPanel implements ActionListener {
 		listModelTeam = new DefaultListModel<Team>();
 		category = new Category();
 		formState = FormState.INITIAL;
-		updateForm();
 		fillComboTeam();
+		updateForm();
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class CategoryView extends JPanel implements ActionListener {
 			// If exist category, show its information
 			if (categorys.size() > 0) {
 				category = categorys.get(0);
-				setTextField(category);
+				setTextField();
 
 				JOptionPane.showMessageDialog(this, "Category founded",
 						"Notice", JOptionPane.INFORMATION_MESSAGE);
@@ -168,7 +168,7 @@ public class CategoryView extends JPanel implements ActionListener {
 										"Error", JOptionPane.ERROR_MESSAGE);
 					} else {
 						// Save new category
-						saveCategory(category);
+						saveCategory();
 						JOptionPane.showMessageDialog(this,
 								"Save new category successful", "Success",
 								JOptionPane.INFORMATION_MESSAGE);
@@ -176,7 +176,7 @@ public class CategoryView extends JPanel implements ActionListener {
 				} else {
 					// Update existing category
 					category = makeCategory();
-					updateCategory(category);
+					updateCategory();
 					JOptionPane.showMessageDialog(this,
 							"Update category successful", "Success",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -514,7 +514,7 @@ public class CategoryView extends JPanel implements ActionListener {
 		return category;
 	}
 
-	private void saveCategory(Category category) {
+	private void saveCategory() {
 		setFieldtoAttribute();
 		try {
 			category.setDeleted(0);
@@ -550,7 +550,7 @@ public class CategoryView extends JPanel implements ActionListener {
 		}
 	}
 
-	private void setTextField(Category category) {
+	private void setTextField() {
 		try {
 			txtCategoryID.setText(category.getId().toString());
 			txtCategoryName.setText(category.getCategoryName());
@@ -569,7 +569,7 @@ public class CategoryView extends JPanel implements ActionListener {
 
 	}
 
-	private void updateCategory(Category category) {
+	private void updateCategory() {
 		setFieldtoAttribute();
 		try {
 			category.update();

@@ -105,8 +105,8 @@ public class AvgDistanceView extends javax.swing.JPanel implements
 
 	private void fillTwoComboTeam() {
 		try {
-			List<String> teams = EntityUtils.loadByCondition(null, String.class,
-					null);
+			List<String> teams = EntityUtils.loadByCondition(null,
+					String.class, null);
 			if (teams.size() <= 0) {
 				JOptionPane
 						.showMessageDialog(
@@ -788,8 +788,6 @@ public class AvgDistanceView extends javax.swing.JPanel implements
 			Office office1 = getOfficeOfTeam(((Team) cboTeam1.getSelectedItem()));
 			Office office2 = getOfficeOfTeam(((Team) cboTeam2.getSelectedItem()));
 
-			
-
 			showOfficeInfo(office1, office2);
 
 		}
@@ -828,7 +826,6 @@ public class AvgDistanceView extends javax.swing.JPanel implements
 				for (Category category : arrCategories) {
 					if (category.getCategoryName().equals(
 							categoryOfTeam.getCategoryName())) {
-						// System.out.println(club.getClubName());
 						clubOfTeam = club;
 					}
 				}
