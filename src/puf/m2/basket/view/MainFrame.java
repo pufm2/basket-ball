@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -13,12 +14,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import puf.m2.basket.view.stat.*;
-//import puf.m2.basket.stat.AvgDistanceView;
-//import puf.m2.basket.stat.AvgScoreOfDateView;
-//import puf.m2.basket.stat.AvgScoreOfSeasonView;
-//import puf.m2.basket.stat.BestPlayerOfDateView;
-//import puf.m2.basket.stat.RankPlayersView;
-//import puf.m2.basket.stat.RankTeamsView;
+import puf.m2.basket.view.support.*;
 
 public class MainFrame extends JFrame implements ActionListener {
 
@@ -121,17 +117,15 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnuAvgScoreOfSeason.setActionCommand("AvgScoreOfSeason");
 		mnuAvgScoreOfSeason.addActionListener(this);
 
-		JMenuItem mnuAvgDistance= new JMenuItem("Average of moving distance betwween two meetings");
+		JMenuItem mnuAvgDistance = new JMenuItem(
+				"Average of moving distance betwween two meetings");
 		mnuAvgDistance.setActionCommand("AvgDistance");
 		mnuAvgDistance.addActionListener(this);
 
-		JMenuItem mnuBestPlayerOfDate = new JMenuItem("Best player of date for a category");
+		JMenuItem mnuBestPlayerOfDate = new JMenuItem(
+				"Best player of date for a category");
 		mnuBestPlayerOfDate.setActionCommand("BestPlayerOfDate");
 		mnuBestPlayerOfDate.addActionListener(this);
-
-		JMenuItem mnuRankPlayers = new JMenuItem("Ranking best players of date for a category");
-		mnuRankPlayers.setActionCommand("RankPlayers");
-		mnuRankPlayers.addActionListener(this);
 
 		JMenuItem mnuRankTeams = new JMenuItem("Ranking teams");
 		mnuRankTeams.setActionCommand("RankTeams");
@@ -141,7 +135,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnuReport.add(mnuAvgScoreOfSeason);
 		mnuReport.add(mnuAvgDistance);
 		mnuReport.add(mnuBestPlayerOfDate);
-		mnuReport.add(mnuRankPlayers);
 		mnuReport.add(mnuRankTeams);
 
 		// Menu About
@@ -219,22 +212,33 @@ public class MainFrame extends JFrame implements ActionListener {
 			Utils.createAndShowGUI(this, new AvgDistanceView());
 		else if ("BestPlayerOfDate".equals(cmd))
 			Utils.createAndShowGUI(this, new BestPlayerOfDateView());
-		else if ("RankPlayers".equals(cmd))
-			Utils.createAndShowGUI(this, new RankPlayersView());
 		else if ("RankTeams".equals(cmd))
-			Utils.createAndShowGUI(this, new RankTeamsView());
-
+			rankTeams();
 		else if (cmd.equals("About"))
 			showAbout();
+	}
+
+	private void rankTeams() {
+		Stat stat = new Stat();
+		ArrayList<RankTeam> rankTeams = new ArrayList<RankTeam>();
+		rankTeams = stat.rankTeams();
+
+		String result = "Ranking for all teams \n";
+		for (RankTeam rankTeam : rankTeams) {
+			result = result + rankTeam.getTeamName() + " - Points: "
+					+ rankTeam.getValue() + " - Rank: " + rankTeam.getRank()
+					+ "\n";
+		}
+		JOptionPane.showMessageDialog(this, result, "Ranking teams",
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private void showAbout() {
 		String strAbout = new String("\"Baket ball management system\" \n"
 				+ "Project of Advanced Database course \n"
-				+ "Prepared by Nguyễn Hữu Phát and Lê Xuân Hoàn\n"
-				+ "MINF10 - PUF at Ho Chi Minh city, VietNam \n"
-				+ "Jul 2012");
+				+ "Prepared by Nguyen Huu Phat and Le Xuan Hoan \n"
+				+ "MINF10 - PUF at Ho Chi Minh city, VietNam \n" + "Jul 2012");
 		JOptionPane.showMessageDialog(null, strAbout, "About",
-				JOptionPane.INFORMATION_MESSAGE);	
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 }

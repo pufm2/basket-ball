@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import puf.m2.basket.model.entity.Team;
+
 import puf.m2.basket.model.support.BasketException;
 
 public class EntityTest {
@@ -19,9 +19,9 @@ public class EntityTest {
     
     @Test
     public void testGetDbProps() throws BasketException {
-        Team t = new Team();
+        String t = new String();
         Map<String, Object> dbProps = new HashMap<String, Object>();
-        t.getDbProps(dbProps, Team.class);
+      //  t.getDbProps(dbProps, String.class);
         
     }
 

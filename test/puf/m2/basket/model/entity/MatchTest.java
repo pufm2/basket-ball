@@ -15,8 +15,8 @@ public class MatchTest {
 
     @Test
     public void testSave() throws SQLException, BasketException {
-        Team team1 = EntityUtils.loadById(1, Team.class);
-        Team team2 = EntityUtils.loadById(2, Team.class);
+    	Team team1 = EntityUtils.loadById(1, Team.class);
+    	Team team2 = EntityUtils.loadById(2, Team.class);
 
         Match m = new Match(111, new Timestamp(System.currentTimeMillis()), team1.getRef(), team2.getRef(), null, null, 0);
         Season s = EntityUtils.loadById(1, Season.class);

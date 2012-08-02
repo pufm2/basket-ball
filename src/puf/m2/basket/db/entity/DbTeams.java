@@ -69,24 +69,24 @@ public class DbTeams implements ORAData, ORADataFactory {
         return (Team[]) _array.getObjectArray(new Team[_array.length()]);
     }
 
-    public Team[] getArray(long index, int count) throws SQLException {
-        return (Team[]) _array.getObjectArray(index,
-                new Team[_array.sliceLength(index, count)]);
+    public String[] getArray(long index, int count) throws SQLException {
+        return (String[]) _array.getObjectArray(index,
+                new String[_array.sliceLength(index, count)]);
     }
 
-    public void setArray(Team[] a) throws SQLException {
+    public void setArray(String[] a) throws SQLException {
         _array.setObjectArray(a);
     }
 
-    public void setArray(Team[] a, long index) throws SQLException {
+    public void setArray(String[] a, long index) throws SQLException {
         _array.setObjectArray(a, index);
     }
 
-    public Team getElement(long index) throws SQLException {
-        return (Team) _array.getObjectElement(index);
+    public String getElement(long index) throws SQLException {
+        return (String) _array.getObjectElement(index);
     }
 
-    public void setElement(Team a, long index) throws SQLException {
+    public void setElement(String a, long index) throws SQLException {
         _array.setObjectElement(a, index);
     }
 

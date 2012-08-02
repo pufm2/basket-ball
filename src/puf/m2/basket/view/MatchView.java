@@ -21,7 +21,6 @@ import puf.m2.basket.model.entity.Player;
 import puf.m2.basket.model.entity.ScoreDetail;
 import puf.m2.basket.model.entity.Season;
 import puf.m2.basket.model.entity.Team;
-import puf.m2.basket.model.entity.ref.ScoreDetailRef;
 import puf.m2.basket.model.entity.ref.SeasonRef;
 import puf.m2.basket.model.support.BasketException;
 import puf.m2.basket.model.support.Condition;
@@ -259,7 +258,6 @@ public class MatchView extends JPanel implements ActionListener {
 				cboPlayer.addItem(player);
 			}
 		} catch (BasketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -272,7 +270,6 @@ public class MatchView extends JPanel implements ActionListener {
 		try {
 			System.out.println(team.getTeamName());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		cboTeam.addItem(team);
@@ -282,7 +279,6 @@ public class MatchView extends JPanel implements ActionListener {
 		try {
 			System.out.println(team.getTeamName());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		cboTeam.addItem(team);
@@ -894,7 +890,6 @@ public class MatchView extends JPanel implements ActionListener {
 			}
 			lstDetails.setModel(model);		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

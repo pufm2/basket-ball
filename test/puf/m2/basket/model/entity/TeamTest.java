@@ -12,14 +12,14 @@ public class TeamTest {
 
     @Test
     public void testGetRef() throws BasketException, SQLException {
-        Team team = Team.loadById(1);
+    	Team team = Team.loadById(1);
         System.out.println(team.getTeamName());
         assertNotNull(team.getRef());
     }
 
     @Test
     public void testSave() throws SQLException, BasketException {
-        Team team = new Team(88, "a x y", 0);
+    	Team team = new Team(88, "a x y", 0);
         team.save();
         
         team.setTeamName("befica");
@@ -28,7 +28,7 @@ public class TeamTest {
     
     @Test
     public void testUpdate() throws SQLException, BasketException {
-        Team team = Team.loadById(1);
+    	Team team = Team.loadById(1);
         team.setTeamName("chelsea");
         team.update();
     }

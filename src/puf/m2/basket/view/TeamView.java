@@ -55,7 +55,7 @@ public class TeamView extends JPanel implements ActionListener {
 			formState = FormState.INITIAL;
 
 		} else if ("Delete".equals(e.getActionCommand())) {
-			Team teamToDelete = null;
+			String teamToDelete = null;
 
 			if (!isInteger(txtTeamID.getText())) {
 				JOptionPane.showMessageDialog(this,
@@ -65,7 +65,7 @@ public class TeamView extends JPanel implements ActionListener {
 
 			try {
 				team = makeTeam();
-				teamToDelete = EntityUtils.loadById(team.getId(), Team.class);
+				teamToDelete = EntityUtils.loadById(team.getId(), String.class);
 			} catch (BasketException | SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -102,7 +102,7 @@ public class TeamView extends JPanel implements ActionListener {
 			// If exist team, show its information
 			if (teams.size() > 0) {
 				team = teams.get(0);
-				setTextField(team);
+				setTextField();
 				JOptionPane.showMessageDialog(this, "Team founded", "Notice",
 						JOptionPane.INFORMATION_MESSAGE);
 				formState = FormState.FIND;
@@ -149,7 +149,7 @@ public class TeamView extends JPanel implements ActionListener {
 				} else {
 					// Update existing team
 					team = makeTeam();
-					updateTeam(team);
+					updateTeam();
 					JOptionPane.showMessageDialog(this,
 							"Update team successful", "Success",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -355,12 +355,12 @@ public class TeamView extends JPanel implements ActionListener {
 	}// </editor-fold>
 
 	private boolean isDuplicateData(Team team) {
-		List<Team> teams = null;
+		List<String> teams = null;
 
 		// check if duplicate team ID
 		try {
 			teams = EntityUtils.loadByCondition(new Condition("id", team
-					.getId().toString()), Team.class, "id");
+					.getId().toString()), String.class, "id");
 		} catch (BasketException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -371,7 +371,7 @@ public class TeamView extends JPanel implements ActionListener {
 		teams = null;
 		try {
 			teams = EntityUtils.loadByCondition(
-					new Condition("Team_name", team.getTeamName()), Team.class,
+					new Condition("Team_name", team.getTeamName()), String.class,
 					"Team_name");
 		} catch (BasketException | SQLException e) {
 			e.printStackTrace();
@@ -409,7 +409,6 @@ public class TeamView extends JPanel implements ActionListener {
 		try {
 			team.setDeleted(0);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return team;
@@ -427,12 +426,6 @@ public class TeamView extends JPanel implements ActionListener {
 
 	private void setFieldtoAttribute() {
 		try {
-			// season.setId(Integer.parseInt(txtSeasonID.getText().trim()));
-			// season.setSeasonStartdate(new
-			// Timestamp(txtStartDate.getDate().getTime()));
-			// season.setSeasonEnddate(new
-			// Timestamp(txtEndDate.getDate().getTime()));
-
 			team.setId(Integer.parseInt(txtTeamID.getText().trim()));
 			team.setTeamName(txtTeamName.getText().trim());
 		} catch (NumberFormatException | SQLException e1) {
@@ -440,10 +433,10 @@ public class TeamView extends JPanel implements ActionListener {
 		}
 	}
 
-	private void setTextField(Team foundedTeam) {
+	private void setTextField() {
 		try {
-			txtTeamID.setText(foundedTeam.getId().toString());
-			txtTeamName.setText(foundedTeam.getTeamName());
+			txtTeamID.setText(team.getId().toString());
+			txtTeamName.setText(team.getTeamName());
 		} catch (SQLException e) {
 
 			e.printStackTrace();
@@ -483,7 +476,7 @@ public class TeamView extends JPanel implements ActionListener {
 		}
 	}
 
-	private void updateTeam(Team team) {
+	private void updateTeam() {
 		setFieldtoAttribute();
 		try {
 			team.setDeleted(0);
