@@ -26,8 +26,8 @@ public class AvgDistanceView extends javax.swing.JPanel implements
 
 	// Variables declaration - do not modify
 	private javax.swing.JButton btnShowDistance;
-	private javax.swing.JComboBox<String> cboTeam1;
-	private javax.swing.JComboBox<String> cboTeam2;
+	private javax.swing.JComboBox<Team> cboTeam1;
+	private javax.swing.JComboBox<Team> cboTeam2;
 	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel jLabel10;
 	private javax.swing.JLabel jLabel11;
@@ -105,8 +105,8 @@ public class AvgDistanceView extends javax.swing.JPanel implements
 
 	private void fillTwoComboTeam() {
 		try {
-			List<String> teams = EntityUtils.loadByCondition(null,
-					String.class, null);
+			List<Team> teams = EntityUtils.loadByCondition(null,
+					Team.class, null);
 			if (teams.size() <= 0) {
 				JOptionPane
 						.showMessageDialog(
@@ -117,7 +117,7 @@ public class AvgDistanceView extends javax.swing.JPanel implements
 			}
 			cboTeam1.removeAll();
 			cboTeam2.removeAll();
-			for (String team : teams) {
+			for (Team team : teams) {
 				cboTeam1.addItem(team);
 				cboTeam2.addItem(team);
 			}
@@ -145,8 +145,8 @@ public class AvgDistanceView extends javax.swing.JPanel implements
 	private void initComponents() {
 
 		jLabel1 = new javax.swing.JLabel();
-		cboTeam1 = new javax.swing.JComboBox<String>();
-		cboTeam2 = new javax.swing.JComboBox<String>();
+		cboTeam1 = new javax.swing.JComboBox<Team>();
+		cboTeam2 = new javax.swing.JComboBox<Team>();
 		jLabel2 = new javax.swing.JLabel();
 		btnShowDistance = new javax.swing.JButton();
 		jLabel3 = new javax.swing.JLabel();
