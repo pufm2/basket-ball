@@ -216,11 +216,6 @@ public class Stat {
 			value = (Integer) m.getValue();
 
 			try {
-				System.out.println(team.getTeamName() + " - " + value);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			try {
 				arrRankTeam.add(new RankTeam(team.getTeamName(), value, 0));
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -258,8 +253,6 @@ public class Stat {
 
 			entryTeamName = (String) entryRankTeam.getKey();
 			entryValue = (Integer) entryRankTeam.getValue();
-
-			System.out.println(entryTeamName + " - " + entryValue.intValue());
 		}
 
 		sortTeams = ViewSupport.sortByValue(sortTeams);

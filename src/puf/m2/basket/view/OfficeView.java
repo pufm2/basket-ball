@@ -685,7 +685,6 @@ public class OfficeView extends JPanel implements ActionListener {
 			txtAddressDistrict.setText(officeAddress.getAddressDistrict());
 
 			for (int i = 0; i < cboCity.getItemCount(); i++) {
-				// System.out.println(cboAddressCity.getItemAt(i).getCityName());
 				if (cboCity.getItemAt(i).getCityName()
 						.equals(office.getOfficeAddress().getAddressCity())) {
 					cboCity.setSelectedIndex(i);

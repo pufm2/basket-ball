@@ -267,20 +267,9 @@ public class MatchView extends JPanel implements ActionListener {
 		cboTeam.removeAllItems();
 
 		team = (Team) cboTeam1.getSelectedItem();
-		try {
-			System.out.println(team.getTeamName());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 		cboTeam.addItem(team);
 
-		team = null;
 		team = (Team) cboTeam2.getSelectedItem();
-		try {
-			System.out.println(team.getTeamName());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 		cboTeam.addItem(team);
 	}
 
