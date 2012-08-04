@@ -18,6 +18,7 @@ import puf.m2.basket.model.support.DbProp;
 
 public abstract class Entity {
     public abstract Integer getId() throws SQLException;
+    public abstract void setDeleted(Integer deleted) throws SQLException;
 
     public <T> T getRef(Class<T> clazz) throws BasketException {
 
@@ -95,8 +96,8 @@ public abstract class Entity {
 
         Connection conn = null;
         try {
-            String tableName = (String) getClass().getField("TABLE_NAME").get(
-                    null);
+            setDeleted(0);
+            String tableName = (String) getClass().getField("TABLE_NAME").get(null);
             String stmt = "insert into " + tableName + " values(?)";
 
             conn = JDBCUtil.getConnection();

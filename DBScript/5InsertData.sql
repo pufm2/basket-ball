@@ -29,7 +29,8 @@ INSERT INTO OFFICE VALUES (
         NULL,
         NULL
     ),
-    'OFFICE 1',T_ADDRESS (2,'TAN VIEN','TAN BINH','Ho Chi Minh city'), 0);
+    0,
+    'OFFICE 1',T_ADDRESS (2,'TAN VIEN','TAN BINH','Ho Chi Minh city'));
 INSERT INTO OFFICE VALUES (
     2,
     SDO_GEOMETRY (
@@ -44,7 +45,8 @@ INSERT INTO OFFICE VALUES (
         NULL,
         NULL
     ),
-    'OFFICE 2',T_ADDRESS (13,'LOT 14 QTSP','12','Ha Noi'), 0);
+    0,
+    'OFFICE 2',T_ADDRESS (13,'LOT 14 QTSP','12','Ha Noi'));
 INSERT INTO OFFICE VALUES (
     3,
     SDO_GEOMETRY (
@@ -59,7 +61,8 @@ INSERT INTO OFFICE VALUES (
         NULL,
         NULL
     ),
-    'OFFICE 3',T_ADDRESS (93,'CAO THANG','3','Ha Long'), 0);
+    0,
+    'OFFICE 3',T_ADDRESS (93,'CAO THANG','3','Ha Long'));
 INSERT INTO OFFICE VALUES (
     4,
     SDO_GEOMETRY (
@@ -74,7 +77,8 @@ INSERT INTO OFFICE VALUES (
         NULL,
         NULL
     ),
-    'OFFICE 4',T_ADDRESS (1,'LOT 10 QTSP','12','Da Lat'), 0);
+    0,
+    'OFFICE 4',T_ADDRESS (1,'LOT 10 QTSP','12','Da Lat'));
 INSERT INTO OFFICE VALUES (
     5,
     SDO_GEOMETRY (
@@ -89,7 +93,8 @@ INSERT INTO OFFICE VALUES (
         NULL,
         NULL
     ),
-    'OFFICE 5',T_ADDRESS (8,'NGUYEN VAN TRANG','1','Can Tho'), 0);
+    0,
+    'OFFICE 5',T_ADDRESS (8,'NGUYEN VAN TRANG','1','Can Tho'));
 
 INSERT INTO PRESIDENT VALUES (1,'PRESIDENT 1', 0);
 INSERT INTO PRESIDENT VALUES (2,'PRESIDENT 2', 0);

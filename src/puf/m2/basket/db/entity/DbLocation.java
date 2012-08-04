@@ -8,6 +8,7 @@ import oracle.sql.ORADataFactory;
 import oracle.sql.Datum;
 import oracle.sql.STRUCT;
 import oracle.jpub.runtime.MutableStruct;
+import puf.m2.basket.model.entity.Office;
 import puf.m2.basket.model.support.DbProp;
 import sqlj.runtime.ref.DefaultContext;
 import sqlj.runtime.ConnectionContext;
@@ -97,8 +98,8 @@ public class DbLocation extends Entity implements ORAData, ORADataFactory {
 
     protected MutableStruct _struct;
 
-    protected static int[] _sqlType = { 4, 2002 };
-    protected static ORADataFactory[] _factory = new ORADataFactory[2];
+    protected static int[] _sqlType = { 4, 2002, 4 };
+    protected static ORADataFactory[] _factory = new ORADataFactory[3];
     static {
         _factory[1] = SdoGeometry.getORADataFactory();
     }
@@ -117,14 +118,14 @@ public class DbLocation extends Entity implements ORAData, ORADataFactory {
             _map.put("BASKET_USER.T_LOCATION",
                     puf.m2.basket.db.entity.DbLocation.getORADataFactory());
             _map.put("BASKET_USER.T_OFFICE",
-                    puf.m2.basket.model.entity.Office.getORADataFactory());
+                    Office.getORADataFactory());
         }
     }
 
     /* constructors */
     protected void _init_struct(boolean init) {
         if (init)
-            _struct = new MutableStruct(new Object[2], _sqlType, _factory);
+            _struct = new MutableStruct(new Object[3], _sqlType, _factory);
     }
 
     public DbLocation() {
@@ -144,14 +145,15 @@ public class DbLocation extends Entity implements ORAData, ORADataFactory {
         __onn = c;
     }
 
-    public DbLocation(Integer id, SdoGeometry loc) throws SQLException {
+    public DbLocation(Integer id, SdoGeometry loc, Integer deleted)
+            throws SQLException {
         _init_struct(true);
         setId(id);
         setLoc(loc);
+        setDeleted(deleted);
     }
 
     /* ORAData interface */
-    @Override
     public Datum toDatum(Connection c) throws SQLException {
         if (__tx != null && __onn != c)
             release();
@@ -160,7 +162,6 @@ public class DbLocation extends Entity implements ORAData, ORADataFactory {
     }
 
     /* ORADataFactory interface */
-    @Override
     public ORAData create(Datum d, int sqlType) throws SQLException {
         return create(null, d, sqlType);
     }
@@ -223,7 +224,6 @@ public class DbLocation extends Entity implements ORAData, ORADataFactory {
     }
 
     /* accessor methods */
-    @Override
     @DbProp
     public Integer getId() throws SQLException {
         return (Integer) _struct.getAttribute(0);
@@ -242,12 +242,21 @@ public class DbLocation extends Entity implements ORAData, ORADataFactory {
         _struct.setAttribute(1, loc);
     }
 
+    @DbProp
+    public Integer getDeleted() throws SQLException {
+        return (Integer) _struct.getAttribute(2);
+    }
+
+    public void setDeleted(Integer deleted) throws SQLException {
+        _struct.setAttribute(2, deleted);
+    }
+
     public java.math.BigDecimal distance(DbLocation LOCOBJ)
             throws java.sql.SQLException {
-        DbLocation __jPt_temp = this;
+        DbLocation __jPt_temp = (DbLocation) this;
         java.math.BigDecimal __jPt_result;
         try {
-            /* @lineinfo:generated-code *//* @lineinfo:173^5 */
+            /* @lineinfo:generated-code *//* @lineinfo:181^5 */
 
             // ************************************************************
             // #sql [getConnectionContext()] { BEGIN
@@ -295,14 +304,14 @@ public class DbLocation extends Entity implements ORAData, ORADataFactory {
 
             // ************************************************************
 
-            /* @lineinfo:user-code *//* @lineinfo:178^5 */
+            /* @lineinfo:user-code *//* @lineinfo:186^5 */
         } catch (java.sql.SQLException _err) {
             try {
                 getConnectionContext().getExecutionContext().close();
                 closeConnection();
                 if (__dataSource == null)
                     throw _err;
-                /* @lineinfo:generated-code *//* @lineinfo:184^5 */
+                /* @lineinfo:generated-code *//* @lineinfo:192^5 */
 
                 // ************************************************************
                 // #sql [getConnectionContext()] { BEGIN
@@ -353,7 +362,7 @@ public class DbLocation extends Entity implements ORAData, ORADataFactory {
 
                 // ************************************************************
 
-                /* @lineinfo:user-code *//* @lineinfo:189^5 */
+                /* @lineinfo:user-code *//* @lineinfo:197^5 */
             } catch (java.sql.SQLException _err2) {
                 try {
                     getConnectionContext().getExecutionContext().close();
