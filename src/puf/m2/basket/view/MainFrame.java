@@ -110,12 +110,13 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnuCoach.setActionCommand("Coach");
 		mnuCoach.addActionListener(this);
 
+		mnuPerson.add(mnuCoach);
 		mnuPerson.add(mnuPlayer);
 		mnuPerson.add(mnuPresident);
-		mnuPerson.add(mnuVicePresident);
 		mnuPerson.add(mnuSecretary);
 		mnuPerson.add(mnuTreasurer);
-		mnuPerson.add(mnuCoach);
+		mnuPerson.add(mnuVicePresident);
+		
 
 		// Menu Organization
 		JMenuItem mnuCategory = new JMenuItem("Category");
@@ -164,7 +165,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnuAvgScoreOfSeason.addActionListener(this);
 
 		JMenuItem mnuAvgDistance = new JMenuItem(
-				"Average of moving distance betwween two meetings");
+				"Average of moving distance betwween two teams");
 		mnuAvgDistance.setActionCommand("AvgDistance");
 		mnuAvgDistance.addActionListener(this);
 

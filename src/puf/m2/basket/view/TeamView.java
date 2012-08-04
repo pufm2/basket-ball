@@ -55,7 +55,7 @@ public class TeamView extends JPanel implements ActionListener {
 			formState = FormState.INITIAL;
 
 		} else if ("Delete".equals(e.getActionCommand())) {
-			String teamToDelete = null;
+			Team teamToDelete = null;
 
 			if (!isInteger(txtTeamID.getText())) {
 				JOptionPane.showMessageDialog(this,
@@ -65,7 +65,7 @@ public class TeamView extends JPanel implements ActionListener {
 
 			try {
 				team = makeTeam();
-				teamToDelete = EntityUtils.loadById(team.getId(), String.class);
+				teamToDelete = EntityUtils.loadById(team.getId(), Team.class);
 			} catch (BasketException | SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -355,12 +355,12 @@ public class TeamView extends JPanel implements ActionListener {
 	}// </editor-fold>
 
 	private boolean isDuplicateData(Team team) {
-		List<String> teams = null;
+		List<Team> teams = null;
 
 		// check if duplicate team ID
 		try {
 			teams = EntityUtils.loadByCondition(new Condition("id", team
-					.getId().toString()), String.class, "id");
+					.getId().toString()), Team.class, "id");
 		} catch (BasketException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -372,7 +372,7 @@ public class TeamView extends JPanel implements ActionListener {
 		try {
 			teams = EntityUtils.loadByCondition(
 					new Condition("Team_name", team.getTeamName()),
-					String.class, "Team_name");
+					Team.class, "Team_name");
 		} catch (BasketException | SQLException e) {
 			e.printStackTrace();
 		}

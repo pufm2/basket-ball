@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import puf.m2.basket.model.entity.User;
 
 import puf.m2.basket.model.support.BasketException;
+import puf.m2.basket.model.support.Condition;
 import puf.m2.basket.model.support.EntityUtils;
 
 public class LoginView extends javax.swing.JPanel implements ActionListener {
@@ -148,12 +149,15 @@ public class LoginView extends javax.swing.JPanel implements ActionListener {
 
 		List<User> users = null;
 		try {
-			users = EntityUtils.loadByCondition(null, User.class, null);
+			Condition userCondition = new Condition("USERNAME", username.toUpperCase());
+			userCondition.and(new Condition("PASSWORD", password.toUpperCase()));
+			
+			users = EntityUtils.loadByCondition(userCondition, User.class, null);
 		} catch (BasketException e) {
 			e.printStackTrace();
 		}
 
-		if (users != null) {
+		if (users.size()>0) {
 			parent.setVisible(false);
 			new MainFrame();
 

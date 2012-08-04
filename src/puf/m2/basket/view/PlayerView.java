@@ -718,9 +718,7 @@ public class PlayerView extends JPanel implements ActionListener {
 			txtAddressDistrict.setText(player.getPlayerAddress()
 					.getAddressDistrict().toString());
 
-			// System.out.println(player.getPlayerAddress().getAddressCity());
 			for (int i = 0; i < cboAddressCity.getItemCount(); i++) {
-				// System.out.println(cboAddressCity.getItemAt(i).getCityName());
 				if (cboAddressCity.getItemAt(i).getCityName()
 						.equals(player.getPlayerAddress().getAddressCity())) {
 					cboAddressCity.setSelectedIndex(i);
